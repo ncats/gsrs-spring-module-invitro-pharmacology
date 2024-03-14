@@ -35,7 +35,7 @@ public class InvitroReference extends InvitroPharmacologyCommanData {
     @Column(name="REFERENCE_SOURCE_TYPE")
     public String referenceSourceType;
 
-    @Indexable(suggest = true, facet=true, name= "Reference Source Number", sortable = true)
+    @Indexable(suggest = true, facet=true, name= "Reference Source", sortable = true)
     @Column(name="REFERENCE_SOURCE_NUMBER")
     public String referenceSourceNumber;
 

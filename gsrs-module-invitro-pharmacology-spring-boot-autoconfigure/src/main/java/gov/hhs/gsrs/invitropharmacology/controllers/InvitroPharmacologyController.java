@@ -118,7 +118,7 @@ public class InvitroPharmacologyController extends EtagLegacySearchEntityControl
 
     @GetGsrsRestApiMapping("/allTestAgents")
     public ResponseEntity<String> findAllTestAgents() throws Exception {
-        List<InvitroAssayInformation> list = invitroPharmacologyEntityService.findAllTestAgents();
+        List<InvitroTestAgent> list = invitroPharmacologyEntityService.findAllTestAgents();
 
         return new ResponseEntity(list, HttpStatus.OK);
     }

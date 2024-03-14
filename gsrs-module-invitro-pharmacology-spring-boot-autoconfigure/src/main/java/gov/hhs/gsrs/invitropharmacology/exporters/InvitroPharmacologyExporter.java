@@ -84,11 +84,11 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
 
             // If there is no screening data, only export the Assay details
             if (a.invitroAssayScreenings.size() == 0) {
-                publicCreateRows(a, 0);
+                createRows(a, 0);
             // Else if there are screening data, export screening data along with Assay details
             } else if (a.invitroAssayScreenings.size() > 0) {
                 for (int i = 0; i < a.invitroAssayScreenings.size(); i++) {
-                    publicCreateRows(a, i);
+                    createRows(a, i);
                 } // for InvitroAssayScreenings
             } // invitroAssayScreenings size > 0
 
@@ -98,7 +98,7 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
         }
     }
 
-    public void publicCreateRows(InvitroAssayInformation a, int i) {
+    public void createRows(InvitroAssayInformation a, int i) {
         Spreadsheet.SpreadsheetRow row = spreadsheet.getRow(this.row++);
         int col = 0;
         this.screeningNumber = i;
@@ -120,7 +120,11 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
         DEFAULT_RECIPE_MAP = new LinkedHashMap<>();
 
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.SCREENING_NUMBER, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.SCREENING_NUMBER, (a, cell) -> {
-            int screeningNum = screeningNumber + 1;
+            int screeningNum = screeningNumber;
+            // If there is any screening data, increment the number by 1
+            if (a.invitroAssayScreenings.size() > 0) {
+                screeningNum = screeningNumber + 1;
+            }
             cell.writeInteger((screeningNum));
         }));
 
