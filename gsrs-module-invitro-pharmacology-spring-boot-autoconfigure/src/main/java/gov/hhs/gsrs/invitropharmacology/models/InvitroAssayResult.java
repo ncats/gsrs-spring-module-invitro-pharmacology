@@ -55,6 +55,21 @@ public class InvitroAssayResult extends InvitroPharmacologyCommanData {
     @Column(name = "ASSAY_MEASUREMENT", length=4000)
     public String assayMeasurement;
 
+    @Column(name = "LIGAND_SUBSTRATE_CONCENT")
+    public Double ligandSubstrateConcentration;
+
+    @Column(name = "LIGAND_SUBSTRATE_CONCENT_UNITS")
+    public String ligandSubstrateConcentrationUnits;
+
+    @Column(name = "NUMBER_OF_TESTS")
+    public String numberOfTests;
+
+    @Column(name = "DATA_TYPE")
+    public String dataType;
+
+    @Column(name = "PLASMA_PROTEIN_ADDED")
+    public String plasmaProteinAdded;
+
     public InvitroAssayResult() {
     }
 
