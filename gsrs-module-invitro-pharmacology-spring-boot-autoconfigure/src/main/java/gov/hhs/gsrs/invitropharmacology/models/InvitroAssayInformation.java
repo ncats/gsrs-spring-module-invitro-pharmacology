@@ -93,6 +93,9 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
     @Column(name="TARGET_NAME_APPROVAL_ID")
     public String targetNameApprovalId;
 
+    @Column(name="TARGET_NAME_SUBSTANCE_UUID")
+    public String targetNameSubstanceUuid;
+
     @Indexable(suggest = true, facet=true, name= "Target Species", sortable = true)
     @Column(name="TARGET_SPECIES")
     public String targetSpecies;
