@@ -17,6 +17,10 @@ public class RequiredFieldNonNullValidator implements ValidatorPlugin<InvitroAss
     @Override
     public void validate(InvitroAssayInformation objnew, InvitroAssayInformation objold, ValidatorCallback callback) {
 
+        if (objnew.assaySet == null || objnew.assaySet.isEmpty()) {
+            callback.addMessage(GinasProcessingMessage.ERROR_MESSAGE("Assay Set is required."));
+        }
+
         if ((objnew.externalAssayId == null) || (objnew.externalAssayId.isEmpty())) {
             callback.addMessage(GinasProcessingMessage.ERROR_MESSAGE("External Assay ID is required"));
         }
