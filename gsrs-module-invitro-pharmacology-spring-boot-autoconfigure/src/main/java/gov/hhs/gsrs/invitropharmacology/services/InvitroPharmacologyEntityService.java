@@ -17,11 +17,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Service
 public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<InvitroAssayInformation, Long> {
     public static final String  CONTEXT = "invitropharmacology";
@@ -126,11 +129,14 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
 
     @Override
     public Optional<InvitroAssayInformation> get(Long id) {
+        System.out.println("********** Inside get(Long id) " + id);
+        log.error("********** Inside get(Long id) " + id);
         return repository.findById(id);
     }
 
     @Override
     public Optional<InvitroAssayInformation> flexLookup(String someKindOfId) {
+        System.out.println("********** Inside flexLookup(String someKindOfId) " + someKindOfId);
         if (someKindOfId == null){
             return Optional.empty();
         }
@@ -154,6 +160,8 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
     }
 
     public List<InvitroAssayInformation> findAllAssays() {
+        System.out.println("********** Inside findAllAssays() ********************");
+        log.error("********** Inside findAllAssays() ******************** ");
         List<InvitroAssayInformation> list = repository.findAllAssays();
         return list;
     }
