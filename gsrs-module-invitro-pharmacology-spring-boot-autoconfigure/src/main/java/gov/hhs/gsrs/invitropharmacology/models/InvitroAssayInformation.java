@@ -37,6 +37,10 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
     @Column(name="ASSAY_ID")
     public String assayId;
 
+    @Indexable(suggest = true, facet=true, name= "Assay Set", sortable = true)
+    @Column(name="ASSAY_SET", length=1000)
+    public String assaySet;
+
     @Indexable(suggest = true, facet=true, name= "External Assay ID", sortable = true)
     @Column(name="EXTERNAL_ASSAY_ID")
     public String externalAssayId;
@@ -52,12 +56,15 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
     public String externalAssayReferenceUrl;
 
     @Indexable(suggest = true, facet=true, name= "Assay Title", sortable = true)
-    @Column(name="ASSAY_TITLE")
+    @Column(name="ASSAY_TITLE", length=1000)
     public String assayTitle;
 
     @Indexable(suggest = true, facet=true, name= "Assay Format", sortable = true)
     @Column(name="ASSAY_FORMAT")
     public String assayFormat;
+
+    @Column(name = "ASSAY_MODE")
+    public String assayMode;
 
     @Indexable(suggest = true, facet=true, name= "Bioassay Type", sortable = true)
     @Column(name="BIOASSAY_TYPE")
@@ -150,4 +157,11 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
         }
     }
 
+    // Many To Many, InvitroAssaySet
+    @ToString.Exclude
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToMany(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
+    @JoinTable(name="GSRS_INVITRO_ASSAY_SET_DET", joinColumns = @JoinColumn(name = "INVITRO_ASSAY_INFO_ID "),
+            inverseJoinColumns = @JoinColumn(name = "INVITRO_ASSAY_SET_ID"))
+    public List<InvitroAssaySet> invitroAssaySets = new ArrayList<>();
 }
