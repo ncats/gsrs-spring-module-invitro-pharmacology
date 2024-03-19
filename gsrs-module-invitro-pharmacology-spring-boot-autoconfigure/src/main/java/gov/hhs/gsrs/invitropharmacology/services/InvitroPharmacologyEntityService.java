@@ -158,13 +158,23 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
         return list;
     }
 
-    public List<InvitroTestAgent> findAllTestAgents() {
-        List<InvitroTestAgent> list = repository.findAllTestAgents();
+    public List<InvitroAssayInformation> findAllAssysByAssaySet(String assaySet) {
+        List<InvitroAssayInformation> list = repository.findAllAssysByAssaySet(assaySet);
+        return list;
+    }
+
+    public List<InvitroAssaySet> findAllAssaySets() {
+        List<InvitroAssaySet> list = repository.findAllAssaySets();
         return list;
     }
 
     public List<InvitroReference> findAllReferences() {
         List<InvitroReference> list = repository.findAllReferences();
+        return list;
+    }
+
+    public List<InvitroTestAgent> findAllTestAgents() {
+        List<InvitroTestAgent> list = repository.findAllTestAgents();
         return list;
     }
 

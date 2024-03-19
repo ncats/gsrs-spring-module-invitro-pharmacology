@@ -116,9 +116,16 @@ public class InvitroPharmacologyController extends EtagLegacySearchEntityControl
         return new ResponseEntity(list, HttpStatus.OK);
     }
 
-    @GetGsrsRestApiMapping("/allTestAgents")
-    public ResponseEntity<String> findAllTestAgents() throws Exception {
-        List<InvitroTestAgent> list = invitroPharmacologyEntityService.findAllTestAgents();
+    @GetGsrsRestApiMapping("/assaysByAssaySets/{assaySet}")
+    public ResponseEntity<String> findAllAssysByAssaySet(@PathVariable("assaySet") String assaySet) throws Exception {
+        List<InvitroAssayInformation> list = invitroPharmacologyEntityService.findAllAssysByAssaySet(assaySet);
+
+        return new ResponseEntity(list, HttpStatus.OK);
+    }
+
+    @GetGsrsRestApiMapping("/allAssaySets")
+    public ResponseEntity<String> findAllAssaySets() throws Exception {
+        List<InvitroAssaySet> list = invitroPharmacologyEntityService.findAllAssaySets();
 
         return new ResponseEntity(list, HttpStatus.OK);
     }
@@ -126,6 +133,13 @@ public class InvitroPharmacologyController extends EtagLegacySearchEntityControl
     @GetGsrsRestApiMapping("/allReferences")
     public ResponseEntity<String> findAllReferences() throws Exception {
         List<InvitroReference> list = invitroPharmacologyEntityService.findAllReferences();
+
+        return new ResponseEntity(list, HttpStatus.OK);
+    }
+
+    @GetGsrsRestApiMapping("/allTestAgents")
+    public ResponseEntity<String> findAllTestAgents() throws Exception {
+        List<InvitroTestAgent> list = invitroPharmacologyEntityService.findAllTestAgents();
 
         return new ResponseEntity(list, HttpStatus.OK);
     }

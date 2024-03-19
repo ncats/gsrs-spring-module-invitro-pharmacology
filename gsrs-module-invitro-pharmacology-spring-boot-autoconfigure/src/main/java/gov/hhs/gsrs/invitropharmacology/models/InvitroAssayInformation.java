@@ -157,4 +157,11 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
         }
     }
 
+    // Many To Many, InvitroAssaySet
+    @ToString.Exclude
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToMany(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
+    @JoinTable(name="GSRS_INVITRO_ASSAY_SET_DET", joinColumns = @JoinColumn(name = "INVITRO_ASSAY_INFO_ID "),
+            inverseJoinColumns = @JoinColumn(name = "INVITRO_ASSAY_SET_ID"))
+    public List<InvitroAssaySet> invitroAssaySets = new ArrayList<>();
 }
