@@ -64,9 +64,11 @@ public class InvitroAssayScreening extends InvitroPharmacologyCommanData {
     @JoinColumn(name="INVITRO_RESULT_ID")
     public InvitroAssayResult invitroAssayResult;
 
+    /*
     @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name="INVITRO_SUMMARY_ID")
     public InvitroSummary invitroSummary;
+    */
 
     // Set Child Class, InvitroControl
     @ToString.Exclude

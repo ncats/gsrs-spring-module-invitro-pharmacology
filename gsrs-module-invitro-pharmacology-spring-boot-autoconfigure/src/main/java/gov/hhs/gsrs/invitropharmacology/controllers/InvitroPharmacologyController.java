@@ -124,8 +124,6 @@ public class InvitroPharmacologyController extends EtagLegacySearchEntityControl
 
     @GetGsrsRestApiMapping("/allAssays")
     public ResponseEntity<String> findAllAssays() throws Exception {
-        System.out.println("********** Controller: Inside findAllAssays() ********************");
-        log.error("********** ********** Controller: Inside findAllAssays() ******************** ");
         List<InvitroAssayInformation> list = invitroPharmacologyEntityService.findAllAssays();
 
         return new ResponseEntity(list, HttpStatus.OK);

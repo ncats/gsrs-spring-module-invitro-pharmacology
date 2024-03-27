@@ -92,6 +92,10 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
     @Column(name="PRESENTATION")
     public String presentation;
 
+    @Indexable(suggest = true, facet=true, name= "Assay Public Domain", sortable = true)
+    @Column(name="PUBLIC_DOMAIN")
+    public String publicDomain;
+
     @Indexable(suggest = true, facet=true, name= "Target Name", sortable = true)
     @Column(name="TARGET_NAME", length=1000)
     public String targetName;
@@ -123,11 +127,11 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
     @Column(name="LIGAND_SUBSTRATE_APPROVAL_ID")
     public String ligandSubstrateApprovalId;
 
-    @Column(name="LIGAND_SUBSTRATE_CONCENT")
-    public String ligandSubstrateConcentration;
-
-    @Column(name="LIGAND_SUBSTRATE_CONCENT_UNITS")
-    public String ligandSubstrateConcentrationUnits;
+    @Column(name="STANDARD_LIGAND_CONCENT")
+    public String standardLigandSubstrateConcentration;
+  
+    @Column(name="STANDARD_LIGAND_CONCENT_UNITS")
+    public String standardLigandSubstrateConcentrationUnits;
 
     public InvitroAssayInformation() {}
 
@@ -151,6 +155,22 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
         this.invitroAssayScreenings = invitroAssayScreenings;
         if (invitroAssayScreenings != null) {
             for (InvitroAssayScreening invitro : invitroAssayScreenings)
+            {
+                invitro.setOwner(this);
+            }
+        }
+    }
+
+    // Set Child Class, InvitroSummary
+    @ToString.Exclude
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "ownerOfAssayInfo")
+    public List<InvitroSummary> invitroSummaries = new ArrayList<InvitroSummary>();
+
+    public void setInvitroSummaries(List<InvitroSummary> invitroSummaries) {
+        this.invitroSummaries = invitroSummaries;
+        if (invitroSummaries != null) {
+            for (InvitroSummary invitro : invitroSummaries)
             {
                 invitro.setOwner(this);
             }
