@@ -43,6 +43,12 @@ public interface InvitroPharmacologyRepository extends GsrsVersionedRepository<I
     @Query("select a from InvitroReference a")
     List<InvitroReference> findAllReferences();
 
+    @Query("select a from InvitroSponsor a")
+    List<InvitroSponsor> findAllSponsors();
+
+    @Query("select a from InvitroLaboratory a")
+    List<InvitroLaboratory> findAllLaboratories();
+
     @Query("select a from InvitroTestAgent a")
     List<InvitroTestAgent> findAllTestAgents();
 

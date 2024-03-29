@@ -150,6 +150,20 @@ public class InvitroPharmacologyController extends EtagLegacySearchEntityControl
         return new ResponseEntity(list, HttpStatus.OK);
     }
 
+    @GetGsrsRestApiMapping("/allSponsors")
+    public ResponseEntity<String> findAllSponsors() throws Exception {
+        List<InvitroSponsor> list = invitroPharmacologyEntityService.findAllSponsors();
+
+        return new ResponseEntity(list, HttpStatus.OK);
+    }
+
+    @GetGsrsRestApiMapping("/allLaboratories")
+    public ResponseEntity<String> findAllLaboratories() throws Exception {
+        List<InvitroLaboratory> list = invitroPharmacologyEntityService.findAllLaboratories();
+
+        return new ResponseEntity(list, HttpStatus.OK);
+    }
+
     @GetGsrsRestApiMapping("/allTestAgents")
     public ResponseEntity<String> findAllTestAgents() throws Exception {
         List<InvitroTestAgent> list = invitroPharmacologyEntityService.findAllTestAgents();
