@@ -37,10 +37,6 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
     @Column(name="ASSAY_ID")
     public String assayId;
 
-    @Indexable(suggest = true, facet=true, name= "Assay Set", sortable = true)
-    @Column(name="ASSAY_SET", length=1000)
-    public String assaySet;
-
     @Indexable(suggest = true, facet=true, name= "External Assay ID", sortable = true)
     @Column(name="EXTERNAL_ASSAY_ID")
     public String externalAssayId;
@@ -48,9 +44,6 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
     @Indexable(suggest = true, facet=true, name= "External Assay Source", sortable = true)
     @Column(name="EXTERNAL_ASSAY_SOURCE")
     public String externalAssaySource;
-
-    @Column(name="EXTERNAL_ASSAY_REFERENCE")
-    public String externalAssayReference;
 
     @Column(name="EXTERNAL_ASSAY_REFERENCE_URL", length=1000)
     public String externalAssayReferenceUrl;
@@ -81,9 +74,6 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
     @Indexable(suggest = true, facet=true, name= "Detection Method", sortable = true)
     @Column(name="DETECTION_METHOD")
     public String detectionMethod;
-
-    @Column(name="BUFFER_PLASMA_PRO_CONCENT")
-    public String bufferPlasmaProteinConcent;
 
     @Indexable(suggest = true, facet=true, name= "Presentation Type", sortable = true)
     @Column(name="PRESENTATION_TYPE")

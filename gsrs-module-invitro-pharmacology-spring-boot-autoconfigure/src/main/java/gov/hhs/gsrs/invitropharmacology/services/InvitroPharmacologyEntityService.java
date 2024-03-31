@@ -181,6 +181,11 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
         return list;
     }
 
+    public List<InvitroSponsorSubmitter> findAllSponsorSubmitters() {
+        List<InvitroSponsorSubmitter> list = repository.findAllSponsorSubmitters();
+        return list;
+    }
+
     public List<InvitroLaboratory> findAllLaboratories() {
         List<InvitroLaboratory> list = repository.findAllLaboratories();
         return list;

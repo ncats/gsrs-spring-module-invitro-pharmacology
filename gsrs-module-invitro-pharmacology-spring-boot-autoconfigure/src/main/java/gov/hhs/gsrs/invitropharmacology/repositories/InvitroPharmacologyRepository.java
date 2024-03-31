@@ -34,6 +34,12 @@ public interface InvitroPharmacologyRepository extends GsrsVersionedRepository<I
     @Query("select a from InvitroAssayInformation a JOIN a.invitroAssaySets s where s.assaySet = ?1")
     List<InvitroAssayInformation> findAllAssysByAssaySet(String assaySet);
 
+    @Query("select a from InvitroAssayInformation a JOIN a.invitroAssayScreenings s JOIN s.invitroTestAgent ta where ta.testAgent IS NOT NULL")
+    List<InvitroAssayInformation> findAllScreeningTestAgents();
+
+    @Query("select a from InvitroAssayInformation a where a.externalAssaySource = ?1 and a.externalAssayId = ?2")
+    InvitroAssayInformation findAssayByExternalAssay(String externalAssaySource, String externalAssayId);
+
     @Query("select a from InvitroAssayInformation a")
     List<InvitroAssayInformation> findAllAssays();
 
@@ -46,12 +52,13 @@ public interface InvitroPharmacologyRepository extends GsrsVersionedRepository<I
     @Query("select a from InvitroSponsor a")
     List<InvitroSponsor> findAllSponsors();
 
+    @Query("select a from InvitroSponsorSubmitter a")
+    List<InvitroSponsorSubmitter> findAllSponsorSubmitters();
+
     @Query("select a from InvitroLaboratory a")
     List<InvitroLaboratory> findAllLaboratories();
 
     @Query("select a from InvitroTestAgent a")
     List<InvitroTestAgent> findAllTestAgents();
 
-    @Query("select a from InvitroAssayInformation a JOIN a.invitroAssayScreenings s JOIN s.invitroTestAgent ta where ta.testAgent IS NOT NULL")
-    List<InvitroAssayInformation> findAllScreeningTestAgents();
 }

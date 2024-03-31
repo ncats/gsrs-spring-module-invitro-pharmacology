@@ -91,7 +91,7 @@ public class InvitroAssayScreening extends InvitroPharmacologyCommanData {
     public InvitroLaboratory invitroLaboratory;
 
     @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "INVITRO_SUBMITTER_REPORT_ID")
-    public InvitroSubmitterReport invitroSubmitterReport;
+    @JoinColumn(name = "INVITRO_SPONSOR_REPORT_ID")
+    public InvitroSponsorReport invitroSponsorReport;
 
 }

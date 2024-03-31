@@ -138,8 +138,6 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
 
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.EXTERNAL_ASSAY_SOURCE, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.EXTERNAL_ASSAY_SOURCE, (a, cell) -> cell.writeString(a.externalAssaySource)));
 
-        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.EXTERNAL_ASSAY_REFERENCE, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.EXTERNAL_ASSAY_REFERENCE, (a, cell) -> cell.writeString(a.externalAssayReference)));
-
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.EXTERNAL_ASSAY_REFERENCE_URL, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.EXTERNAL_ASSAY_REFERENCE_URL, (a, cell) -> cell.writeString(a.externalAssayReferenceUrl)));
 
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.ASSAY_TITLE, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.ASSAY_TITLE, (a, cell) -> cell.writeString(a.assayTitle)));
@@ -157,8 +155,6 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.PRESENTATION_TYPE, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.PRESENTATION_TYPE, (a, cell) -> cell.writeString(a.presentationType)));
 
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.PRESENTATION, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.PRESENTATION, (a, cell) -> cell.writeString(a.presentation)));
-
-        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.BUFFER_PLASMA_PRO_CONCENT, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.BUFFER_PLASMA_PRO_CONCENT, (a, cell) -> cell.writeString(a.bufferPlasmaProteinConcent)));
 
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.TARGET_NAME, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.TARGET_NAME, (a, cell) -> cell.writeString(a.targetName)));
 
@@ -250,12 +246,12 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
                             ? screening.invitroReference.referenceSourceNumber : "");
                     break;
                 case REPORT_NUMBER:
-                    sb.append((screening.invitroSubmitterReport != null && screening.invitroSubmitterReport.reportNumber != null)
-                            ? screening.invitroSubmitterReport.reportNumber : "");
+                    sb.append((screening.invitroSponsorReport != null && screening.invitroSponsorReport.reportNumber != null)
+                            ? screening.invitroSponsorReport.reportNumber : "");
                     break;
                 case REPORT_DATE:
-                    sb.append((screening.invitroSubmitterReport != null && screening.invitroSubmitterReport.reportDate != null)
-                            ? screening.invitroSubmitterReport.reportDate : "");
+                    sb.append((screening.invitroSponsorReport != null && screening.invitroSponsorReport.reportDate != null)
+                            ? screening.invitroSponsorReport.reportDate : "");
                     break;
                 case LABORATORY_NAME:
                     sb.append((screening.invitroLaboratory != null && screening.invitroLaboratory.laboratoryName != null)
