@@ -34,26 +34,11 @@ public class InvitroAssayResult extends InvitroPharmacologyCommanData {
     @Column(name = "TEST_AGENT_CONCENTRATION_UNITS")
     public String testAgentConcentrationUnits;
 
-    @Column(name = "TEST_CONCENTRATION_ACTIVE_MOIETY")
-    public Double testConcentrationActiveMoiety;
-
-    @Column(name = "TEST_CONCENTRATION_UNITS_MOIETY")
-    public String testConcentrationUnitsActiveMoiety;
-
     @Column(name = "RESULT_VALUE")
     public Double resultValue;
 
     @Column(name = "RESULT_VALUE_UNITS")
     public String resultValueUnits;
-
-    @Column(name = "ASSAY_MODE")
-    public String assayMode;
-
-    @Column(name = "COMMENTS", length=4000)
-    public String comments;
-
-    @Column(name = "ASSAY_MEASUREMENT", length=4000)
-    public String assayMeasurement;
 
     @Column(name = "LIGAND_SUBSTRATE_CONCENT")
     public Double ligandSubstrateConcentration;
@@ -61,14 +46,29 @@ public class InvitroAssayResult extends InvitroPharmacologyCommanData {
     @Column(name = "LIGAND_SUBSTRATE_CONCENT_UNITS")
     public String ligandSubstrateConcentrationUnits;
 
+    @Column(name = "PLASMA_PROTEIN_ADDED")
+    public String plasmaProteinAdded;
+
+    @Column(name = "PLASMA_PROTEIN")
+    public String plasmaProtein;
+
+    @Column(name = "PLASMA_PROTEIN_CONCENT")
+    public String plasmaProteinConcentration;
+
+    @Column(name = "PLASMA_PROTEIN_CONCENT_UNITS")
+    public String plasmaProteinConcentrationUnits;
+
     @Column(name = "NUMBER_OF_TESTS")
     public String numberOfTests;
 
     @Column(name = "DATA_TYPE")
     public String dataType;
 
-    @Column(name = "PLASMA_PROTEIN_ADDED")
-    public String plasmaProteinAdded;
+    @Column(name = "COMMENTS", length=4000)
+    public String comments;
+
+    @Column(name = "ASSAY_MEASUREMENT", length=4000)
+    public String assayMeasurement;
 
     public InvitroAssayResult() {
     }

@@ -62,7 +62,7 @@ public class InvitroControl extends InvitroPharmacologyCommanData {
     @EqualsAndHashCode.Exclude
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "ASSAY_SCREEING_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "INVITRO_SCREENING_ID", referencedColumnName = "ID")
     public InvitroAssayScreening owner;
 
     public void setOwner(InvitroAssayScreening invitroAssayScreening) {

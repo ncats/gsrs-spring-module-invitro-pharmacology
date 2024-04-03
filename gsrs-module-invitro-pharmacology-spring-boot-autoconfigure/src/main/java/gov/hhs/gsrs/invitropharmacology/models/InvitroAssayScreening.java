@@ -56,6 +56,14 @@ public class InvitroAssayScreening extends InvitroPharmacologyCommanData {
     @JoinColumn(name="INVITRO_REFERENCE_ID")
     public InvitroReference invitroReference;
 
+    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "INVITRO_SPONSOR_REPORT_ID")
+    public InvitroSponsorReport invitroSponsorReport;
+
+    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "INVITRO_LABORATORY_ID")
+    public InvitroLaboratory invitroLaboratory;
+
     @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name="INVITRO_TEST_AGENT_ID")
     public InvitroTestAgent invitroTestAgent;
@@ -85,13 +93,5 @@ public class InvitroAssayScreening extends InvitroPharmacologyCommanData {
             }
         }
     }
-
-    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "INVITRO_LABORATORY_ID")
-    public InvitroLaboratory invitroLaboratory;
-
-    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "INVITRO_SPONSOR_REPORT_ID")
-    public InvitroSponsorReport invitroSponsorReport;
 
 }

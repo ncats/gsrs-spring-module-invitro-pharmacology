@@ -47,7 +47,7 @@ public class InvitroPharmacologyTextExporter implements Exporter<InvitroAssayInf
                 .append("HUMAN_HOMOLOG_TARGET").append("\t")
                 .append("HUMAN_HOMOLOG_TARGET_APPROVAL_ID").append("\t")
                 .append("REFERENCE_SOURCE_TYPE").append("\t")
-                .append("REFERENCE_SOURCE_NUMBER").append("\t")
+                .append("REFERENCE_SOURCE").append("\t")
                 .append("REPORT_NUMBER").append("\t")
                 .append("REPORT_DATE").append("\t")
                 .append("LABORATORY_NAME").append("\t")

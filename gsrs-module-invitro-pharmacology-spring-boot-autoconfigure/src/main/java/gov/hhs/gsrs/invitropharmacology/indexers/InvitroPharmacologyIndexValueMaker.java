@@ -53,10 +53,10 @@ public class InvitroPharmacologyIndexValueMaker implements IndexValueMaker<Invit
                             if (screening != null) {
                                 if (screening.invitroReference != null) {
                                     String sourceType = screening.invitroReference.referenceSourceType != null ? screening.invitroReference.referenceSourceType : "";
-                                    String sourceNumber = screening.invitroReference.referenceSourceNumber != null ? screening.invitroReference.referenceSourceNumber : "";
+                                    String source = screening.invitroReference.referenceSource != null ? screening.invitroReference.referenceSource : "";
 
-                                    if (!sourceType.isEmpty() || !sourceNumber.isEmpty()) {
-                                        consumer.accept(IndexableValue.simpleFacetStringValue("Application Type Number", sourceType + " " + sourceNumber).suggestable().setSortable());
+                                    if (!sourceType.isEmpty() || !source.isEmpty()) {
+                                        consumer.accept(IndexableValue.simpleFacetStringValue("Reference Type and Source", sourceType + " " + source).suggestable().setSortable());
                                     }
                                 }
                             }

@@ -47,7 +47,7 @@ public class InvitroTestAgent extends InvitroPharmacologyCommanData {
     public String testAgentSmileString;
 
     @Column(name="TEST_AGENT_MOLECULAR_FORMULA_WT")
-    public String molecularFormlaWeight;
+    public String testAgentMolecularFormulaWeight;
 
     @Indexable(suggest = true, facet=true, name= "Test Agent Active Moiety", sortable = true)
     @Column(name="ACTIVE_MOIETY")

@@ -36,7 +36,7 @@ enum InvitroPharmDefaultColumns implements Column {
     LIGAND_SUBSTRATE_CONCENT,
     LIGAND_SUBSTRATE_CONCENT_UNITS,
     REFERENCE_SOURCE_TYPE,
-    REFERENCE_SOURCE_NUMBER,
+    REFERENCE_SOURCE,
     SPONSOR_CONTACT_NAME,
     BATCH_NUMBER,
     PURITY,
@@ -144,6 +144,8 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
 
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.ASSAY_FORMAT, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.ASSAY_FORMAT, (a, cell) -> cell.writeString(a.assayFormat)));
 
+        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.ASSAY_MODE, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.ASSAY_MODE, (a, cell) -> cell.writeString(a.assayMode)));
+
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.BIOASSAY_TYPE, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.BIOASSAY_TYPE, (a, cell) -> cell.writeString(a.bioassayType)));
 
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.BIOASSAY_CLASS, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.BIOASSAY_CLASS, (a, cell) -> cell.writeString(a.bioassayClass)));
@@ -172,8 +174,8 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
             cell.writeString(sb.toString());
         }));
 
-        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.REFERENCE_SOURCE_NUMBER, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.REFERENCE_SOURCE_NUMBER, (s, cell) -> {
-            StringBuilder sb = getScreeningDetails(s, InvitroPharmDefaultColumns.REFERENCE_SOURCE_NUMBER);
+        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.REFERENCE_SOURCE, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.REFERENCE_SOURCE, (s, cell) -> {
+            StringBuilder sb = getScreeningDetails(s, InvitroPharmDefaultColumns.REFERENCE_SOURCE);
             cell.writeString(sb.toString());
         }));
 
@@ -241,9 +243,9 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
                     sb.append((screening.invitroReference != null && screening.invitroReference.referenceSourceType != null)
                             ? screening.invitroReference.referenceSourceType : "");
                     break;
-                case REFERENCE_SOURCE_NUMBER:
-                    sb.append((screening.invitroReference != null && screening.invitroReference.referenceSourceNumber != null)
-                            ? screening.invitroReference.referenceSourceNumber : "");
+                case REFERENCE_SOURCE:
+                    sb.append((screening.invitroReference != null && screening.invitroReference.referenceSource != null)
+                            ? screening.invitroReference.referenceSource : "");
                     break;
                 case REPORT_NUMBER:
                     sb.append((screening.invitroSponsorReport != null && screening.invitroSponsorReport.reportNumber != null)
@@ -280,10 +282,6 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
                 case RESULT_VALUE_UNITS:
                     sb.append((screening.invitroAssayResult != null && screening.invitroAssayResult.resultValueUnits != null)
                             ? screening.invitroAssayResult.resultValueUnits : "");
-                    break;
-                case ASSAY_MODE:
-                    sb.append((screening.invitroAssayResult != null && screening.invitroAssayResult.assayMode != null)
-                            ? screening.invitroAssayResult.assayMode : "");
                     break;
                 default:
                     break;
