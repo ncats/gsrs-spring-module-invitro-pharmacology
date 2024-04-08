@@ -81,7 +81,7 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
         try {
             // Add one more column called "Screening Number" at the beginning.  Have it increment by one.
             // Each of these screenings be new rows. Can duplicate the other Assay columns on each row.
-
+            /*
             // If there is no screening data, only export the Assay details
             if (a.invitroAssayScreenings.size() == 0) {
                 createRows(a, 0);
@@ -91,7 +91,7 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
                     createRows(a, i);
                 } // for InvitroAssayScreenings
             } // invitroAssayScreenings size > 0
-
+            */
         } // try
         catch (Exception ex) {
             log.error("Error exporting In-vitro Pharmacology for ID: " + a.id, ex);
@@ -119,6 +119,7 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
 
         DEFAULT_RECIPE_MAP = new LinkedHashMap<>();
 
+        /*
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.SCREENING_NUMBER, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.SCREENING_NUMBER, (a, cell) -> {
             int screeningNum = screeningNumber;
             // If there is any screening data, increment the number by 1
@@ -168,7 +169,7 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
 
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.HUMAN_HOMOLOG_TARGET_APPROVAL_ID, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.HUMAN_HOMOLOG_TARGET_APPROVAL_ID, (a, cell) -> cell.writeString(a.humanHomologTargetApprovalId)));
 
-        /* SCREENING DATA */
+        // SCREENING DATA
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.REFERENCE_SOURCE_TYPE, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.REFERENCE_SOURCE_TYPE, (s, cell) -> {
             StringBuilder sb = getScreeningDetails(s, InvitroPharmDefaultColumns.REFERENCE_SOURCE_TYPE);
             cell.writeString(sb.toString());
@@ -229,11 +230,14 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
             cell.writeString(sb.toString());
         }));
 
+         */
+
     }  // static
 
     private static StringBuilder getScreeningDetails(InvitroAssayInformation a, InvitroPharmDefaultColumns fieldName) {
         StringBuilder sb = new StringBuilder();
 
+        /*
         if (a.invitroAssayScreenings.size() > 0) {
 
             InvitroAssayScreening screening = a.invitroAssayScreenings.get(screeningNumber);
@@ -287,6 +291,8 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
                     break;
             }
         }
+
+         */
         return sb;
     }
 

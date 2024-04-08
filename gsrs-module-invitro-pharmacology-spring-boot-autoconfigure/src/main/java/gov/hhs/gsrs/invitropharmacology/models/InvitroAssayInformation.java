@@ -135,7 +135,7 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
         return "Not Deprecated";
     }
 
-    // Set Child Class, InvitroAssayScreening
+    // Set Child for InvitroAssayScreening
     @ToString.Exclude
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "ownerOfAssayInfo")
@@ -151,7 +151,8 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
         }
     }
 
-    // Set Child Class, InvitroSummary
+    /*
+    // Set Child for InvitroSummary
     @ToString.Exclude
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "ownerOfAssayInfo")
@@ -166,6 +167,8 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
             }
         }
     }
+
+     */
 
     // Many To Many, InvitroAssaySet
     @ToString.Exclude

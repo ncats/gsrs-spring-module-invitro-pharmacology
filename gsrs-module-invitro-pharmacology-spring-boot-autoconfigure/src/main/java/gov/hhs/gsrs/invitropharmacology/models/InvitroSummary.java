@@ -35,6 +35,9 @@ public class InvitroSummary extends InvitroPharmacologyCommanData {
     @Column(name="TEST_AGENT", length=2000)
     public String testAgent;
 
+    @Column(name="TEST_AGENT_SUBSTANCE_UUID")
+    public String testAgentSubstanceUuid;
+
     @Indexable(suggest = true, facet=true, name= "Relationship Type", sortable = true)
     @Column(name="RELATIONSHIP_TYPE")
     public String relationshipType;
@@ -62,8 +65,18 @@ public class InvitroSummary extends InvitroPharmacologyCommanData {
     @Column(name="COMMENTS", length=4000)
     public String comments;
 
+    @Column(name="REFERENCE_SOURCE_TYPE")
+    public String referenceSourceType;
+
+    @Column(name="REFERENCE_SOURCE")
+    public String referenceSource;
+
+    @Column(name="REFERENCE_SOURCE_URL")
+    public String referenceSourceUrl;
+
     public InvitroSummary () {}
 
+    /*
     // Set Parent Class, InvitroAssayInformation
     @Indexable(indexed=false)
     @ParentReference
@@ -75,5 +88,11 @@ public class InvitroSummary extends InvitroPharmacologyCommanData {
 
     public void setOwner(InvitroAssayInformation invitroAssayInformation) {
         this.ownerOfAssayInfo = invitroAssayInformation;
-    }
+    } */
+
+    /*
+    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name="INVITRO_TEST_AGENT_ID")
+    public InvitroTestAgent invitroTestAgent;
+    */
 }

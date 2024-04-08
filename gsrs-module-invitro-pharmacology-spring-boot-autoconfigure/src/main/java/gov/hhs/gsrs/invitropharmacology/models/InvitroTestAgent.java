@@ -32,6 +32,10 @@ public class InvitroTestAgent extends InvitroPharmacologyCommanData {
     @Column(name="ID")
     public Long id;
 
+    @Indexable(suggest = true, facet=true, name= "Test Agent Company Code", sortable = true)
+    @Column(name="TEST_AGENT_COMPANY_CODE", length=1000)
+    public String testAgentCompanyCode;
+
     @Indexable(suggest = true, facet=true, name= "Test Agent", sortable = true)
     @Column(name="TEST_AGENT", length=1000)
     public String testAgent;

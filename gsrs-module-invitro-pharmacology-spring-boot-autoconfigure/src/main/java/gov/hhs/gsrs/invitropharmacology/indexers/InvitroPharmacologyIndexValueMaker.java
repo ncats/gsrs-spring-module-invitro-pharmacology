@@ -44,6 +44,7 @@ public class InvitroPharmacologyIndexValueMaker implements IndexValueMaker<Invit
     public void createIndexableValues(InvitroAssayInformation invitroAssay, Consumer<IndexableValue> consumer) {
         try {
 
+            /*
             if (invitroAssay != null) {
                 if (invitroAssay.invitroAssayScreenings != null) {
                     if (invitroAssay.invitroAssayScreenings.size() > 0) {
@@ -63,7 +64,7 @@ public class InvitroPharmacologyIndexValueMaker implements IndexValueMaker<Invit
                         } // for loop
                     }
                 }
-            }
+            }*/
         } catch (Exception ex) {
             ex.printStackTrace();
         }

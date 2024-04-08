@@ -73,4 +73,22 @@ public class InvitroAssayResult extends InvitroPharmacologyCommanData {
     public InvitroAssayResult() {
     }
 
+    /*
+    // Set Parent for InvitroAssayScreening
+    @Indexable(indexed=false)
+    @ParentReference
+    @EqualsAndHashCode.Exclude
+    //@JsonIgnore
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name="INVITRO_SCREENING_ID", referencedColumnName="ID")
+    public InvitroAssayScreening owner;
+
+    public void setOwner(InvitroAssayScreening invitroAssayScreening) {
+        this.owner = invitroAssayScreening;
+    }
+
+    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name="INVITRO_ASSAY_INFO_ID")
+    public InvitroAssayInformation invitroAssayInformation;
+    */
 }

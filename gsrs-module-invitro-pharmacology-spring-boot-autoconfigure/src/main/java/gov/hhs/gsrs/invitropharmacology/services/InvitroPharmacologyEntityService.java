@@ -114,7 +114,7 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
 
     @Override
     protected List<InvitroAssayInformation> fromUpdatedJsonList(JsonNode list) throws IOException {
-        return null;
+       return null;
     }
 
     @Override
@@ -150,10 +150,13 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
         return Optional.empty();
     }
 
-
     public List<InvitroAssayInformation> findAllScreeningsByAssayId(Long id) {
         List<InvitroAssayInformation> list = repository.findAllScreeningsByAssayId(id);
         return list;
+    }
+
+    public InvitroAssayInformation saveBulkAssays(InvitroAssayInformation assayInfo) {
+        return this.update(assayInfo);
     }
 
     public List<InvitroAssayInformation> findAllAssays() {
