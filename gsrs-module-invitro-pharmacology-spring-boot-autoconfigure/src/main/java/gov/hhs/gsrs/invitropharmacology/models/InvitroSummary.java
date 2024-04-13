@@ -38,6 +38,13 @@ public class InvitroSummary extends InvitroPharmacologyCommanData {
     @Column(name="TEST_AGENT_SUBSTANCE_UUID")
     public String testAgentSubstanceUuid;
 
+    @Indexable(suggest = true, facet=true, name= "Summary Target Name", sortable = true)
+    @Column(name="TARGET_NAME", length=2000)
+    public String targetName;
+
+    @Column(name="TARGET_NAME_SUBSTANCE_UUID")
+    public String targetNameSubstanceUuid;
+
     @Indexable(suggest = true, facet=true, name= "Relationship Type", sortable = true)
     @Column(name="RELATIONSHIP_TYPE")
     public String relationshipType;

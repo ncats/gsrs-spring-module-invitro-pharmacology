@@ -19,6 +19,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
 
+import javax.persistence.EntityManager;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +37,9 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
 
     @Autowired
     private InvitroPharmacologyRepository repository;
+
+    @Autowired
+    private InvitroAssayScreeningRepository assayScreeningRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -77,8 +82,8 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
 
     @Override
     @Transactional
-    protected InvitroAssayInformation update(InvitroAssayInformation details) {
-        return repository.saveAndFlush(details);
+    protected InvitroAssayInformation update(InvitroAssayInformation assayInfo) {
+        return repository.saveAndFlush(assayInfo);
     }
 
     @Override
@@ -150,13 +155,51 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
         return Optional.empty();
     }
 
+    @Transactional
+    public InvitroAssayInformation saveBulkAssays(InvitroAssayInformation assayInfo) {
+        return this.update(assayInfo);
+    }
+
+    @Transactional
+    public InvitroAssayScreening updateBulkScreenings(InvitroAssayScreening screening, EntityManager entityManager) {
+        try {
+            System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+             InvitroAssayScreening obj = null;
+             screening.internalVersion = 1L;
+
+            //first bump version?
+            screening.forceUpdate();
+
+            assayScreeningRepository.save(entityManager.merge(screening));
+
+          //  screening.save(screening);
+          //  entityManager.persist(screening);
+           // entityManager.flush();
+            System.out.println("\n");
+
+            System.out.println("!!!!!!!! " + screening);
+
+         //   Optional<InvitroAssayScreening> sc = assayScreeningRepository.findById(1L);
+          //  System.out.println("############################ " + sc.get());
+
+           // entityManager.getTransaction();
+            //InvitroAssayScreening screen = entityManager.merge(screening);
+         //   screening.forceUpdate();
+           // InvitroAssayScreening savedObj = assayScreeningRepository.saveAndFlush(screening);
+
+
+           // InvitroAssayScreening obj = assayScreeningRepository.saveAndFlush(screening);
+            System.out.println("******* SAVING " + obj);
+            return obj;
+        } catch (Throwable t) {
+            t.printStackTrace();
+            throw t;
+        }
+    }
+
     public List<InvitroAssayInformation> findAllScreeningsByAssayId(Long id) {
         List<InvitroAssayInformation> list = repository.findAllScreeningsByAssayId(id);
         return list;
-    }
-
-    public InvitroAssayInformation saveBulkAssays(InvitroAssayInformation assayInfo) {
-        return this.update(assayInfo);
     }
 
     public List<InvitroAssayInformation> findAllAssays() {
@@ -196,6 +239,12 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
 
     public List<InvitroTestAgent> findAllTestAgents() {
         List<InvitroTestAgent> list = repository.findAllTestAgents();
+        return list;
+    }
+
+    public List<InvitroAssayScreening> findAllScreeningSummaryByTestAgentId(Long TestAgentId) {
+        System.out.println("*********************************************");
+        List<InvitroAssayScreening> list = repository.findAllScreeningSummaryByTestAgentId(TestAgentId);
         return list;
     }
 

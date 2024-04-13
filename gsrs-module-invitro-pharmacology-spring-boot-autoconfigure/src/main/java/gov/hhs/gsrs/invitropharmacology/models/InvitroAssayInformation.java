@@ -138,7 +138,7 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
     // Set Child for InvitroAssayScreening
     @ToString.Exclude
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "ownerOfAssayInfo")
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<InvitroAssayScreening> invitroAssayScreenings = new ArrayList<InvitroAssayScreening>();
 
     public void setInvitroAssayScreenings(List<InvitroAssayScreening> invitroAssayScreenings) {
@@ -171,6 +171,7 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
      */
 
     // Many To Many, InvitroAssaySet
+    @Indexable(indexed=false)
     @ToString.Exclude
     @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(fetch = FetchType.LAZY, cascade= CascadeType.ALL)

@@ -44,15 +44,15 @@ public class InvitroAssayScreening extends InvitroPharmacologyCommanData {
     @ParentReference
     @EqualsAndHashCode.Exclude
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="INVITRO_ASSAY_INFO_ID", referencedColumnName="ID")
-    public InvitroAssayInformation ownerOfAssayInfo;
+    public InvitroAssayInformation owner;
 
     public void setOwner(InvitroAssayInformation invitroAssayInformation) {
-        this.ownerOfAssayInfo = invitroAssayInformation;
+        this.owner = invitroAssayInformation;
     }
 
-    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinColumn(name="INVITRO_REFERENCE_ID")
     public InvitroReference invitroReference;
 
@@ -64,7 +64,7 @@ public class InvitroAssayScreening extends InvitroPharmacologyCommanData {
     @JoinColumn(name = "INVITRO_LABORATORY_ID")
     public InvitroLaboratory invitroLaboratory;
 
-    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinColumn(name="INVITRO_TEST_AGENT_ID")
     public InvitroTestAgent invitroTestAgent;
 
@@ -72,9 +72,24 @@ public class InvitroAssayScreening extends InvitroPharmacologyCommanData {
     @JoinColumn(name="INVITRO_RESULT_ID")
     public InvitroAssayResult invitroAssayResult;
 
-    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name="INVITRO_SUMMARY_ID")
     public InvitroSummary invitroSummary;
+
+    // Set Parent Class, InvitroResultInformation
+    @Indexable(indexed=false)
+    @ParentReference
+    @EqualsAndHashCode.Exclude
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="INVITRO_RESULT_INFO_ID", referencedColumnName="ID")
+    public InvitroAssayResultInformation invitroAssayResultInformation;
+
+    public void setInvitroAssayResultInformation(InvitroAssayResultInformation invitroAssayResultInformation) {
+        this.invitroAssayResultInformation = invitroAssayResultInformation;
+    }
+
+    @Column(name="TESTING")
+    public String testing;
 
 
     /*
@@ -98,7 +113,7 @@ public class InvitroAssayScreening extends InvitroPharmacologyCommanData {
     // Set Child Class, InvitroControl
     @ToString.Exclude
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.MERGE, mappedBy = "owner")
     public List<InvitroControl> invitroControls = new ArrayList<InvitroControl>();
 
     public void setInvitroControls(List<InvitroControl> invitroControls) {
