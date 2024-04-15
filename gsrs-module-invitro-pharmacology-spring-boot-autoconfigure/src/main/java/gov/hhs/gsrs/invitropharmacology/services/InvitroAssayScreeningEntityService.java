@@ -168,10 +168,10 @@ public class InvitroAssayScreeningEntityService extends AbstractGsrsEntityServic
           //  entityManager.joinTransaction();
            // entityManager.persist(screening);
 
-            entityManager.getTransaction();
-            InvitroAssayScreening screen = entityManager.merge(screening);
-            screen.forceUpdate();
-            assayScreeningRepository.saveAndFlush(screen);
+           // entityManager.getTransaction();
+           // InvitroAssayScreening screen = entityManager.merge(screening);
+           // screen.forceUpdate();
+            assayScreeningRepository.saveAndFlush(screening);
 
             //entityManager.persist(screening);
            //  entityManager.flush();

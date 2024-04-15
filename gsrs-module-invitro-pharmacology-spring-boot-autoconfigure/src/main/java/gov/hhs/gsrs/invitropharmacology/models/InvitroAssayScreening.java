@@ -39,6 +39,9 @@ public class InvitroAssayScreening extends InvitroPharmacologyCommanData {
         return id;
     }
 
+    @Column(name = "TEST_AGENT_SUBSTANCE_UUID")
+    public String testAgentSubstanceUuid;
+
     // Set Parent Class, InvitroAssayInformation
     @Indexable(indexed=false)
     @ParentReference
@@ -52,6 +55,10 @@ public class InvitroAssayScreening extends InvitroPharmacologyCommanData {
         this.owner = invitroAssayInformation;
     }
 
+    @Column(name="TESTING")
+    public String testing;
+
+    /*
     @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinColumn(name="INVITRO_REFERENCE_ID")
     public InvitroReference invitroReference;
@@ -63,18 +70,11 @@ public class InvitroAssayScreening extends InvitroPharmacologyCommanData {
     @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "INVITRO_LABORATORY_ID")
     public InvitroLaboratory invitroLaboratory;
+    */
 
     @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinColumn(name="INVITRO_TEST_AGENT_ID")
     public InvitroTestAgent invitroTestAgent;
-
-    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name="INVITRO_RESULT_ID")
-    public InvitroAssayResult invitroAssayResult;
-
-    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.MERGE)
-    @JoinColumn(name="INVITRO_SUMMARY_ID")
-    public InvitroSummary invitroSummary;
 
     // Set Parent Class, InvitroResultInformation
     @Indexable(indexed=false)
@@ -87,10 +87,6 @@ public class InvitroAssayScreening extends InvitroPharmacologyCommanData {
     public void setInvitroAssayResultInformation(InvitroAssayResultInformation invitroAssayResultInformation) {
         this.invitroAssayResultInformation = invitroAssayResultInformation;
     }
-
-    @Column(name="TESTING")
-    public String testing;
-
 
     /*
     // Set Child for InvitroAssayScreening
@@ -108,7 +104,16 @@ public class InvitroAssayScreening extends InvitroPharmacologyCommanData {
             }
         }
     }
-    */
+
+   */
+
+    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name="INVITRO_RESULT_ID")
+    public InvitroAssayResult invitroAssayResult;
+
+    @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
+    @JoinColumn(name="INVITRO_SUMMARY_ID")
+    public InvitroSummary invitroSummary;
 
     // Set Child Class, InvitroControl
     @ToString.Exclude

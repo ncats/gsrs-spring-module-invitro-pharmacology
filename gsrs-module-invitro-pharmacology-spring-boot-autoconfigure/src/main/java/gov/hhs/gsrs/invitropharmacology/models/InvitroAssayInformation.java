@@ -19,6 +19,8 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.LinkedHashSet;
 import java.util.UUID;
 
 @IndexableRoot
@@ -174,8 +176,8 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
     @Indexable(indexed=false)
     @ToString.Exclude
     @LazyCollection(LazyCollectionOption.FALSE)
-    @ManyToMany(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade= CascadeType.ALL)
     @JoinTable(name="GSRS_INVITRO_ASSAY_SET_DET", joinColumns = @JoinColumn(name = "INVITRO_ASSAY_INFO_ID "),
             inverseJoinColumns = @JoinColumn(name = "INVITRO_ASSAY_SET_ID"))
-    public List<InvitroAssaySet> invitroAssaySets = new ArrayList<>();
+    public Set<InvitroAssaySet> invitroAssaySets = new LinkedHashSet<>();
 }

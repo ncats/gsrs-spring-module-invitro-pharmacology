@@ -31,8 +31,8 @@ public class InvitroAssayResultInformation extends InvitroPharmacologyCommanData
     @Column(name = "TEST_AGENT_SUBSTANCE_UUID")
     public String testAgentSubstanceUuid;
 
-    @Column(name = "BATCH_NUMBER")
-    public String batchNumber;
+    @Column(name = "TEST_AGENT", length=2000)
+    public String testAgent;
 
     @Column(name = "PURITY_PERCENT")
     public String purityPercent;
@@ -40,10 +40,13 @@ public class InvitroAssayResultInformation extends InvitroPharmacologyCommanData
     @Column(name = "VEHICLE_COMPOSITION")
     public String vehicleComposition;
 
+    @Column(name = "ASSAY_SET")
+    public String assaySet;
+
     public InvitroAssayResultInformation() {
     }
 
-    // Set Child for InvitroAssayResultInformation
+    // Set Child for InvitroAssayScreening
     @JsonIgnore
     @Indexable(indexed=false)
     @ToString.Exclude
@@ -60,4 +63,20 @@ public class InvitroAssayResultInformation extends InvitroPharmacologyCommanData
             }
         }
     }
+
+    @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
+    @JoinColumn(name="INVITRO_REFERENCE_ID")
+    public InvitroReference invitroReference;
+
+    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "INVITRO_SPONSOR_ID", referencedColumnName = "ID")
+    public InvitroSponsor invitroSponsor;
+
+    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "INVITRO_SPONSOR_REPORT_ID", referencedColumnName = "ID")
+    public InvitroSponsorReport invitroSponsorReport;
+
+    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "INVITRO_LABORATORY_ID", referencedColumnName = "ID")
+    public InvitroLaboratory invitroLaboratory;
 }

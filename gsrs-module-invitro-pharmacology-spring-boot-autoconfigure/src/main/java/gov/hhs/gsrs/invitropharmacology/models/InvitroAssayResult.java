@@ -6,15 +6,18 @@ import ix.core.models.ParentReference;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import javax.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 @SingleParent
 @Data
@@ -27,6 +30,12 @@ public class InvitroAssayResult extends InvitroPharmacologyCommanData {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "invitroResultSeq")
     @Column(name = "ID")
     public Long id;
+
+    @Column(name = "BATCH_NUMBER")
+    public String batchNumber;
+
+    @Column(name = "TEST_DATE")
+    public Date testDate;
 
     @Column(name = "TEST_AGENT_CONCENTRATION")
     public Double testAgentConcentration;
@@ -49,8 +58,8 @@ public class InvitroAssayResult extends InvitroPharmacologyCommanData {
     @Column(name = "PLASMA_PROTEIN_ADDED")
     public String plasmaProteinAdded;
 
-    @Column(name = "PLASMA_PROTEIN")
-    public String plasmaProtein;
+    @Column(name = "PROTEIN")
+    public String protein;
 
     @Column(name = "PLASMA_PROTEIN_CONCENT")
     public String plasmaProteinConcentration;

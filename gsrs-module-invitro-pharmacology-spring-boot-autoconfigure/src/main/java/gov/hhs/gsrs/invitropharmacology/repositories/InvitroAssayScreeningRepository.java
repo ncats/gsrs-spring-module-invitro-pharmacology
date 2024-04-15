@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
+//@Transactional
 public interface InvitroAssayScreeningRepository extends GsrsVersionedRepository<InvitroAssayScreening, Long> {
 
     Optional<InvitroAssayScreening> findById(Long id);

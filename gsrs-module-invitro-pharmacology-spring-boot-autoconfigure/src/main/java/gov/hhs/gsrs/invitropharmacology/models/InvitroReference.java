@@ -44,9 +44,4 @@ public class InvitroReference extends InvitroPharmacologyCommanData {
 
     public InvitroReference () {}
 
-    @Basic(fetch = FetchType.EAGER)
-    @JoinColumn(name = "INVITRO_SPONSOR_ID", referencedColumnName = "ID")
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    public InvitroSponsor invitroSponsor;
-
 }

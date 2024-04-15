@@ -141,6 +141,14 @@ public class InvitroPharmacologyController extends EtagLegacySearchEntityControl
         return new ResponseEntity(list, HttpStatus.OK);
     }
 
+    @GetGsrsRestApiMapping("/assaysByResultInfoId/{id}")
+    public ResponseEntity<String> findAssayByResultInfoId(@PathVariable("id") Long refInfoId) throws Exception {
+
+        List<InvitroAssayInformation> list = invitroPharmacologyEntityService.findAssayByResultInfoId(refInfoId);
+
+        return new ResponseEntity(list, HttpStatus.OK);
+    }
+
     @PutGsrsRestApiMapping("/saveBulkAssays")
     //@Transactional
     public ResponseEntity<Object> updateBulkAssay(@RequestBody JsonNode[] updatedEntityJson,
@@ -192,13 +200,13 @@ public class InvitroPharmacologyController extends EtagLegacySearchEntityControl
 
     @PutGsrsRestApiMapping("/saveBulkScreenings")
     //@Transactional
-    public ResponseEntity<String> updateBulkScreenings(@RequestBody JsonNode[] updatedEntityJson,
+    public ResponseEntity<Object> updateBulkScreenings(@RequestBody JsonNode[] updatedEntityJson,
                                                @RequestParam Map<String, String> queryParameters,
                                                Principal principal) throws Exception {
         if (principal == null) {
             System.out.println("NOT LOGGED IN");
             //not logged in!
-           // return gsrsControllerConfiguration.unauthorized("no user logged in", queryParameters);
+            return gsrsControllerConfiguration.unauthorized("no user logged in", queryParameters);
         }
 
 
@@ -230,9 +238,9 @@ public class InvitroPharmacologyController extends EtagLegacySearchEntityControl
                 savedList.add(savedScreeningObj);
             }
         }
-        return new ResponseEntity(savedList, HttpStatus.OK);
+      //  return new ResponseEntity(savedList, HttpStatus.OK);
 
-        //return gsrsControllerConfiguration.handleNotFound(queryParameters);
+        return gsrsControllerConfiguration.handleNotFound(queryParameters);
     }
 
     public ResponseEntity<String> findAllAssays(@PathVariable("assayTargetUnii") String assayTargetUnii) throws Exception {
@@ -290,12 +298,14 @@ public class InvitroPharmacologyController extends EtagLegacySearchEntityControl
         return new ResponseEntity(list, HttpStatus.OK);
     }
 
+
     @GetGsrsRestApiMapping("/allTestAgents")
     public ResponseEntity<String> findAllTestAgents() throws Exception {
         List<InvitroTestAgent> list = invitroPharmacologyEntityService.findAllTestAgents();
 
         return new ResponseEntity(list, HttpStatus.OK);
     }
+
 
     @GetGsrsRestApiMapping("/assaytargetunii/{assayTargetUnii}")
     public ResponseEntity<String> findAssayByTargetNameApprovalId(@PathVariable("assayTargetUnii") String assayTargetUnii) throws Exception {
