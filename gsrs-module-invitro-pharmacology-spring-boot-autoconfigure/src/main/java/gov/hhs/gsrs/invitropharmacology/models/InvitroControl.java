@@ -39,6 +39,9 @@ public class InvitroControl extends InvitroPharmacologyCommanData {
     @Column(name = "CONTROL_APPROVAL_ID")
     public String controlApprovalId;
 
+    @Column(name = "CONTROL_SUBSTANCE_UUID")
+    public String controlSubstanceUuid;
+
     @Indexable(suggest = true, facet = true, name = "Control Type", sortable = true)
     @Column(name = "CONTROL_TYPE")
     public String controlType;
@@ -49,7 +52,7 @@ public class InvitroControl extends InvitroPharmacologyCommanData {
     @Column(name = "CONTROL_REFERENCE_VALUE_UNITS")
     public String controlReferenceValueUnits;
 
-    @Indexable(suggest = true, facet = true, name = "Result Type", sortable = true)
+    @Indexable(suggest = true, facet = true, name = "Control Result Type", sortable = true)
     @Column(name = "RESULT_TYPE")
     public String resultType;
 
@@ -62,7 +65,7 @@ public class InvitroControl extends InvitroPharmacologyCommanData {
     @EqualsAndHashCode.Exclude
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "ASSAY_SCREEING_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "INVITRO_SCREENING_ID", referencedColumnName = "ID")
     public InvitroAssayScreening owner;
 
     public void setOwner(InvitroAssayScreening invitroAssayScreening) {

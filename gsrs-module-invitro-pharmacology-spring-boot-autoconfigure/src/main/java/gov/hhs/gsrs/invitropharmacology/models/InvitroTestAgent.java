@@ -32,6 +32,10 @@ public class InvitroTestAgent extends InvitroPharmacologyCommanData {
     @Column(name="ID")
     public Long id;
 
+    @Indexable(suggest = true, facet=true, name= "Test Agent Company Code", sortable = true)
+    @Column(name="TEST_AGENT_COMPANY_CODE", length=1000)
+    public String testAgentCompanyCode;
+
     @Indexable(suggest = true, facet=true, name= "Test Agent", sortable = true)
     @Column(name="TEST_AGENT", length=1000)
     public String testAgent;
@@ -47,7 +51,7 @@ public class InvitroTestAgent extends InvitroPharmacologyCommanData {
     public String testAgentSmileString;
 
     @Column(name="TEST_AGENT_MOLECULAR_FORMULA_WT")
-    public String molecularFormlaWeight;
+    public String testAgentMolecularFormulaWeight;
 
     @Indexable(suggest = true, facet=true, name= "Test Agent Active Moiety", sortable = true)
     @Column(name="ACTIVE_MOIETY")
@@ -71,7 +75,24 @@ public class InvitroTestAgent extends InvitroPharmacologyCommanData {
 
     @Column(name="VEHICLE_COMPOSITION")
     public String vehicleComposition;
-    
+
+    /*
+    // Set Child for InvitroAssayScreening
+    @ToString.Exclude
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    public List<InvitroAssayScreening> invitroScreeningsFromTestAgent = new ArrayList<InvitroAssayScreening>();
+
+    public void setInvitroAssayScreenings(List<InvitroAssayScreening> invitroAssayScreenings) {
+        this.invitroScreeningsFromTestAgent = invitroAssayScreenings;
+        if (invitroScreeningsFromTestAgent != null) {
+            for (InvitroAssayScreening invitro : invitroScreeningsFromTestAgent)
+            {
+                invitro.setOwner(this);
+            }
+        }
+    }
+     */
     public InvitroTestAgent () {}
 
 }

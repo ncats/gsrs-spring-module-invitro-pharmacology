@@ -36,7 +36,7 @@ enum InvitroPharmDefaultColumns implements Column {
     LIGAND_SUBSTRATE_CONCENT,
     LIGAND_SUBSTRATE_CONCENT_UNITS,
     REFERENCE_SOURCE_TYPE,
-    REFERENCE_SOURCE_NUMBER,
+    REFERENCE_SOURCE,
     SPONSOR_CONTACT_NAME,
     BATCH_NUMBER,
     PURITY,
@@ -81,7 +81,7 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
         try {
             // Add one more column called "Screening Number" at the beginning.  Have it increment by one.
             // Each of these screenings be new rows. Can duplicate the other Assay columns on each row.
-
+            /*
             // If there is no screening data, only export the Assay details
             if (a.invitroAssayScreenings.size() == 0) {
                 createRows(a, 0);
@@ -91,7 +91,7 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
                     createRows(a, i);
                 } // for InvitroAssayScreenings
             } // invitroAssayScreenings size > 0
-
+            */
         } // try
         catch (Exception ex) {
             log.error("Error exporting In-vitro Pharmacology for ID: " + a.id, ex);
@@ -119,6 +119,7 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
 
         DEFAULT_RECIPE_MAP = new LinkedHashMap<>();
 
+        /*
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.SCREENING_NUMBER, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.SCREENING_NUMBER, (a, cell) -> {
             int screeningNum = screeningNumber;
             // If there is any screening data, increment the number by 1
@@ -138,13 +139,13 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
 
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.EXTERNAL_ASSAY_SOURCE, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.EXTERNAL_ASSAY_SOURCE, (a, cell) -> cell.writeString(a.externalAssaySource)));
 
-        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.EXTERNAL_ASSAY_REFERENCE, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.EXTERNAL_ASSAY_REFERENCE, (a, cell) -> cell.writeString(a.externalAssayReference)));
-
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.EXTERNAL_ASSAY_REFERENCE_URL, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.EXTERNAL_ASSAY_REFERENCE_URL, (a, cell) -> cell.writeString(a.externalAssayReferenceUrl)));
 
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.ASSAY_TITLE, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.ASSAY_TITLE, (a, cell) -> cell.writeString(a.assayTitle)));
 
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.ASSAY_FORMAT, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.ASSAY_FORMAT, (a, cell) -> cell.writeString(a.assayFormat)));
+
+        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.ASSAY_MODE, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.ASSAY_MODE, (a, cell) -> cell.writeString(a.assayMode)));
 
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.BIOASSAY_TYPE, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.BIOASSAY_TYPE, (a, cell) -> cell.writeString(a.bioassayType)));
 
@@ -158,8 +159,6 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
 
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.PRESENTATION, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.PRESENTATION, (a, cell) -> cell.writeString(a.presentation)));
 
-        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.BUFFER_PLASMA_PRO_CONCENT, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.BUFFER_PLASMA_PRO_CONCENT, (a, cell) -> cell.writeString(a.bufferPlasmaProteinConcent)));
-
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.TARGET_NAME, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.TARGET_NAME, (a, cell) -> cell.writeString(a.targetName)));
 
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.TARGET_NAME_APPROVAL_ID, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.TARGET_NAME_APPROVAL_ID, (a, cell) -> cell.writeString(a.targetNameApprovalId)));
@@ -170,14 +169,14 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
 
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.HUMAN_HOMOLOG_TARGET_APPROVAL_ID, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.HUMAN_HOMOLOG_TARGET_APPROVAL_ID, (a, cell) -> cell.writeString(a.humanHomologTargetApprovalId)));
 
-        /* SCREENING DATA */
+        // SCREENING DATA
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.REFERENCE_SOURCE_TYPE, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.REFERENCE_SOURCE_TYPE, (s, cell) -> {
             StringBuilder sb = getScreeningDetails(s, InvitroPharmDefaultColumns.REFERENCE_SOURCE_TYPE);
             cell.writeString(sb.toString());
         }));
 
-        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.REFERENCE_SOURCE_NUMBER, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.REFERENCE_SOURCE_NUMBER, (s, cell) -> {
-            StringBuilder sb = getScreeningDetails(s, InvitroPharmDefaultColumns.REFERENCE_SOURCE_NUMBER);
+        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.REFERENCE_SOURCE, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.REFERENCE_SOURCE, (s, cell) -> {
+            StringBuilder sb = getScreeningDetails(s, InvitroPharmDefaultColumns.REFERENCE_SOURCE);
             cell.writeString(sb.toString());
         }));
 
@@ -231,11 +230,14 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
             cell.writeString(sb.toString());
         }));
 
+         */
+
     }  // static
 
     private static StringBuilder getScreeningDetails(InvitroAssayInformation a, InvitroPharmDefaultColumns fieldName) {
         StringBuilder sb = new StringBuilder();
 
+        /*
         if (a.invitroAssayScreenings.size() > 0) {
 
             InvitroAssayScreening screening = a.invitroAssayScreenings.get(screeningNumber);
@@ -245,17 +247,17 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
                     sb.append((screening.invitroReference != null && screening.invitroReference.referenceSourceType != null)
                             ? screening.invitroReference.referenceSourceType : "");
                     break;
-                case REFERENCE_SOURCE_NUMBER:
-                    sb.append((screening.invitroReference != null && screening.invitroReference.referenceSourceNumber != null)
-                            ? screening.invitroReference.referenceSourceNumber : "");
+                case REFERENCE_SOURCE:
+                    sb.append((screening.invitroReference != null && screening.invitroReference.referenceSource != null)
+                            ? screening.invitroReference.referenceSource : "");
                     break;
                 case REPORT_NUMBER:
-                    sb.append((screening.invitroSubmitterReport != null && screening.invitroSubmitterReport.reportNumber != null)
-                            ? screening.invitroSubmitterReport.reportNumber : "");
+                    sb.append((screening.invitroSponsorReport != null && screening.invitroSponsorReport.reportNumber != null)
+                            ? screening.invitroSponsorReport.reportNumber : "");
                     break;
                 case REPORT_DATE:
-                    sb.append((screening.invitroSubmitterReport != null && screening.invitroSubmitterReport.reportDate != null)
-                            ? screening.invitroSubmitterReport.reportDate : "");
+                    sb.append((screening.invitroSponsorReport != null && screening.invitroSponsorReport.reportDate != null)
+                            ? screening.invitroSponsorReport.reportDate : "");
                     break;
                 case LABORATORY_NAME:
                     sb.append((screening.invitroLaboratory != null && screening.invitroLaboratory.laboratoryName != null)
@@ -285,14 +287,12 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
                     sb.append((screening.invitroAssayResult != null && screening.invitroAssayResult.resultValueUnits != null)
                             ? screening.invitroAssayResult.resultValueUnits : "");
                     break;
-                case ASSAY_MODE:
-                    sb.append((screening.invitroAssayResult != null && screening.invitroAssayResult.assayMode != null)
-                            ? screening.invitroAssayResult.assayMode : "");
-                    break;
                 default:
                     break;
             }
         }
+
+         */
         return sb;
     }
 

@@ -36,17 +36,12 @@ public class InvitroReference extends InvitroPharmacologyCommanData {
     public String referenceSourceType;
 
     @Indexable(suggest = true, facet=true, name= "Reference Source", sortable = true)
-    @Column(name="REFERENCE_SOURCE_NUMBER")
-    public String referenceSourceNumber;
+    @Column(name="REFERENCE_SOURCE")
+    public String referenceSource;
 
     @Column(name="DIGITAL_OBJECT_IDENTIFIER", length=1000)
     public String digitalObjectIdentifier;
 
     public InvitroReference () {}
-
-    @Basic(fetch = FetchType.EAGER)
-    @JoinColumn(name = "INVITRO_SPONSOR_ID", referencedColumnName = "ID")
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    public InvitroSponsor invitroSponsor;
 
 }

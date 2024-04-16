@@ -19,6 +19,8 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.LinkedHashSet;
 import java.util.UUID;
 
 @IndexableRoot
@@ -37,10 +39,6 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
     @Column(name="ASSAY_ID")
     public String assayId;
 
-    @Indexable(suggest = true, facet=true, name= "Assay Set", sortable = true)
-    @Column(name="ASSAY_SET", length=1000)
-    public String assaySet;
-
     @Indexable(suggest = true, facet=true, name= "External Assay ID", sortable = true)
     @Column(name="EXTERNAL_ASSAY_ID")
     public String externalAssayId;
@@ -48,9 +46,6 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
     @Indexable(suggest = true, facet=true, name= "External Assay Source", sortable = true)
     @Column(name="EXTERNAL_ASSAY_SOURCE")
     public String externalAssaySource;
-
-    @Column(name="EXTERNAL_ASSAY_REFERENCE")
-    public String externalAssayReference;
 
     @Column(name="EXTERNAL_ASSAY_REFERENCE_URL", length=1000)
     public String externalAssayReferenceUrl;
@@ -82,15 +77,16 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
     @Column(name="DETECTION_METHOD")
     public String detectionMethod;
 
-    @Column(name="BUFFER_PLASMA_PRO_CONCENT")
-    public String bufferPlasmaProteinConcent;
-
     @Indexable(suggest = true, facet=true, name= "Presentation Type", sortable = true)
     @Column(name="PRESENTATION_TYPE")
     public String presentationType;
 
     @Column(name="PRESENTATION")
     public String presentation;
+
+    @Indexable(suggest = true, facet=true, name= "Assay Public Domain", sortable = true)
+    @Column(name="PUBLIC_DOMAIN")
+    public String publicDomain;
 
     @Indexable(suggest = true, facet=true, name= "Target Name", sortable = true)
     @Column(name="TARGET_NAME", length=1000)
@@ -123,11 +119,11 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
     @Column(name="LIGAND_SUBSTRATE_APPROVAL_ID")
     public String ligandSubstrateApprovalId;
 
-    @Column(name="LIGAND_SUBSTRATE_CONCENT")
-    public String ligandSubstrateConcentration;
-
-    @Column(name="LIGAND_SUBSTRATE_CONCENT_UNITS")
-    public String ligandSubstrateConcentrationUnits;
+    @Column(name="STANDARD_LIGAND_CONCENT")
+    public String standardLigandSubstrateConcentration;
+  
+    @Column(name="STANDARD_LIGAND_CONCENT_UNITS")
+    public String standardLigandSubstrateConcentrationUnits;
 
     public InvitroAssayInformation() {}
 
@@ -141,10 +137,10 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
         return "Not Deprecated";
     }
 
-    // Set Child Class, InvitroAssayScreening
+    // Set Child for InvitroAssayScreening
     @ToString.Exclude
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "ownerOfAssayInfo")
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<InvitroAssayScreening> invitroAssayScreenings = new ArrayList<InvitroAssayScreening>();
 
     public void setInvitroAssayScreenings(List<InvitroAssayScreening> invitroAssayScreenings) {
@@ -157,11 +153,31 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
         }
     }
 
-    // Many To Many, InvitroAssaySet
+    /*
+    // Set Child for InvitroSummary
     @ToString.Exclude
     @LazyCollection(LazyCollectionOption.FALSE)
-    @ManyToMany(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "ownerOfAssayInfo")
+    public List<InvitroSummary> invitroSummaries = new ArrayList<InvitroSummary>();
+
+    public void setInvitroSummaries(List<InvitroSummary> invitroSummaries) {
+        this.invitroSummaries = invitroSummaries;
+        if (invitroSummaries != null) {
+            for (InvitroSummary invitro : invitroSummaries)
+            {
+                invitro.setOwner(this);
+            }
+        }
+    }
+
+     */
+
+    // Many To Many, InvitroAssaySet
+    @Indexable(indexed=false)
+    @ToString.Exclude
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToMany(fetch = FetchType.EAGER, cascade= CascadeType.ALL)
     @JoinTable(name="GSRS_INVITRO_ASSAY_SET_DET", joinColumns = @JoinColumn(name = "INVITRO_ASSAY_INFO_ID "),
             inverseJoinColumns = @JoinColumn(name = "INVITRO_ASSAY_SET_ID"))
-    public List<InvitroAssaySet> invitroAssaySets = new ArrayList<>();
+    public Set<InvitroAssaySet> invitroAssaySets = new LinkedHashSet<>();
 }

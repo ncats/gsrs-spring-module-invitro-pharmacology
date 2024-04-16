@@ -33,8 +33,6 @@ public class SubstanceModuleService {
     // https://www.baeldung.com/spring-tests-override-properties
 
     public Boolean substanceExists(String uuid) {
-        System.out.println("Inside "+ "substanceExists " + uuid);
-
         // is there a way to make this final and use property?
         String urlTemplate1 = baseUrl +  "api/v1/substances(%s)";
         Boolean exists;
@@ -77,7 +75,6 @@ public class SubstanceModuleService {
     // actually not needed; at least GSRS public version is not giving me CORS problem
 
     public ResponseEntity<String> getSubstanceDetailsFromUUID(String uuid) {
-        System.out.println("Inside "+ "getSubstanceDetailsFromUUID " + uuid);
         // is there a way to make this final and use property?
         String urlTemplate1 = baseUrl +  "api/v1/substances(%s)";
         Boolean exists;

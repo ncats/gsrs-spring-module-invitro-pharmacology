@@ -47,7 +47,7 @@ public class InvitroPharmacologyTextExporter implements Exporter<InvitroAssayInf
                 .append("HUMAN_HOMOLOG_TARGET").append("\t")
                 .append("HUMAN_HOMOLOG_TARGET_APPROVAL_ID").append("\t")
                 .append("REFERENCE_SOURCE_TYPE").append("\t")
-                .append("REFERENCE_SOURCE_NUMBER").append("\t")
+                .append("REFERENCE_SOURCE").append("\t")
                 .append("REPORT_NUMBER").append("\t")
                 .append("REPORT_DATE").append("\t")
                 .append("LABORATORY_NAME").append("\t")
@@ -72,6 +72,7 @@ public class InvitroPharmacologyTextExporter implements Exporter<InvitroAssayInf
             // Add one more column called "Screening Number" at the beginning.  Have it increment by one.
             // Each of these screenings be new rows. Can duplicate the other Assay columns on each row.
 
+            /*
             // If there is no screening data, only export the Assay details
             if (a.invitroAssayScreenings.size() == 0) {
                 publicCreateRows(a, 0);
@@ -81,6 +82,7 @@ public class InvitroPharmacologyTextExporter implements Exporter<InvitroAssayInf
                     publicCreateRows(a, i);
                 } // for InvitroAssayScreenings
             } // invitroAssayScreenings size > 0
+            */
 
             /*
             if (s.productIngredientAllList.size() > 0) {

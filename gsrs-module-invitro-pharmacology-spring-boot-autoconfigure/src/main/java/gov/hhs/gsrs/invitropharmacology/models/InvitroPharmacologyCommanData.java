@@ -22,27 +22,27 @@ import java.util.Date;
 @MappedSuperclass
 public class InvitroPharmacologyCommanData extends AbstractGsrsEntity implements ForceUpdateDirtyMakerMixin{
 
+    @JsonSerialize(using = GsrsDateSerializer.class)
+    @JsonDeserialize(using = GsrsDateDeserializer.class)
+    @CreatedDate
+    @Indexable( name = "Record Created Date", sortable=true)
+    @Column(name = "CREATED_DATE")
+    private Date createdDate;
+
     @Indexable(facet = true, name = "Record Created By")
     @Column(name = "CREATED_BY")
     private String createdBy;
 
-    @Indexable(name = "Record Last Edited By")
-    @Column(name = "MODIFIED_BY")
-    private String modifiedBy;
-
-    @JsonSerialize(using = GsrsDateSerializer.class)
-    @JsonDeserialize(using = GsrsDateDeserializer.class)
-    @CreatedDate
-    @Indexable( name = "Record Create Date", sortable=true)
-    @Column(name = "CREATE_DATE")
-    private Date creationDate;
-
     @JsonSerialize(using = GsrsDateSerializer.class)
     @JsonDeserialize(using = GsrsDateDeserializer.class)
     @LastModifiedDate
-    @Indexable( name = "Record Last Edited", sortable=true)
-    @Column(name = "MODIFY_DATE")
-    private Date lastModifiedDate;
+    @Indexable( name = "Record Modified Date", sortable=true)
+    @Column(name = "MODIFIED_DATE")
+    private Date modifiedDate;
+
+    @Indexable(name = "Record Modified By")
+    @Column(name = "MODIFIED_BY")
+    private String modifiedBy;
 
     @Version
     @Column(name = "INTERNAL_VERSION")
@@ -86,17 +86,17 @@ public class InvitroPharmacologyCommanData extends AbstractGsrsEntity implements
         return this.createdBy;
     }
 
-    public Date getCreationDate() {
+    public Date getCreatedDate() {
         //Get from Database
-        return this.creationDate;
+        return this.createdDate;
     }
 
     public String getModifiedBy () {
         return this.modifiedBy;
     }
 
-    public Date getLastModifiedDate() {
-        return this.lastModifiedDate;
+    public Date getModifiedDate() {
+        return this.modifiedDate;
     }
 
     public String convertDateToString(Date dtDate) {

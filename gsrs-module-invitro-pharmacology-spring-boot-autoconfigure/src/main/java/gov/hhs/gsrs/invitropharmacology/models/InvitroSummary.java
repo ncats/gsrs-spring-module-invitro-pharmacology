@@ -33,41 +33,73 @@ public class InvitroSummary extends InvitroPharmacologyCommanData {
 
     @Indexable(suggest = true, facet=true, name= "Summary Test Agent", sortable = true)
     @Column(name="TEST_AGENT", length=2000)
-    public String summaryTestAgent;
+    public String testAgent;
+
+    @Column(name="TEST_AGENT_SUBSTANCE_UUID")
+    public String testAgentSubstanceUuid;
 
     @Indexable(suggest = true, facet=true, name= "Summary Target Name", sortable = true)
     @Column(name="TARGET_NAME", length=2000)
-    public String summaryTargetName;
+    public String targetName;
+
+    @Column(name="TARGET_NAME_SUBSTANCE_UUID")
+    public String targetNameSubstanceUuid;
 
     @Indexable(suggest = true, facet=true, name= "Relationship Type", sortable = true)
     @Column(name="RELATIONSHIP_TYPE")
     public String relationshipType;
 
+    @Indexable(suggest = true, facet=true, name= "Interaction Type", sortable = true)
+    @Column(name="INTERACTION_TYPE")
+    public String interactionType;
+
     @Indexable(suggest = true, facet=true, name= "Summary Result Type", sortable = true)
     @Column(name="RESULT_TYPE")
     public String resultType;
 
-    @Column(name="RESULT")
-    public String result;
+    @Column(name="RESULT_VALUE_AVERAGE")
+    public String resultValueAverage;
 
-    @Column(name="RESULT_UNITS")
-    public String resultUnits;
+    @Column(name="RESULT_VALUE_LOW")
+    public String resultValueLow;
 
-    @Column(name="AMOUNT_TYPE")
-    public String amountType;
+    @Column(name="RESULT_VALUE_HIGH")
+    public String resultValueHigh;
 
-    @Column(name="AMOUNT_AVERAGE")
-    public Double amountAverage;
+    @Column(name="RESULT_VALUE_UNITS")
+    public String resultValueUnits;
 
-    @Column(name="AMOUNT_LOW")
-    public Double amountLow;
+    @Column(name="COMMENTS", length=4000)
+    public String comments;
 
-    @Column(name="AMOUNT_HIGH")
-    public Double amountHigh;
+    @Column(name="REFERENCE_SOURCE_TYPE")
+    public String referenceSourceType;
 
-    @Column(name="AMOUNT_UNITS")
-    public String amountUnits;
+    @Column(name="REFERENCE_SOURCE")
+    public String referenceSource;
+
+    @Column(name="REFERENCE_SOURCE_URL")
+    public String referenceSourceUrl;
 
     public InvitroSummary () {}
 
+    /*
+    // Set Parent Class, InvitroAssayInformation
+    @Indexable(indexed=false)
+    @ParentReference
+    @EqualsAndHashCode.Exclude
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name="INVITRO_ASSAY_INFO_ID", referencedColumnName="ID")
+    public InvitroAssayInformation ownerOfAssayInfo;
+
+    public void setOwner(InvitroAssayInformation invitroAssayInformation) {
+        this.ownerOfAssayInfo = invitroAssayInformation;
+    } */
+
+    /*
+    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name="INVITRO_TEST_AGENT_ID")
+    public InvitroTestAgent invitroTestAgent;
+    */
 }

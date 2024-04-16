@@ -17,11 +17,11 @@ import java.util.List;
 @SingleParent
 @Data
 @Entity
-@Table(name="GSRS_INVITRO_SUBMITTER_REPORT")
-public class InvitroSubmitterReport extends InvitroPharmacologyCommanData {
+@Table(name="GSRS_INVITRO_SPONSOR_REPORT")
+public class InvitroSponsorReport extends InvitroPharmacologyCommanData {
 
     @Id
-    @SequenceGenerator(name="invitroSubReportSeq", sequenceName="GSRS_INVITRO_SM_REPORT_SEQ",allocationSize=1)
+    @SequenceGenerator(name="invitroSubReportSeq", sequenceName="GSRS_INVITRO_SPONSOR_REPORT_SEQ",allocationSize=1)
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "invitroSubReportSeq")
     @Column(name="ID")
     public Long id;
@@ -34,11 +34,11 @@ public class InvitroSubmitterReport extends InvitroPharmacologyCommanData {
     @Column(name="REPORT_DATE")
     public Date reportDate;
 
-    public InvitroSubmitterReport () {}
+    public InvitroSponsorReport () {}
 
     @ManyToMany(fetch = FetchType.EAGER, cascade= CascadeType.ALL)
-    @JoinTable(name="GSRS_INVITRO_SUB_REPORT_DET", joinColumns = @JoinColumn(name = "INVITRO_SUBMITTER_REPORT_ID"),
-            inverseJoinColumns = @JoinColumn(name = "INVITRO_SPON_SUBMITTER_ID"))
+    @JoinTable(name="GSRS_INVITRO_SPONSOR_SUB_REPORT_DET", joinColumns = @JoinColumn(name = "INVITRO_SPONSOR_REPORT_ID"),
+            inverseJoinColumns = @JoinColumn(name = "INVITRO_SPONSOR_SUBMITTER_ID"))
     public List<InvitroSponsorSubmitter> invitroSponsorSubmitters = new ArrayList<>();
 
 }
