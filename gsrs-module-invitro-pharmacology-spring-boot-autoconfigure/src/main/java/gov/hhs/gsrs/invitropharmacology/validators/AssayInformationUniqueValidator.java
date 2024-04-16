@@ -24,15 +24,12 @@ public class AssayInformationUniqueValidator implements ValidatorPlugin<InvitroA
     @Override
     public void validate(InvitroAssayInformation objnew, InvitroAssayInformation objold, ValidatorCallback callback) {
 
-        System.out.println("ZZZZZZZZZZZZZZZZZZZZZZZZZ");
         System.out.println("***** " + objnew.externalAssaySource + "      " +  objnew.externalAssayId);
         InvitroAssayInformation assay = repository.findAssayByExternalAssay(objnew.externalAssaySource, objnew.externalAssayId);
 
         if (assay != null) {
-            System.out.println("AAAAAAAAAAAAAAAAAAAAAAA");
             callback.addMessage(GinasProcessingMessage.ERROR_MESSAGE("External Assay Source and External Assay ID should be unique."));
         } else {
-            System.out.println("BBBBBBBBBBBBBBBBBBBBBB");
         }
     }
 }

@@ -177,7 +177,6 @@ public class InvitroAssayScreeningEntityService extends AbstractGsrsEntityServic
            //  entityManager.flush();
 
            // InvitroAssayScreening obj = assayScreeningRepository.saveAndFlush(screening);
-            System.out.println("******* SAVING " + screening);
             return obj;
         } catch (Throwable t) {
             t.printStackTrace();

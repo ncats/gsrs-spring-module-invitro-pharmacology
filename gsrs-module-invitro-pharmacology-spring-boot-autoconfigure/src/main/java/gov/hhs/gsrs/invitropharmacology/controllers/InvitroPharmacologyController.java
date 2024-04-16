@@ -162,11 +162,10 @@ public class InvitroPharmacologyController extends EtagLegacySearchEntityControl
 
         List<InvitroAssayInformation> saveAssays = new ArrayList<>(updatedEntityJson.length);
 
-        System.out.println("**** SAVING ASSAYS ******************** ");
         ObjectMapper mapper = new ObjectMapper();
 
         for (int i = 0; i < updatedEntityJson.length; i++) {
-            System.out.println("UPDATING ASSAY index " + i  + "    " + updatedEntityJson[i]);
+            //System.out.println("UPDATING ASSAY index " + i  + "    " + updatedEntityJson[i]);
 
             InvitroAssayInformation assayInfo = mapper.treeToValue(updatedEntityJson[i], InvitroAssayInformation.class);
            // assayInfos.add(assayInfo);
@@ -184,7 +183,6 @@ public class InvitroPharmacologyController extends EtagLegacySearchEntityControl
       //  InvitroAssayInformation value = mapper.treeToValue(updatedEntityJson, InvitroAssayInformation.class);
 
             /*for(JsonNode n : updatedEntityJson){
-                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ");
                 System.out.println(n);
             }*/
 
@@ -216,13 +214,12 @@ public class InvitroPharmacologyController extends EtagLegacySearchEntityControl
 
 
         List<InvitroAssayScreening> assayInfos = new ArrayList<>(updatedEntityJson.length);
-        System.out.println("SCREENING BULK SAVING *************************** ");
 
         List<InvitroAssayScreening> savedList = new ArrayList<InvitroAssayScreening>();
         ObjectMapper mapper = new ObjectMapper();
 
         for (int i = 0; i < updatedEntityJson.length; i++) {
-            System.out.println("**************** " + updatedEntityJson[i]);
+           // System.out.println("**************** " + updatedEntityJson[i]);
 
             // Convert Json to InvitroAssayScreening Class Object
             InvitroAssayScreening screeningObj = mapper.treeToValue(updatedEntityJson[i], InvitroAssayScreening.class);
@@ -239,7 +236,6 @@ public class InvitroPharmacologyController extends EtagLegacySearchEntityControl
             InvitroAssayScreening savedScreeningObj = invitroPharmacologyEntityService.updateBulkScreenings(screeningObj, entityManager);
 
             if (savedScreeningObj != null) {
-                System.out.println("SAVED THIS: " + savedScreeningObj);
                 savedList.add(savedScreeningObj);
             }
         }

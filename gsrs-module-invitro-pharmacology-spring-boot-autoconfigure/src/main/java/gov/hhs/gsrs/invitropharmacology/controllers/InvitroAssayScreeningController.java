@@ -135,13 +135,12 @@ public class InvitroAssayScreeningController extends EtagLegacySearchEntityContr
         }
 
         List<InvitroAssayScreening> assayInfos = new ArrayList<>(updatedEntityJson.length);
-        System.out.println("SCREENING BULK SAVING *************************** ");
 
         List<InvitroAssayScreening> savedList = new ArrayList<InvitroAssayScreening>();
         ObjectMapper mapper = new ObjectMapper();
 
         for (int i = 0; i < updatedEntityJson.length; i++) {
-            System.out.println("**************** " + updatedEntityJson[i]);
+           // System.out.println("**************** " + updatedEntityJson[i]);
 
             // Convert Json to InvitroAssayScreening Class Object
             InvitroAssayScreening screeningObj = mapper.treeToValue(updatedEntityJson[i], InvitroAssayScreening.class);
@@ -153,7 +152,6 @@ public class InvitroAssayScreeningController extends EtagLegacySearchEntityContr
           //  InvitroAssayScreening savedScreeningObj = invitroPharmacologyEntityService.updateBulkScreenings(screeningObj, entityManager);
 
             if (savedScreeningObj != null) {
-                System.out.println("SAVED THIS: " + savedScreeningObj);
                 savedList.add(savedScreeningObj);
             }
         }
@@ -171,7 +169,6 @@ public class InvitroAssayScreeningController extends EtagLegacySearchEntityContr
             //  entityManager.flush();
 
             InvitroAssayScreening obj = invitroAssayScreeningEntityService.updateBulkScreenings(screening, entityManager);
-            System.out.println("******* SAVING " + obj);
             return obj;
         } catch (Throwable t) {
             t.printStackTrace();
