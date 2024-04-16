@@ -64,7 +64,8 @@ public class InvitroAssayResultInformation extends InvitroPharmacologyCommanData
         }
     }
 
-    @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
+   // @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
+    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name="INVITRO_REFERENCE_ID")
     public InvitroReference invitroReference;
 
@@ -79,4 +80,10 @@ public class InvitroAssayResultInformation extends InvitroPharmacologyCommanData
     @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "INVITRO_LABORATORY_ID", referencedColumnName = "ID")
     public InvitroLaboratory invitroLaboratory;
+
+   // @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
+    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name="INVITRO_TEST_AGENT_ID", referencedColumnName = "ID")
+    public InvitroTestAgent invitroTestAgent;
+
 }

@@ -39,6 +39,9 @@ public class InvitroAssayScreening extends InvitroPharmacologyCommanData {
         return id;
     }
 
+    @Column(name = "ASSAY_SET")
+    public String assaySet;
+
     @Column(name = "TEST_AGENT_SUBSTANCE_UUID")
     public String testAgentSubstanceUuid;
 
@@ -70,11 +73,11 @@ public class InvitroAssayScreening extends InvitroPharmacologyCommanData {
     @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "INVITRO_LABORATORY_ID")
     public InvitroLaboratory invitroLaboratory;
-    */
 
     @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinColumn(name="INVITRO_TEST_AGENT_ID")
     public InvitroTestAgent invitroTestAgent;
+    */
 
     // Set Parent Class, InvitroResultInformation
     @Indexable(indexed=false)

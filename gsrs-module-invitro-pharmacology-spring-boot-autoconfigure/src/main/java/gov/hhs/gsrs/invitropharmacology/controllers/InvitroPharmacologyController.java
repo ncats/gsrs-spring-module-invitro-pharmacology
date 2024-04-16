@@ -151,30 +151,35 @@ public class InvitroPharmacologyController extends EtagLegacySearchEntityControl
 
     @PutGsrsRestApiMapping("/saveBulkAssays")
     //@Transactional
-    public ResponseEntity<Object> updateBulkAssay(@RequestBody JsonNode[] updatedEntityJson,
+    public ResponseEntity<String> updateBulkAssay(@RequestBody JsonNode[] updatedEntityJson,
                                                @RequestParam Map<String, String> queryParameters,
                                                Principal principal) throws Exception {
         if (principal == null) {
             //not logged in!
-            return gsrsControllerConfiguration.unauthorized("no user logged in", queryParameters);
+          //  return gsrsControllerConfiguration.unauthorized("no user logged in", queryParameters);
         }
 
 
-        List<InvitroAssayInformation> assayInfos = new ArrayList<>(updatedEntityJson.length);
-        System.out.println("******************************************** ");
+        List<InvitroAssayInformation> saveAssays = new ArrayList<>(updatedEntityJson.length);
+
+        System.out.println("**** SAVING ASSAYS ******************** ");
         ObjectMapper mapper = new ObjectMapper();
 
         for (int i = 0; i < updatedEntityJson.length; i++) {
-            System.out.println("**************** " + updatedEntityJson[i]);
+            System.out.println("UPDATING ASSAY index " + i  + "    " + updatedEntityJson[i]);
 
             InvitroAssayInformation assayInfo = mapper.treeToValue(updatedEntityJson[i], InvitroAssayInformation.class);
            // assayInfos.add(assayInfo);
 
-           invitroPharmacologyEntityService.saveBulkAssays(assayInfo);
+            InvitroAssayInformation savedAssay = invitroPharmacologyEntityService.saveBulkAssays(assayInfo);
+            saveAssays.add(savedAssay);
         }
 
+        return new ResponseEntity(saveAssays, HttpStatus.OK);
 
-          //  List<T> l = new ArrayList<>(updatedEntityJson.size());
+       // return gsrsControllerConfiguration.handleNotFound(queryParameters);
+
+        //  List<T> l = new ArrayList<>(updatedEntityJson.size());
        // JsonNode node = mapper.valueToTree(updatedEntityJson);
       //  InvitroAssayInformation value = mapper.treeToValue(updatedEntityJson, InvitroAssayInformation.class);
 
@@ -194,7 +199,7 @@ public class InvitroPharmacologyController extends EtagLegacySearchEntityControl
             return new ResponseEntity<>(result.getValidationResponse(),gsrsControllerConfiguration.getHttpStatusFor(HttpStatus.BAD_REQUEST, queryParameters));
         }
         */
-        return gsrsControllerConfiguration.handleNotFound(queryParameters);
+
         //return new ResponseEntity(list, HttpStatus.OK);
     }
 
