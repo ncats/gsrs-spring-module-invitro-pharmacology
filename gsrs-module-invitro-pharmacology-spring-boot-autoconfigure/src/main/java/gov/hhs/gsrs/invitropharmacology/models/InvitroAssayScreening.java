@@ -80,7 +80,6 @@ public class InvitroAssayScreening extends InvitroPharmacologyCommanData {
     */
 
     // Set Parent Class, InvitroResultInformation
-    @Indexable(indexed=false)
     @ParentReference
     @EqualsAndHashCode.Exclude
     @ManyToOne(cascade = CascadeType.ALL)
