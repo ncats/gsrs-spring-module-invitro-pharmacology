@@ -81,6 +81,9 @@ public class InvitroSummary extends InvitroPharmacologyCommanData {
     @Column(name="REFERENCE_SOURCE_URL")
     public String referenceSourceUrl;
 
+    @Column(name="IS_FROM_RESULT")
+    public String isFromResult;
+
     public InvitroSummary () {}
 
     /*
