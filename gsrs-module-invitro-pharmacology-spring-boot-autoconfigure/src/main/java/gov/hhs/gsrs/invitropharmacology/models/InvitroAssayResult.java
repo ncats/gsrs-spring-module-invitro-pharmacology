@@ -5,6 +5,7 @@ import ix.core.models.Indexable;
 import ix.core.models.ParentReference;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -34,6 +35,7 @@ public class InvitroAssayResult extends InvitroPharmacologyCommanData {
     @Column(name = "BATCH_NUMBER")
     public String batchNumber;
 
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="MM/dd/yyyy")
     @Column(name = "TEST_DATE")
     public Date testDate;
 

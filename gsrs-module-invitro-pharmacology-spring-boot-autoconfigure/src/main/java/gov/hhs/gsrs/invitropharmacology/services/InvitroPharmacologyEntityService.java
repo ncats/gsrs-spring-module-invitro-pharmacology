@@ -2,6 +2,7 @@ package gov.hhs.gsrs.invitropharmacology.services;
 
 import gov.hhs.gsrs.invitropharmacology.models.*;
 import gov.hhs.gsrs.invitropharmacology.repositories.*;
+import gov.hhs.gsrs.invitropharmacology.InvitroPharmacologyDataSourceConfig;
 
 import gsrs.controller.IdHelpers;
 import gsrs.events.AbstractEntityCreatedEvent;
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,17 +32,23 @@ import java.util.UUID;
 @Service
 @Transactional
 public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<InvitroAssayInformation, Long> {
-    public static final String  CONTEXT = "invitropharmacology";
+    public static final String CONTEXT = "invitropharmacology";
 
     public InvitroPharmacologyEntityService() {
-        super(CONTEXT,  IdHelpers.NUMBER, null, null, null);
+        super(CONTEXT, IdHelpers.NUMBER, null, null, null);
     }
+
+    @PersistenceContext(unitName = InvitroPharmacologyDataSourceConfig.NAME_ENTITY_MANAGER)
+    private EntityManager entityManager;
 
     @Autowired
     private InvitroPharmacologyRepository repository;
 
     @Autowired
     private InvitroAssayScreeningRepository assayScreeningRepository;
+
+    @Autowired
+    private InvitroAssayScreeningEntityService invitroAssayScreeningEntityService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -84,6 +92,44 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
     @Override
     @Transactional
     protected InvitroAssayInformation update(InvitroAssayInformation assayInfo) {
+        int size = assayInfo.invitroAssayScreenings.size();
+        if (size > 0) {
+
+            InvitroAssayScreening screening = assayInfo.invitroAssayScreenings.get(size - 1);
+
+            String importFileName = screening.screeningImportFileName;
+
+            if (importFileName != null) {
+                List<InvitroAssayScreening> screeningImportFile = repository.findScreeningByImportFile(importFileName);
+
+                System.out.println("$$$$$$$$$$$$$$$ " + screeningImportFile);
+                // Found in the Database
+                if (screeningImportFile != null && screeningImportFile.size() > 0) {
+                    System.out.println("HHHHHHHHHHHHHHHHHHHH");
+                    if (screeningImportFile.get(0) != null) {
+                        System.out.println("MMMMMMMMMMMMMMMMMMMMMMMMM");
+                        if (screeningImportFile.get(0).invitroAssayResultInformation != null) {
+                            System.out.println("RRRRRRRRRRRRRRRRRRRRR");
+                            if (screeningImportFile.get(0).invitroAssayResultInformation.id != null) {
+                                System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKK");
+                                Long resultInfoId = screeningImportFile.get(0).invitroAssayResultInformation.id;
+                                System.out.println("REF INFO ID " + resultInfoId);
+
+                                InvitroAssayResultInformation resultInfo = repository.findAssayResultInformationById(resultInfoId);
+
+                                System.out.println("FOUND FOUND " + resultInfo);
+                                screening.setInvitroAssayResultInformation(resultInfo);
+                                assayInfo.invitroAssayScreenings.set(size - 1, screening);
+                            }
+                        }
+                    }
+
+                } else {
+                    screening.setInfoDirty();
+                }
+            }
+        } // if size > 0
+
         return repository.saveAndFlush(assayInfo);
     }
 
@@ -120,7 +166,7 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
 
     @Override
     protected List<InvitroAssayInformation> fromUpdatedJsonList(JsonNode list) throws IOException {
-       return null;
+        return null;
     }
 
     @Override
@@ -140,7 +186,7 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
 
     @Override
     public Optional<InvitroAssayInformation> flexLookup(String someKindOfId) {
-        if (someKindOfId == null){
+        if (someKindOfId == null) {
             return Optional.empty();
         }
         return repository.findById(Long.parseLong(someKindOfId));
@@ -150,7 +196,7 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
     protected Optional<Long> flexLookupIdOnly(String someKindOfId) {
         //easiest way to avoid deduping data is to just do a full flex lookup and then return id
         Optional<InvitroAssayInformation> found = flexLookup(someKindOfId);
-        if(found.isPresent()){
+        if (found.isPresent()) {
             return Optional.of(found.get().id);
         }
         return Optional.empty();
@@ -162,84 +208,100 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
     }
 
     @Transactional
-    public InvitroAssayScreening updateBulkScreenings(InvitroAssayScreening screening, EntityManager entityManager) {
+    public void saveScreeningRef(EntityManager entityManager) {
+
+        Optional<InvitroAssayScreening> databaseScreening = assayScreeningRepository.findById(241L);
+
+        if (databaseScreening.get() != null) {
+            invitroAssayScreeningEntityService.update(databaseScreening.get());
+
+            InvitroAssayScreening saved = assayScreeningRepository.saveAndFlush(databaseScreening.get());
+        }
+    }
+
+    @Transactional
+    public InvitroAssayScreening saveScreening(InvitroAssayScreening screening, Long assayId, EntityManager entityManager) {
         InvitroAssayScreening obj = null;
+
         try {
-            // screening.internalVersion = 1L;
-
-          //  screening.forceUpdate();
-          //  assayScreeningRepository.save(entityManager.merge(screening));
-           // screening.forceUpdate();
-          //  assayScreeningRepository.save(entityManager.merge(screening));
-
-         //   Optional<InvitroAssayScreening> a2 = assayScreeningRepository.findById(63L);
-
-            /*
-            Optional<InvitroAssayInformation> ai  = get(1L);
-           // Optional<InvitroAssayInformation> ai = repository.findById(1L);
-            if(ai.isPresent()){
-                System.out.println("INFORMATION FOUND FOUND FOUND " + Optional.of(ai.get().id));
-                InvitroAssayInformation abc = ai.get();
-                abc.assayMode = "Mode";
-                abc.publicDomain = "YES";
-
-          //  repository.saveAndFlush(ai.get());
-            update(abc);
+            // if Assay Id is not null, get the Assay Record by Id
+            if (assayId != null) {
+                Optional<InvitroAssayInformation> assay = repository.findById(assayId);
+                if (assay.isPresent()) {
+                    // set the returned assay as a owner of the screening record
+                    screening.setOwner(assay.get());
+                }
             }
-            */
+            //  InvitroAssayScreening screening2 = null;
+            //  InvitroAssayScreening newscreening = null;
+            // if Result Information object is null, get the id
+            if (screening.invitroAssayResultInformation != null) {
+                if (screening.invitroAssayResultInformation.id != null) {
 
-            /*
-            if (ai.isPresent()) {
-                System.out.println("FOUND " + ai);
+                    InvitroAssayResultInformation resultInfo = repository.findAssayResultInformationById(screening.invitroAssayResultInformation.id);
 
-               // screening.owner = ai.get();
-               // entityManager.persist(screening);
-              //  entityManager.merge(screening);
-             //   entityManager.getTransaction().commit();
-            } */
+                    resultInfo.addInvitroAssayScreeningChild(screening);
 
-         //   System.out.println("******* CONTAINS A2 A2" + entityManager.contains(a2.get()));
+                    screening.setInvitroAssayResultInformation(resultInfo);
+                    screening.setIsDirty("invitroAssayInformation");
 
-            // FOR SAVING NEW RECORD BEGIN
-              if (screening.id == null) {
-                  /*
-                  screening.forceUpdate();
-                  assayScreeningRepository.saveAndFlush(screening);  */
-              } else {
+                    entityManager.joinTransaction();
+                    entityManager.merge(screening);
+                } else {
+                    return assayScreeningRepository.saveAndFlush(screening);
 
-               //   System.out.println("******* CONTAINS " + entityManager.contains(screening));
-
-                //  screening.forceUpdate();
-                //  assayScreeningRepository.saveAndFlush(entityManager.merge(screening));
-
-                 /*
-                  InvitroAssayScreening name2 = entityManager.merge(a2.get());
-                  // log.trace("name2 dirtiness: {}" , (log.isTraceEnabled()) ? name2.isDirty(): "");
-                  name2.forceUpdate();
-                 // log.trace("name2 dirtiness after update: {}", (log.isTraceEnabled()) ? name2.isDirty() : "");
-                  assayScreeningRepository.saveAndFlush(name2);*/
-              }
-            // SAVE END
-
-
-            //  screening.save(screening);
-          //  entityManager.persist(screening);
-           // entityManager.flush();
-           // System.out.println("\n");
-         //   Optional<InvitroAssayScreening> sc = assayScreeningRepository.findById(1L);
-
-           // entityManager.getTransaction();
-            //InvitroAssayScreening screen = entityManager.merge(screening);
-         //   screening.forceUpdate();
-           // InvitroAssayScreening savedObj = assayScreeningRepository.saveAndFlush(screening);
-
-           // InvitroAssayScreening obj = assayScreeningRepository.saveAndFlush(screening);
+                }
+            }
 
         } catch (Exception t) {
             t.printStackTrace();
-           // throw t;
         }
         return obj;
+    }
+
+    @Transactional
+    public InvitroAssayScreening updateBulkScreenings(InvitroAssayScreening screening, EntityManager entityManager) {
+        InvitroAssayScreening obj = null;
+        try {
+            if (screening.id == null) {
+            } else {
+
+            }
+        } catch (Exception t) {
+            t.printStackTrace();
+            // throw t;
+        }
+        return obj;
+    }
+
+    public AbstractGsrsEntityService.UpdateResult<InvitroAssayInformation> updateAssayForScreening(InvitroAssayInformation assayInformation, Long resultInfoId, EntityManager entityManager) {
+        AbstractGsrsEntityService.UpdateResult.UpdateResultBuilder<InvitroAssayInformation> builder = AbstractGsrsEntityService.UpdateResult.<InvitroAssayInformation>builder();
+
+        try {
+
+            int size = assayInformation.invitroAssayScreenings.size();
+            if (size > 0) {
+                InvitroAssayScreening screening = assayInformation.invitroAssayScreenings.get(size - 1);
+
+            } // if size > 0
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        builder.updatedEntity(update(assayInformation));
+
+        builder.status(UpdateResult.STATUS.UPDATED);
+
+        UpdateResult<InvitroAssayInformation> updateResult = builder.build();
+
+        return updateResult;
+
+    }
+
+    public InvitroAssayInformation findAssayByExternalAssay(String externalAssaySource, String externalAssayId) {
+        InvitroAssayInformation assay = repository.findAssayByExternalAssay(externalAssaySource, externalAssayId);
+        return assay;
     }
 
     public List<InvitroAssayInformation> findAssayByResultInfoId(Long id) {

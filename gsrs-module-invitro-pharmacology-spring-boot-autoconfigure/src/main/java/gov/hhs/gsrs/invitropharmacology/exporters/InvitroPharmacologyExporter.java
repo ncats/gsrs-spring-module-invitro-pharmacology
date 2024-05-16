@@ -172,6 +172,7 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
 
 
         // SCREENING DATA
+        /*
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.REFERENCE_SOURCE_TYPE, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.REFERENCE_SOURCE_TYPE, (s, cell) -> {
             StringBuilder sb = getScreeningDetails(s, InvitroPharmDefaultColumns.REFERENCE_SOURCE_TYPE);
             cell.writeString(sb.toString());
@@ -181,6 +182,7 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
             StringBuilder sb = getScreeningDetails(s, InvitroPharmDefaultColumns.REFERENCE_SOURCE);
             cell.writeString(sb.toString());
         }));
+        */
 
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.REPORT_NUMBER, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.REPORT_NUMBER, (s, cell) -> {
             StringBuilder sb = getScreeningDetails(s, InvitroPharmDefaultColumns.REPORT_NUMBER);
@@ -249,6 +251,7 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
             if (screening.invitroAssayResultInformation != null) {
 
                 switch (fieldName) {
+                    /*
                     case REFERENCE_SOURCE_TYPE:
                         sb.append((screening.invitroAssayResultInformation.invitroReference != null && screening.invitroAssayResultInformation.invitroReference.referenceSourceType != null)
                                 ? screening.invitroAssayResultInformation.invitroReference.referenceSourceType : "");
@@ -257,6 +260,8 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
                         sb.append((screening.invitroAssayResultInformation.invitroReference != null && screening.invitroAssayResultInformation.invitroReference.referenceSource != null)
                                 ? screening.invitroAssayResultInformation.invitroReference.referenceSource : "");
                         break;
+
+                     */
                     case REPORT_NUMBER:
                         sb.append((screening.invitroAssayResultInformation.invitroSponsorReport != null && screening.invitroAssayResultInformation.invitroSponsorReport.reportNumber != null)
                                 ? screening.invitroAssayResultInformation.invitroSponsorReport.reportNumber : "");

@@ -18,6 +18,7 @@ import gsrs.repository.ETagRepository;
 import gsrs.service.EtagExportGenerator;
 import gsrs.service.ExportService;
 import gsrs.service.GsrsEntityService;
+import gsrs.service.AbstractGsrsEntityService;
 import ix.core.models.ETag;
 import ix.core.search.SearchOptions;
 import ix.core.search.text.TextIndexer;
@@ -40,6 +41,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -119,6 +121,65 @@ public class InvitroPharmacologyController extends EtagLegacySearchEntityControl
         return stream;
     }
 
+   // @PutGsrsRestApiMapping(value="({id})/screening")
+    @PostGsrsRestApiMapping("/{assayId}/screening")
+    public ResponseEntity<Object> saveScreening(@RequestBody JsonNode entityJson,
+                                                @RequestParam Map<String, String> queryParameters,
+                                                Principal principal,
+                                                @PathVariable("assayId") Long assayId) throws Exception {
+        if (principal == null) {
+            //not logged in!
+            return gsrsControllerConfiguration.unauthorized("no user logged in", queryParameters);
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        InvitroAssayScreening screening = mapper.treeToValue(entityJson, InvitroAssayScreening.class);
+
+        InvitroAssayScreening savedScreening = invitroPharmacologyEntityService.saveScreening(screening, assayId, entityManager);
+
+        InvitroAssayScreening screeningTesting = new InvitroAssayScreening();
+        if (screening.invitroAssayResultInformation != null) {
+
+            if (screening.invitroAssayResultInformation.id != null) {
+
+                return new ResponseEntity(screening, HttpStatus.OK);
+
+            }
+        }
+
+        return new ResponseEntity(screening, HttpStatus.OK);
+
+        //   List<InvitroAssayScreening> savedList = new ArrayList<InvitroAssayScreening>();
+
+        //   ObjectMapper mapper = new ObjectMapper();
+
+        //   for (int i = 0; i < updatedEntityJson.length; i++) {
+        // System.out.println("**************** " + updatedEntityJson[i]);
+
+        // Convert Json to InvitroAssayScreening Class Object
+        //     InvitroAssayScreening screeningObj = mapper.treeToValue(updatedEntityJson[i], InvitroAssayScreening.class);
+
+
+        // screeningObj.setOwner();
+        // Save/Update the InvitroAssayScreening record into the database
+            /*
+            InvitroAssayScreening savedScreeningObj = invitroPharmacologyEntityService.updateBulkScreenings(screeningObj, entityManager);
+            */
+
+        //  InvitroAssayScreening savedScreeningObj = invitroAssayScreeningController.updateBulkScreenings(screeningObj);
+
+        // InvitroAssayScreening savedScreeningObj = invitroPharmacologyEntityService.updateBulkScreenings(screeningObj, entityManager);
+
+        //  if (savedScreeningObj != null) {
+        //       savedList.add(savedScreeningObj);
+        //   }
+        // }
+        //  return new ResponseEntity(savedList, HttpStatus.OK);
+
+        // return gsrsControllerConfiguration.handleNotFound(queryParameters);
+    }
+
     @GetGsrsRestApiMapping("/actuator/health")
     public ResponseEntity<Object> checkHealth() throws Exception {
         JSONObject status = new JSONObject();
@@ -126,7 +187,7 @@ public class InvitroPharmacologyController extends EtagLegacySearchEntityControl
         return new ResponseEntity(status, HttpStatus.OK);
     }
 
-    @GetGsrsRestApiMapping("/assay/{id}/screenings")
+    @GetGsrsRestApiMapping("/assay/({id})/screenings")
     public ResponseEntity<String> findAllScreeningsByAssayId(@PathVariable("id") Long assayId) throws Exception {
         List<InvitroAssayInformation> list = invitroPharmacologyEntityService.findAllScreeningsByAssayId(assayId);
 
@@ -141,12 +202,83 @@ public class InvitroPharmacologyController extends EtagLegacySearchEntityControl
         return new ResponseEntity(list, HttpStatus.OK);
     }
 
+    @GetGsrsRestApiMapping("/externalAssay/{externalAssaySource}/{externalAssayId}")
+    public ResponseEntity<String> findAssayByExternalAssay(@PathVariable("externalAssaySource") String externalAssaySource,
+                                                           @PathVariable("externalAssayId") String externalAssayId) throws Exception {
+
+        InvitroAssayInformation assay = invitroPharmacologyEntityService.findAssayByExternalAssay(externalAssaySource, externalAssayId);
+
+        return new ResponseEntity(assay, HttpStatus.OK);
+    }
+
     @GetGsrsRestApiMapping("/assaysByResultInfoId/{id}")
     public ResponseEntity<String> findAssayByResultInfoId(@PathVariable("id") Long refInfoId) throws Exception {
 
         List<InvitroAssayInformation> list = invitroPharmacologyEntityService.findAssayByResultInfoId(refInfoId);
 
         return new ResponseEntity(list, HttpStatus.OK);
+    }
+
+    @PutGsrsRestApiMapping("/saveAssay")
+    public ResponseEntity<Object> saveNewAssay(@RequestBody JsonNode updatedEntityJson,
+                                                  @RequestParam Map<String, String> queryParameters,
+                                                  Principal principal) throws Exception {
+        if (principal == null) {
+            //not logged in!
+            return gsrsControllerConfiguration.unauthorized("no user logged in", queryParameters);
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        JsonNode nodeResultInfo = updatedEntityJson.findPath("invitroAssayResultInformation");
+        // if no Id found, it is new
+        Long resultInfoId = null;
+        if (nodeResultInfo != null) {
+            resultInfoId = nodeResultInfo.get("id").asLong();
+
+
+            System.out.println("################### id" + resultInfoId);
+
+          //  if (nodeResultInfo instanceof ObjectNode) {
+                System.out.println("YES YES YES");
+        //      ((ObjectNode)nodeResultInfo).remove("invitroAssayResultInformation");
+             //   ObjectNode object = (ObjectNode) nodeResultInfo;
+             //   object.remove("nodeResultInfo");
+         //   }
+          //  ((ObjectNode)updatedEntityJson).remove("invitroAssayResultInformation"]);
+        }
+
+        InvitroAssayInformation assayInfo = mapper.treeToValue(updatedEntityJson, InvitroAssayInformation.class);
+
+        AbstractGsrsEntityService.UpdateResult<InvitroAssayInformation> result = invitroPharmacologyEntityService.updateAssayForScreening(assayInfo,resultInfoId,  entityManager);
+
+        // if Id found and createdBy not found, remove the object
+        return new ResponseEntity<>(result.getUpdatedEntity(), HttpStatus.OK);
+      //  return new ResponseEntity(savedAssay, HttpStatus.OK);
+
+        // return gsrsControllerConfiguration.handleNotFound(queryParameters);
+
+        //  List<T> l = new ArrayList<>(updatedEntityJson.size());
+        // JsonNode node = mapper.valueToTree(updatedEntityJson);
+        //  InvitroAssayInformation value = mapper.treeToValue(updatedEntityJson, InvitroAssayInformation.class);
+
+            /*for(JsonNode n : updatedEntityJson){
+                System.out.println(n);
+            }*/
+
+        /*
+        AbstractGsrsEntityService.UpdateResult<T> result = getEntityService().updateEntity(updatedEntityJson);
+
+        if(result.getStatus()== AbstractGsrsEntityService.UpdateResult.STATUS.NOT_FOUND){
+            return gsrsControllerConfiguration.handleNotFound(queryParameters);
+        }
+
+        if(result.getStatus()== AbstractGsrsEntityService.UpdateResult.STATUS.ERROR){
+            return new ResponseEntity<>(result.getValidationResponse(),gsrsControllerConfiguration.getHttpStatusFor(HttpStatus.BAD_REQUEST, queryParameters));
+        }
+        */
+
+        //return new ResponseEntity(savedAssay, HttpStatus.OK);
     }
 
     @PutGsrsRestApiMapping("/saveBulkAssays")
@@ -219,7 +351,6 @@ public class InvitroPharmacologyController extends EtagLegacySearchEntityControl
         ObjectMapper mapper = new ObjectMapper();
 
         for (int i = 0; i < updatedEntityJson.length; i++) {
-           // System.out.println("**************** " + updatedEntityJson[i]);
 
             // Convert Json to InvitroAssayScreening Class Object
             InvitroAssayScreening screeningObj = mapper.treeToValue(updatedEntityJson[i], InvitroAssayScreening.class);
@@ -243,6 +374,7 @@ public class InvitroPharmacologyController extends EtagLegacySearchEntityControl
 
         return gsrsControllerConfiguration.handleNotFound(queryParameters);
     }
+
 
     public ResponseEntity<String> findAllAssays(@PathVariable("assayTargetUnii") String assayTargetUnii) throws Exception {
         List<InvitroAssayInformation> list = invitroPharmacologyEntityService.findAllAssays();
