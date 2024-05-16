@@ -47,6 +47,9 @@ public interface InvitroPharmacologyRepository extends GsrsVersionedRepository<I
     @Query("select a from InvitroAssayInformation a")
     List<InvitroAssayInformation> findAllAssays();
 
+    @Query("select a from InvitroAssayScreening a JOIN a.invitroAssayResultInformation i where a.screeningImportFileName = ?1")
+    List<InvitroAssayScreening> findScreeningByImportFile(String importFilename);
+
     @Query("select a from InvitroAssayInformation a JOIN a.invitroAssayScreenings s JOIN s.invitroAssayResult r JOIN s.invitroAssayResultInformation ai where ai.id = ?1")
     List<InvitroAssayInformation> findAssayByResultInfoId(Long resultInfoId);
 
@@ -58,6 +61,9 @@ public interface InvitroPharmacologyRepository extends GsrsVersionedRepository<I
 
     @Query("select a from InvitroReference a")
     List<InvitroReference> findAllReferences();
+
+    @Query("select a from InvitroAssayResultInformation a where a.id = ?1")
+    InvitroAssayResultInformation findAssayResultInformationById(Long id);
 
     @Query("select a from InvitroSponsor a")
     List<InvitroSponsor> findAllSponsors();

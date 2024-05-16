@@ -24,7 +24,6 @@ public class AssayInformationUniqueValidator implements ValidatorPlugin<InvitroA
     @Override
     public void validate(InvitroAssayInformation objnew, InvitroAssayInformation objold, ValidatorCallback callback) {
 
-        System.out.println("***** " + objnew.externalAssaySource + "      " +  objnew.externalAssayId);
         InvitroAssayInformation assay = repository.findAssayByExternalAssay(objnew.externalAssaySource, objnew.externalAssayId);
 
         if (assay != null) {

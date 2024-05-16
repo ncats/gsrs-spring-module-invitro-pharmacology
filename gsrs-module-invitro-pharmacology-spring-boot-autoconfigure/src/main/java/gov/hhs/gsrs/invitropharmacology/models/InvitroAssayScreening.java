@@ -50,16 +50,20 @@ public class InvitroAssayScreening extends InvitroPharmacologyCommanData {
     @ParentReference
     @EqualsAndHashCode.Exclude
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL)
+   // @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name="INVITRO_ASSAY_INFO_ID", referencedColumnName="ID")
     public InvitroAssayInformation owner;
 
     public void setOwner(InvitroAssayInformation invitroAssayInformation) {
         this.owner = invitroAssayInformation;
+
+        // Need this to update the field
+        setIsDirty("invitroAssayInformation");
     }
 
-    @Column(name="TESTING")
-    public String testing;
+    @Column(name="SCREENING_IMPORT_FILENAME")
+    public String screeningImportFileName;
 
     /*
     @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
@@ -82,14 +86,23 @@ public class InvitroAssayScreening extends InvitroPharmacologyCommanData {
     // Set Parent Class, InvitroResultInformation
     @ParentReference
     @EqualsAndHashCode.Exclude
-    @ManyToOne(cascade = CascadeType.ALL)
+   // @ManyToOne()
+   // @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
+    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+    //@ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name="INVITRO_RESULT_INFO_ID", referencedColumnName="ID")
     public InvitroAssayResultInformation invitroAssayResultInformation;
 
     public void setInvitroAssayResultInformation(InvitroAssayResultInformation invitroAssayResultInformation) {
         this.invitroAssayResultInformation = invitroAssayResultInformation;
+
+        // Need this to update the field
+        setIsDirty("invitroAssayResultInformation");
     }
 
+    public void setInfoDirty() {
+        setIsDirty("invitroAssayResultInformation");
+    }
     /*
     // Set Child for InvitroAssayScreening
     @ToString.Exclude

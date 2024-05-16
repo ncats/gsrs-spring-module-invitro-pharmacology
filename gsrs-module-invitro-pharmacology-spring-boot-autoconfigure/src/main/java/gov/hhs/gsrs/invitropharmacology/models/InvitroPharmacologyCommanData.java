@@ -5,6 +5,7 @@ import gsrs.security.GsrsSecurityUtils;
 import ix.core.models.Indexable;
 import ix.core.models.Principal;
 import ix.core.models.UserProfile;
+import ix.core.models.ForceUpdatableModel;
 import gsrs.ForceUpdateDirtyMakerMixin;
 import ix.ginas.models.serialization.GsrsDateDeserializer;
 import ix.ginas.models.serialization.GsrsDateSerializer;
@@ -20,7 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @MappedSuperclass
-public class InvitroPharmacologyCommanData extends AbstractGsrsEntity implements ForceUpdateDirtyMakerMixin{
+public class InvitroPharmacologyCommanData extends AbstractGsrsEntity implements ForceUpdateDirtyMakerMixin, ForceUpdatableModel {
 
     @JsonSerialize(using = GsrsDateSerializer.class)
     @JsonDeserialize(using = GsrsDateDeserializer.class)

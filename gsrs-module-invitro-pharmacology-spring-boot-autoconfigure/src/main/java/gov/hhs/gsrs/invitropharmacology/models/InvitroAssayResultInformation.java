@@ -15,6 +15,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @SingleParent
 @Data
@@ -27,6 +28,9 @@ public class InvitroAssayResultInformation extends InvitroPharmacologyCommanData
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "invitroResultInfoSeq")
     @Column(name = "ID")
     public Long id;
+
+    @Column(name = "BATCH_NUMBER")
+    public String batchNumber;
 
     @Column(name = "TEST_AGENT_SUBSTANCE_UUID")
     public String testAgentSubstanceUuid;
@@ -64,10 +68,36 @@ public class InvitroAssayResultInformation extends InvitroPharmacologyCommanData
         }
     }
 
+    public InvitroAssayScreening addInvitroAssayScreeningChild(InvitroAssayScreening invitroAssayScreening) {
+        this.invitroAssayScreenings.add(invitroAssayScreening);
+        invitroAssayScreening.setInvitroAssayResultInformation(this);
+        this.setIsDirty("invitroAssayScreenings");
+        return invitroAssayScreening;
+    }
+
+    // Set Child for InvitroAssayScreening
+    @Indexable(indexed=false)
+    @ToString.Exclude
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    public List<InvitroReference> invitroReferences = new ArrayList<InvitroReference>();
+
+    public void setInvitroReferences(List<InvitroReference> invitroReferences) {
+        this.invitroReferences = invitroReferences;
+        if (invitroReferences != null) {
+            for (InvitroReference invitro : invitroReferences)
+            {
+                invitro.setOwner(this);
+            }
+        }
+    }
+
    // @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
+    /*
     @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name="INVITRO_REFERENCE_ID")
     public InvitroReference invitroReference;
+    */
 
     @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "INVITRO_SPONSOR_ID", referencedColumnName = "ID")
@@ -86,4 +116,19 @@ public class InvitroAssayResultInformation extends InvitroPharmacologyCommanData
     @JoinColumn(name="INVITRO_TEST_AGENT_ID", referencedColumnName = "ID")
     public InvitroTestAgent invitroTestAgent;
 
+    @Override
+    public boolean equals(Object o) {
+        if(o == null)
+            return false;
+        if(this == o)
+            return true;
+        if(getClass() != o.getClass())
+            return false;
+        return (id != null && id.equals (((InvitroAssayResultInformation)o).id));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

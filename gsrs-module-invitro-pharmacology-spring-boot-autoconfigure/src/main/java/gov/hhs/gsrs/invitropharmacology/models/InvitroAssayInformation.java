@@ -139,8 +139,9 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
 
     // Set Child for InvitroAssayScreening
     @ToString.Exclude
+    @OrderBy("modifiedDate asc")
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<InvitroAssayScreening> invitroAssayScreenings = new ArrayList<InvitroAssayScreening>();
 
     public void setInvitroAssayScreenings(List<InvitroAssayScreening> invitroAssayScreenings) {
@@ -153,31 +154,24 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
         }
     }
 
-    /*
-    // Set Child for InvitroSummary
-    @ToString.Exclude
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "ownerOfAssayInfo")
-    public List<InvitroSummary> invitroSummaries = new ArrayList<InvitroSummary>();
-
-    public void setInvitroSummaries(List<InvitroSummary> invitroSummaries) {
-        this.invitroSummaries = invitroSummaries;
-        if (invitroSummaries != null) {
-            for (InvitroSummary invitro : invitroSummaries)
-            {
-                invitro.setOwner(this);
-            }
-        }
-    }
-
-     */
-
     // Many To Many, InvitroAssaySet
     @Indexable(indexed=false)
     @ToString.Exclude
     @LazyCollection(LazyCollectionOption.FALSE)
-    @ManyToMany(fetch = FetchType.EAGER, cascade= CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH })
+    //@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+   // @ManyToMany(fetch = FetchType.EAGER, cascade= CascadeType.ALL)
+   // @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+   // @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinTable(name="GSRS_INVITRO_ASSAY_SET_DET", joinColumns = @JoinColumn(name = "INVITRO_ASSAY_INFO_ID "),
             inverseJoinColumns = @JoinColumn(name = "INVITRO_ASSAY_SET_ID"))
     public Set<InvitroAssaySet> invitroAssaySets = new LinkedHashSet<>();
+
+
+    @PrePersist
+    public void beforeCreate(){
+    }
+
 }
+
+
