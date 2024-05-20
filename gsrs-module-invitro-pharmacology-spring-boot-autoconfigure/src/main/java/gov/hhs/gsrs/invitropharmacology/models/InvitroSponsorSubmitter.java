@@ -61,4 +61,8 @@ public class InvitroSponsorSubmitter extends InvitroPharmacologyCommanData {
             inverseJoinColumns = @JoinColumn(name = "INVITRO_SPONSOR_REPORT_ID"))
     public List<InvitroSponsorReport> invitroSponsorReport = new ArrayList<>();
 
+    public void setIsDirtyToFields() {
+        this.setIsDirty("sponsorReportSubmitterName");
+    }
+
 }

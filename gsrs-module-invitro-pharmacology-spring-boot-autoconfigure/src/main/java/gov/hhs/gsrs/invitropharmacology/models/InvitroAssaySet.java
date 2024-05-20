@@ -17,6 +17,8 @@ import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 
 import java.util.Date;
+import java.util.Set;
+import java.util.LinkedHashSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,8 +43,10 @@ public class InvitroAssaySet extends InvitroPharmacologyCommanData {
     // Many To Many, InvitroAssayInformation
     @Indexable(indexed=false)
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER, cascade= CascadeType.ALL, mappedBy = "invitroAssaySets")
+   // @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
+   // @ManyToMany(fetch = FetchType.EAGER, cascade= CascadeType.ALL, mappedBy = "invitroAssaySets")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "invitroAssaySets")
    // @JoinTable(name="GSRS_INVITRO_ASSAY_SET_DET", joinColumns = @JoinColumn(name = "INVITRO_ASSAY_SET_ID"),
    //        inverseJoinColumns = @JoinColumn(name = "INVITRO_ASSAY_INFO_ID"))
-    public List<InvitroAssayInformation> invitroAssayInformations = new ArrayList<>();
+    public Set<InvitroAssayInformation> invitroAssayInformations = new LinkedHashSet<>();
 }

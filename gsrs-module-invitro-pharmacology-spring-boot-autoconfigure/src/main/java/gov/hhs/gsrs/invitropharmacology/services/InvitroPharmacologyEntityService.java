@@ -79,10 +79,46 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
     @Override
     protected InvitroAssayInformation create(InvitroAssayInformation assayInfo) {
         try {
+            // if Assay ID is null, generate a new UUID and assign to Assay ID
             if (assayInfo.assayId == null) {
                 assayInfo.assayId = UUID.randomUUID().toString();
             }
+
+            if (assayInfo.invitroAssaySets.size() > 0) {
+
+                for (int i = 0; i < assayInfo.invitroAssaySets.size(); i++) {
+
+                    InvitroAssaySet asySet = assayInfo.invitroAssaySets.get(i);
+                    // if AssaySet already exists into the database, get the InvitroAssaySet object by Id
+                    if (asySet.id != null) {
+                        // Find Assay Set By Assay Set id
+                        InvitroAssaySet existingAssaySet = repository.findAssaySetById(asySet.id);
+
+                        //if AssaySet Object found in the database, set it to Assay
+                        if (existingAssaySet != null) {
+                            asySet = existingAssaySet;
+                            assayInfo.invitroAssaySets.set(i, asySet);
+                        }
+                    } else {
+                        // if Assay Set Id is null, verify that if Assay Set already exists in the database.
+                        // if exists in the database, assign that object here before saving
+                        // Find Assay Set By Assay Set
+                        InvitroAssaySet existingAssaySet = repository.findAssaySetByAssaySet(asySet.assaySet);
+
+                        //if AssaySet object found in the database, set it to Assay
+                        if (existingAssaySet != null) {
+                            asySet = existingAssaySet;
+                            assayInfo.invitroAssaySets.set(i, asySet);
+                        }
+                    } // else
+                } // for
+
+            } else {
+                // Do something
+            }
+
             return repository.saveAndFlush(assayInfo);
+
         } catch (Throwable t) {
             t.printStackTrace();
             throw t;
@@ -92,11 +128,52 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
     @Override
     @Transactional
     protected InvitroAssayInformation update(InvitroAssayInformation assayInfo) {
-        int size = assayInfo.invitroAssayScreenings.size();
-        if (size > 0) {
 
-            InvitroAssayScreening screening = assayInfo.invitroAssayScreenings.get(size - 1);
+        /*
+        System.out.println("QQQQQQQQQQQQQQ ASSAY INFO " + assayInfo.id);
 
+        if (assayInfo.invitroAssayScreenings.size() > 0) {
+
+            for (int i = 0; i < assayInfo.invitroAssayScreenings.size(); i++) {
+
+                InvitroAssayScreening screening = assayInfo.invitroAssayScreenings.get(i);
+                if (screening != null) {
+                    System.out.println("GGGGGGGGGGGGG SCREENING NOT NULL " + screening.id);
+
+                    // If new Screening
+                   // if (screening.id == null) {
+                        System.out.println("DDDDDDDDDDDDDDDDDDDDDD  SCREENING ID ID ID IS NULL ");
+
+                        if (screening.invitroAssayResultInformation != null) {
+                            System.out.println("GGGGGGGGGGGGG NOT NULL NOT NULL RESULT INFO " + screening.invitroAssayResultInformation);
+
+                            System.out.println("SPONSR SPONSOR SPONSOR " +  screening.invitroAssayResultInformation.invitroSponsor);
+                            //screening.setInfoDirty();
+
+                           // screening.invitroAssayResultInformation.batchNumber = "AAAAAAA";
+                           // screening.invitroAssayResultInformation.setIsDirty("batchNumber");
+
+                            //screening.invitroAssayResultInformation.invitroSponsor.setIsDirty("sponsorContactName");
+
+                           // screening.setIsDirty("invitroAssayResultInformation");
+                           // screening.invitroAssayResultInformation.invitroSponsor.setIsDirtyToFields();
+                            //screening.invitroAssayResultInformation.setIsDirtyToFields();
+
+
+                            if (screening.invitroAssayResultInformation.id != null) {
+
+                                System.out.println("$$$$$$$$$$$$$$$ RESULT INFO ID " + screening.invitroAssayResultInformation.id);
+                                System.out.println("$$$$$$$$$$$$$$$ RESULT INFO ID " + screening.invitroAssayResultInformation.internalVersion);
+
+                            }
+                        } // if invitroAssayResultInformation is not null
+                  //  }  // if screening id is null
+                } // if screening is not null
+
+            } // for
+        } // if screening size > 0
+        */
+                           /*
             String importFileName = screening.screeningImportFileName;
 
             if (importFileName != null) {
@@ -127,10 +204,9 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
                 } else {
                     screening.setInfoDirty();
                 }
-            }
-        } // if size > 0
+            }  */
 
-        return repository.saveAndFlush(assayInfo);
+       return repository.saveAndFlush(assayInfo);
     }
 
     @Override
