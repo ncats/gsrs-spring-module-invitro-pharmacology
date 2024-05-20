@@ -101,7 +101,7 @@ public class InvitroAssayScreening extends InvitroPharmacologyCommanData {
     }
 
     public void setInfoDirty() {
-        setIsDirty("invitroAssayResultInformation");
+        this.setIsDirty("invitroAssayResultInformation");
     }
     /*
     // Set Child for InvitroAssayScreening

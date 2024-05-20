@@ -68,12 +68,10 @@ public class InvitroAssayScreeningEntityService extends AbstractGsrsEntityServic
     }
 
     @Override
-    protected InvitroAssayScreening create(InvitroAssayScreening assayInfo) {
+    protected InvitroAssayScreening create(InvitroAssayScreening screening) {
+        System.out.println("SAVING SAVING SCREENING SCREENING CREATING CREATING **********");
         try {
-          /*  if (assayInfo.assayId == null) {
-                assayInfo.assayId = UUID.randomUUID().toString();
-            }*/
-            return repository.saveAndFlush(assayInfo);
+            return repository.saveAndFlush(screening);
         } catch (Throwable t) {
             t.printStackTrace();
             throw t;
@@ -82,8 +80,9 @@ public class InvitroAssayScreeningEntityService extends AbstractGsrsEntityServic
 
     @Override
     @Transactional
-    protected InvitroAssayScreening update(InvitroAssayScreening assayInfo) {
-        return repository.saveAndFlush(assayInfo);
+    protected InvitroAssayScreening update(InvitroAssayScreening screening) {
+        System.out.println("SAVING SAVING SCREENING SCREENING");
+        return repository.saveAndFlush(screening);
     }
 
     @Override
@@ -98,6 +97,7 @@ public class InvitroAssayScreeningEntityService extends AbstractGsrsEntityServic
 
     @Override
     protected AbstractEntityCreatedEvent<InvitroAssayScreening> newCreationEvent(InvitroAssayScreening createdEntity) {
+        System.out.println("SAVING SAVING SCREENING SCREENING NEW CREATION EVENT");
         return null;
     }
 

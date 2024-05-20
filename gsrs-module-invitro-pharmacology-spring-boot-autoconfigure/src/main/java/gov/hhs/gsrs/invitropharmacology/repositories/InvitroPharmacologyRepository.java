@@ -41,9 +41,6 @@ public interface InvitroPharmacologyRepository extends GsrsVersionedRepository<I
     // GOOD WAS WORKING@Query("select a from InvitroAssayInformation a JOIN a.invitroAssayScreenings s JOIN s.invitroTestAgent ta where ta.testAgent IS NOT NULL")
     List<InvitroAssayInformation> findAllScreeningTestAgents();
 
-    @Query("select a from InvitroAssayInformation a where a.externalAssaySource = ?1 and a.externalAssayId = ?2")
-    InvitroAssayInformation findAssayByExternalAssay(String externalAssaySource, String externalAssayId);
-
     @Query("select a from InvitroAssayInformation a")
     List<InvitroAssayInformation> findAllAssays();
 
@@ -53,8 +50,6 @@ public interface InvitroPharmacologyRepository extends GsrsVersionedRepository<I
     @Query("select a from InvitroAssayInformation a JOIN a.invitroAssayScreenings s JOIN s.invitroAssayResult r JOIN s.invitroAssayResultInformation ai where ai.id = ?1")
     List<InvitroAssayInformation> findAssayByResultInfoId(Long resultInfoId);
 
-    @Query("select a from InvitroAssaySet a")
-    List<InvitroAssaySet> findAllAssaySets();
 
     @Query("select a from InvitroAssayScreening a JOIN a.invitroSummary s JOIN a.invitroAssayResultInformation ai JOIN ai.invitroTestAgent t where t.id = ?1")
     List<InvitroAssayScreening> findAllScreeningSummaryByTestAgentId(Long testAgentId);
@@ -78,4 +73,19 @@ public interface InvitroPharmacologyRepository extends GsrsVersionedRepository<I
     @Query("select a from InvitroTestAgent a")
     List<InvitroTestAgent> findAllTestAgents();
 
+    // NEED THIS
+    @Query("select a from InvitroAssayInformation a where a.externalAssaySource = ?1 and a.externalAssayId = ?2")
+    InvitroAssayInformation findAssayByExternalAssay(String externalAssaySource, String externalAssayId);
+
+    // NEED THIS
+    @Query("select a from InvitroAssaySet a")
+    List<InvitroAssaySet> findAllAssaySets();
+
+    // NEED THIS
+    @Query("select a from InvitroAssaySet a where a.id = ?1")
+    InvitroAssaySet findAssaySetById(Long id);
+
+    // NEED THIS
+    @Query("select a from InvitroAssaySet a where a.assaySet = ?1")
+    InvitroAssaySet findAssaySetByAssaySet(String assaySet);
 }

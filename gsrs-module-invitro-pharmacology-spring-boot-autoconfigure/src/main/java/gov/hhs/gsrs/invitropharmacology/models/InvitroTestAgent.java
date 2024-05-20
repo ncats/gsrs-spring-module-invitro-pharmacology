@@ -77,23 +77,9 @@ public class InvitroTestAgent extends InvitroPharmacologyCommanData {
     @Column(name="VEHICLE_COMPOSITION")
     public String vehicleComposition;
 
-    /*
-    // Set Child for InvitroAssayScreening
-    @ToString.Exclude
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
-    public List<InvitroAssayScreening> invitroScreeningsFromTestAgent = new ArrayList<InvitroAssayScreening>();
-
-    public void setInvitroAssayScreenings(List<InvitroAssayScreening> invitroAssayScreenings) {
-        this.invitroScreeningsFromTestAgent = invitroAssayScreenings;
-        if (invitroScreeningsFromTestAgent != null) {
-            for (InvitroAssayScreening invitro : invitroScreeningsFromTestAgent)
-            {
-                invitro.setOwner(this);
-            }
-        }
-    }
-     */
     public InvitroTestAgent () {}
 
+    public void setIsDirtyToFields() {
+        this.setIsDirty("testAgent");
+    }
 }

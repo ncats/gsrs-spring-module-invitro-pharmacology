@@ -55,4 +55,7 @@ public class InvitroLaboratory extends InvitroPharmacologyCommanData {
 
     public InvitroLaboratory () {}
 
+    public void setIsDirtyToFields() {
+        this.setIsDirty("laboratoryName");
+    }
 }

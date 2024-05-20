@@ -141,7 +141,7 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
     @ToString.Exclude
     @OrderBy("modifiedDate asc")
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<InvitroAssayScreening> invitroAssayScreenings = new ArrayList<InvitroAssayScreening>();
 
     public void setInvitroAssayScreenings(List<InvitroAssayScreening> invitroAssayScreenings) {
@@ -158,18 +158,60 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
     @Indexable(indexed=false)
     @ToString.Exclude
     @LazyCollection(LazyCollectionOption.FALSE)
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH })
+    //@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
+    //CAN REGISTER@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH })
     //@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-   // @ManyToMany(fetch = FetchType.EAGER, cascade= CascadeType.ALL)
+    @ManyToMany(cascade= CascadeType.ALL)
    // @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
    // @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinTable(name="GSRS_INVITRO_ASSAY_SET_DET", joinColumns = @JoinColumn(name = "INVITRO_ASSAY_INFO_ID "),
             inverseJoinColumns = @JoinColumn(name = "INVITRO_ASSAY_SET_ID"))
-    public Set<InvitroAssaySet> invitroAssaySets = new LinkedHashSet<>();
+    //public Set<InvitroAssaySet> invitroAssaySets = new LinkedHashSet<>();
+    public List<InvitroAssaySet> invitroAssaySets = new ArrayList<>();
 
+    public void addInvitroAssaySet(InvitroAssaySet assaySet) {
+        this.invitroAssaySets.add(assaySet);
+    }
 
-    @PrePersist
-    public void beforeCreate(){
+    @PreUpdate
+    public void beforeUpdate(){
+        System.out.println("BEFORE UPDATE PRE UPDATE ASSAY INFO " + id);
+
+        if (invitroAssayScreenings.size() > 0) {
+
+            for (int i = 0; i < invitroAssayScreenings.size(); i++) {
+
+                InvitroAssayScreening screening = invitroAssayScreenings.get(i);
+                if (screening != null) {
+
+                    if (screening.invitroAssayResultInformation != null) {
+                        System.out.println("GGGGGGGGGGGGG NOT NULL NOT NULL RESULT INFO " + screening.invitroAssayResultInformation);
+
+                        // IMPORTANT NEED THIS. Set Dirty Fields, to save/update the fields into the database
+
+                        screening.setIsDirty("invitroAssayResultInformation");
+                        screening.invitroAssayResultInformation.setIsDirtyToFields();
+                        if (screening.invitroAssayResultInformation.invitroSponsor != null) {
+                            screening.invitroAssayResultInformation.invitroSponsor.setIsDirtyToFields();
+                        }
+                        if (screening.invitroAssayResultInformation.invitroSponsorReport != null) {
+                            screening.invitroAssayResultInformation.invitroSponsorReport.setIsDirtyToFields();
+                        }
+                        if (screening.invitroAssayResultInformation.invitroLaboratory != null) {
+                            screening.invitroAssayResultInformation.invitroLaboratory.setIsDirtyToFields();
+                        }
+                        if (screening.invitroAssayResultInformation.invitroTestAgent != null) {
+                            screening.invitroAssayResultInformation.invitroTestAgent.setIsDirtyToFields();
+                        }
+
+                        if (screening.invitroAssayResultInformation.id != null) {
+                        }
+                    } // if invitroAssayResultInformation is not null
+                    //  }  // if screening id is null
+                } // if screening is not null
+
+            } // for
+        } // if screening size > 0
     }
 
 }

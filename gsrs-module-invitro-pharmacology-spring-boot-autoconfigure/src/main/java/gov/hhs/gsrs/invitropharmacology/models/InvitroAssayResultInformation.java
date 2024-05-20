@@ -92,13 +92,6 @@ public class InvitroAssayResultInformation extends InvitroPharmacologyCommanData
         }
     }
 
-   // @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
-    /*
-    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name="INVITRO_REFERENCE_ID")
-    public InvitroReference invitroReference;
-    */
-
     @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "INVITRO_SPONSOR_ID", referencedColumnName = "ID")
     public InvitroSponsor invitroSponsor;
@@ -116,19 +109,7 @@ public class InvitroAssayResultInformation extends InvitroPharmacologyCommanData
     @JoinColumn(name="INVITRO_TEST_AGENT_ID", referencedColumnName = "ID")
     public InvitroTestAgent invitroTestAgent;
 
-    @Override
-    public boolean equals(Object o) {
-        if(o == null)
-            return false;
-        if(this == o)
-            return true;
-        if(getClass() != o.getClass())
-            return false;
-        return (id != null && id.equals (((InvitroAssayResultInformation)o).id));
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
+    public void setIsDirtyToFields() {
+        this.setIsDirty("batchNumber");
     }
 }

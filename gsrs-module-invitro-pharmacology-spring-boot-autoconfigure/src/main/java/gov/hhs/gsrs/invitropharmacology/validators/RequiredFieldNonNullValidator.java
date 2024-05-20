@@ -29,7 +29,7 @@ public class RequiredFieldNonNullValidator implements ValidatorPlugin<InvitroAss
             callback.addMessage(GinasProcessingMessage.ERROR_MESSAGE("External Assay Source is required."));
         }
 
-        if (objnew.externalAssaySource == null || objnew.targetName.isEmpty()) {
+        if (objnew.targetName == null || objnew.targetName.isEmpty()) {
             callback.addMessage(GinasProcessingMessage.ERROR_MESSAGE("Target Name is required."));
         }
     }
