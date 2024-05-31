@@ -50,7 +50,6 @@ public class InvitroAssayScreening extends InvitroPharmacologyCommanData {
     @ParentReference
     @EqualsAndHashCode.Exclude
     @JsonIgnore
-   // @ManyToOne(cascade = CascadeType.ALL)
     @ManyToOne()
     @JoinColumn(name="INVITRO_ASSAY_INFO_ID", referencedColumnName="ID")
     public InvitroAssayInformation owner;
@@ -59,29 +58,11 @@ public class InvitroAssayScreening extends InvitroPharmacologyCommanData {
         this.owner = invitroAssayInformation;
 
         // Need this to update the field
-        setIsDirty("invitroAssayInformation");
+        //setIsDirty("invitroAssayInformation");
     }
 
     @Column(name="SCREENING_IMPORT_FILENAME")
     public String screeningImportFileName;
-
-    /*
-    @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
-    @JoinColumn(name="INVITRO_REFERENCE_ID")
-    public InvitroReference invitroReference;
-
-    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "INVITRO_SPONSOR_REPORT_ID")
-    public InvitroSponsorReport invitroSponsorReport;
-
-    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "INVITRO_LABORATORY_ID")
-    public InvitroLaboratory invitroLaboratory;
-
-    @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
-    @JoinColumn(name="INVITRO_TEST_AGENT_ID")
-    public InvitroTestAgent invitroTestAgent;
-    */
 
     // Set Parent Class, InvitroResultInformation
     @ParentReference
@@ -97,36 +78,20 @@ public class InvitroAssayScreening extends InvitroPharmacologyCommanData {
         this.invitroAssayResultInformation = invitroAssayResultInformation;
 
         // Need this to update the field
-        setIsDirty("invitroAssayResultInformation");
+        //setIsDirty("invitroAssayResultInformation");
     }
 
-    public void setInfoDirty() {
+    public void setIsDirtyToFields() {
         this.setIsDirty("invitroAssayResultInformation");
+        this.setIsDirty("invitroAssayResult");
     }
-    /*
-    // Set Child for InvitroAssayScreening
-    @ToString.Exclude
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
-    public List<InvitroAssayResult> invitroAssayResults = new ArrayList<InvitroAssayResult>();
-
-    public void setInvitroAssayResults(List<InvitroAssayResult> invitroAssayResults) {
-        this.invitroAssayResults = invitroAssayResults;
-        if (invitroAssayResults != null) {
-            for (InvitroAssayResult invitro : invitroAssayResults)
-            {
-                invitro.setOwner(this);
-            }
-        }
-    }
-
-   */
 
     @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name="INVITRO_RESULT_ID")
     public InvitroAssayResult invitroAssayResult;
 
-    @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
+    //@ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
+    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name="INVITRO_SUMMARY_ID")
     public InvitroSummary invitroSummary;
 

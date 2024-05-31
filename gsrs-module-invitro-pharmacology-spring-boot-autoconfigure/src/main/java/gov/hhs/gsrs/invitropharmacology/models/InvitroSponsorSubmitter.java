@@ -55,10 +55,13 @@ public class InvitroSponsorSubmitter extends InvitroPharmacologyCommanData {
 
     public InvitroSponsorSubmitter () {}
 
+    @Indexable(indexed=false)
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER, cascade= CascadeType.ALL)
-    @JoinTable(name="GSRS_INVITRO_SPONSOR_SUB_REPORT_DET", joinColumns = @JoinColumn(name = "INVITRO_SPONSOR_SUBMITTER_ID"),
-            inverseJoinColumns = @JoinColumn(name = "INVITRO_SPONSOR_REPORT_ID"))
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "invitroSponsorSubmitters")
+    //@JsonIgnore
+   // @ManyToMany(fetch = FetchType.EAGER, cascade= CascadeType.ALL)
+   // @JoinTable(name="GSRS_INVITRO_SPONSOR_SUB_REPORT_DET", joinColumns = @JoinColumn(name = "INVITRO_SPONSOR_SUBMITTER_ID"),
+   //         inverseJoinColumns = @JoinColumn(name = "INVITRO_SPONSOR_REPORT_ID"))
     public List<InvitroSponsorReport> invitroSponsorReport = new ArrayList<>();
 
     public void setIsDirtyToFields() {

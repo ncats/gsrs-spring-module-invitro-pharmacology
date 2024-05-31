@@ -1,6 +1,5 @@
 package gov.hhs.gsrs.invitropharmacology.models;
 
-
 import ix.core.SingleParent;
 import ix.core.models.Indexable;
 import ix.core.models.IndexableRoot;
@@ -43,6 +42,14 @@ public class InvitroTestAgent extends InvitroPharmacologyCommanData {
     @Indexable(suggest = true, facet=true, name= "Test Agent Approval ID", sortable = true)
     @Column(name="TEST_AGENT_APPROVAL_ID")
     public String testAgentApprovalId;
+
+    @Indexable(suggest = true, facet=true, name= "Test Agent Substance Key", sortable = true)
+    @Column(name="TEST_AGENT_SUBSTANCE_KEY")
+    public String testAgentSubstanceKey;
+
+    @Indexable(suggest = true, facet=true, name= "Test Agent Substance Key", sortable = true)
+    @Column(name="TEST_AGENT_SUBSTANCE_KEY_TYPE")
+    public String testAgentSubstanceKeyType;
 
     @Indexable(suggest = true, facet=true, name= "Test Agent Substance Uuid", sortable = true)
     @Column(name="TEST_AGENT_SUBSTANCE_UUID")

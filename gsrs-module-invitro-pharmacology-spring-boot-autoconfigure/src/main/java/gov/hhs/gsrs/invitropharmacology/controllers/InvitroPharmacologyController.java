@@ -146,7 +146,7 @@ public class InvitroPharmacologyController extends EtagLegacySearchEntityControl
             savedAssayList.add(savedAssay);
         }
 
-        return new ResponseEntity(savedAssay, HttpStatus.OK);
+        return new ResponseEntity(savedAssayList, HttpStatus.OK);
 
         // return gsrsControllerConfiguration.handleNotFound(queryParameters);
 

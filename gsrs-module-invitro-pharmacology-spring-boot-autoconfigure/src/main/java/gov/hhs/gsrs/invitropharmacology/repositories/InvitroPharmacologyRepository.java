@@ -41,9 +41,6 @@ public interface InvitroPharmacologyRepository extends GsrsVersionedRepository<I
     // GOOD WAS WORKING@Query("select a from InvitroAssayInformation a JOIN a.invitroAssayScreenings s JOIN s.invitroTestAgent ta where ta.testAgent IS NOT NULL")
     List<InvitroAssayInformation> findAllScreeningTestAgents();
 
-    @Query("select a from InvitroAssayInformation a")
-    List<InvitroAssayInformation> findAllAssays();
-
     @Query("select a from InvitroAssayScreening a JOIN a.invitroAssayResultInformation i where a.screeningImportFileName = ?1")
     List<InvitroAssayScreening> findScreeningByImportFile(String importFilename);
 
@@ -69,23 +66,22 @@ public interface InvitroPharmacologyRepository extends GsrsVersionedRepository<I
     @Query("select a from InvitroLaboratory a")
     List<InvitroLaboratory> findAllLaboratories();
 
-
     @Query("select a from InvitroTestAgent a")
     List<InvitroTestAgent> findAllTestAgents();
 
     // NEED THIS
+    @Query("select a from InvitroAssayInformation a order by a.modifiedDate desc")
+    List<InvitroAssayInformation> findAllAssays();
+
     @Query("select a from InvitroAssayInformation a where a.externalAssaySource = ?1 and a.externalAssayId = ?2")
     InvitroAssayInformation findAssayByExternalAssay(String externalAssaySource, String externalAssayId);
 
-    // NEED THIS
     @Query("select a from InvitroAssaySet a")
     List<InvitroAssaySet> findAllAssaySets();
 
-    // NEED THIS
     @Query("select a from InvitroAssaySet a where a.id = ?1")
     InvitroAssaySet findAssaySetById(Long id);
 
-    // NEED THIS
     @Query("select a from InvitroAssaySet a where a.assaySet = ?1")
     InvitroAssaySet findAssaySetByAssaySet(String assaySet);
 }
