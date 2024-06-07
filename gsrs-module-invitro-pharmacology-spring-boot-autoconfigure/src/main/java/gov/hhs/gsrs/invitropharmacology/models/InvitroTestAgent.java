@@ -51,10 +51,6 @@ public class InvitroTestAgent extends InvitroPharmacologyCommanData {
     @Column(name="TEST_AGENT_SUBSTANCE_KEY_TYPE")
     public String testAgentSubstanceKeyType;
 
-    @Indexable(suggest = true, facet=true, name= "Test Agent Substance Uuid", sortable = true)
-    @Column(name="TEST_AGENT_SUBSTANCE_UUID")
-    public String testAgentSubstanceUuid;
-
     @Column(name="TEST_AGENT_SMILES_STRING")
     public String testAgentSmileString;
 

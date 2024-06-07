@@ -42,6 +42,12 @@ public class InvitroSummary extends InvitroPharmacologyCommanData {
     @Column(name="TARGET_NAME", length=2000)
     public String targetName;
 
+    @Column(name="TARGET_NAME_SUBSTANCE_KEY")
+    public String targetNameSubstanceKey;
+
+    @Column(name="TARGET_NAME_SUBSTANCE_KEY_TYPE")
+    public String targetNameSubstanceKeyType;
+
     @Column(name="TARGET_NAME_SUBSTANCE_UUID")
     public String targetNameSubstanceUuid;
 
@@ -82,6 +88,7 @@ public class InvitroSummary extends InvitroPharmacologyCommanData {
     @Column(name="COMMENTS", length=4000)
     public String comments;
 
+    /*
     @Column(name="REFERENCE_SOURCE_TYPE")
     public String referenceSourceType;
 
@@ -90,6 +97,7 @@ public class InvitroSummary extends InvitroPharmacologyCommanData {
 
     @Column(name="REFERENCE_SOURCE_URL")
     public String referenceSourceUrl;
+     */
 
     @Column(name="IS_FROM_RESULT")
     public Boolean isFromResult;
