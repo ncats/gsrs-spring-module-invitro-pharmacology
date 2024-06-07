@@ -97,6 +97,18 @@
             <version>${gsrs.substance.version}</version>
         </dependency>
 
+        <!-- SUBSTANCE MODULE API and DTO Dependencies -->
+        <dependency>
+            <groupId>gov.nih.ncats</groupId>
+            <artifactId>gsrs-module-substances-api</artifactId>
+            <version>${gsrs.substance.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>gov.nih.ncats</groupId>
+            <artifactId>gsrs-module-substances-dto</artifactId>
+            <version>${gsrs.substance.version}</version>
+        </dependency>
+
         <!-- DATABASE DEPENDENCIES   NOTE: TO BE MOVED TO GSRS-CI? -->
         <dependency>
             <groupId>com.oracle.database.jdbc</groupId>

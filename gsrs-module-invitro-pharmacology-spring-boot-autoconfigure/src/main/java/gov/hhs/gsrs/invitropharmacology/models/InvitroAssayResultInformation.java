@@ -29,6 +29,7 @@ public class InvitroAssayResultInformation extends InvitroPharmacologyCommanData
     @Column(name = "ID")
     public Long id;
 
+    @Indexable(suggest = true, facet = true, name = "Batch Number", sortable = true)
     @Column(name = "BATCH_NUMBER")
     public String batchNumber;
 

@@ -62,6 +62,7 @@ public class InvitroAssayResult extends InvitroPharmacologyCommanData {
     @Column(name = "PLASMA_PROTEIN_CONCENT_UNITS")
     public String plasmaProteinConcentrationUnits;
 
+    @Indexable(suggest = true, facet=true, name= "Test Date", sortable = true)
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="MM/dd/yyyy")
     @Column(name = "TEST_DATE")
     public Date testDate;

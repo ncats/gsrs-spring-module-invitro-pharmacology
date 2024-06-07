@@ -158,6 +158,23 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
         return "Not Deprecated";
     }
 
+    // Set Child for InvitroAssayAnalytes
+    @ToString.Exclude
+    @OrderBy("modifiedDate asc")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    public List<InvitroAssayAnalyte> invitroAssayAnalytes = new ArrayList<InvitroAssayAnalyte>();
+
+    public void setInvitroAssayAnalytes(List<InvitroAssayAnalyte> invitroAssayAnalytes) {
+        this.invitroAssayAnalytes = invitroAssayAnalytes;
+        if (invitroAssayAnalytes != null) {
+            for (InvitroAssayAnalyte invitro : invitroAssayAnalytes)
+            {
+                invitro.setOwner(this);
+            }
+        }
+    }
+
     // Set Child for InvitroAssayScreening
     @ToString.Exclude
     @OrderBy("modifiedDate asc")

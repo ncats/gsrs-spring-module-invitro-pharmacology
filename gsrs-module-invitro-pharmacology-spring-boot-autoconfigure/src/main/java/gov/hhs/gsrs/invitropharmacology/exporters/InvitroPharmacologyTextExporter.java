@@ -13,6 +13,64 @@ import java.io.IOException;
 
 import lombok.extern.slf4j.Slf4j;
 
+enum InvitroPharmTextDefaultColumns implements Column {
+    SCREENING_NUMBER,
+    ASSAY_SET,
+    ID,
+    ASSAY_ID,
+    EXTERNAL_ASSAY_SOURCE,
+    EXTERNAL_ASSAY_ID,
+    EXTERNAL_ASSAY_REFERENCE_URL,
+    ASSAY_TITLE,
+    ASSAY_FORMAT,
+    ASSAY_MODE,
+    BIOASSAY_TYPE,
+    BIOASSAY_CLASS,
+    STUDY_TYPE,
+    DETECTION_METHOD,
+    PRESENTATION_TYPE,
+    PRESENTATION,
+    TARGET_SPECIES,
+    TARGET_NAME,
+    TARGET_NAME_APPROVAL_ID,
+    HUMAN_HOMOLOG_TARGET,
+    HUMAN_HOMOLOG_TARGET_APPROVAL_ID,
+    LIGAND_SUBSTRATE,
+    LIGAND_SUBSTRATE_APPROVAL_ID,
+    LIGAND_SUBSTRATE_CONCENT,
+    LIGAND_SUBSTRATE_CONCENT_UNITS,
+    ANALYTES,
+    REFERENCE_SOURCE_TYPE_AND_ID,
+    LABORATORY_NAME,
+    LABORATORY_CITY,
+    SPONSOR_CONTACT_NAME,
+    SPONSOR_REPORT_SUBMITTERS,
+    REPORT_NUMBER,
+    REPORT_DATE,
+    BATCH_NUMBER,
+    TEST_AGENT,
+    TEST_AGENT_APPROVAL_ID,
+    TEST_AGENT_CONCENTRATION,
+    TEST_AGENT_CONCENTRATION_UNITS,
+    RESULT_VALUE,
+    RESULT_VALUE_UNITS,
+    RESULT_TEST_DATE,
+    CONTROL,
+    CONTROL_TYPE,
+    CONTROL_REFERENCE_VALUE,
+    CONTROL_REFERENCE_VALUE_UNITS,
+    CONTROL_RESULT_TYPE,
+    SUMMARY_TARGET_NAME,
+    SUMMARY_RESULT_VALUE_LOW,
+    SUMMARY_RESULT_VALUE_AVERAGE,
+    SUMMARY_RESULT_VALUE_HIGH,
+    SUMMARY_RESULT_VALUE_UNITS,
+    SUMMARY_RESULT_TYPE,
+    SUMMARY_RELATIONSHIP_TYPE,
+    SUMMARY_INTERACTION_TYPE,
+    FROM_RESULT_DATA
+}
+
 @Slf4j
 public class InvitroPharmacologyTextExporter implements Exporter<InvitroAssayInformation> {
 
@@ -26,38 +84,60 @@ public class InvitroPharmacologyTextExporter implements Exporter<InvitroAssayInf
         StringBuilder sb = new StringBuilder();
 
         sb.append("SCREENING_NUMBER").append("\t")
+                .append("ASSAY_SET").append("\t")
                 .append("ID").append("\t")
                 .append("ASSAY_ID").append("\t")
-                .append("EXTERNAL_ASSAY_ID").append("\t")
                 .append("EXTERNAL_ASSAY_SOURCE").append("\t")
-                .append("EXTERNAL_ASSAY_REFERENCE").append("\t")
+                .append("EXTERNAL_ASSAY_ID").append("\t")
                 .append("EXTERNAL_ASSAY_REFERENCE_URL").append("\t")
                 .append("ASSAY_TITLE").append("\t")
                 .append("ASSAY_FORMAT").append("\t")
+                .append("AASSAY_MODE").append("\t")
                 .append("BIOASSAY_TYPE").append("\t")
                 .append("BIOASSAY_CLASS").append("\t")
                 .append("STUDY_TYPE").append("\t")
                 .append("DETECTION_METHOD").append("\t")
                 .append("PRESENTATION_TYPE").append("\t")
                 .append("PRESENTATION").append("\t")
-                .append("BUFFER_PLASMA_PRO_CONCENT").append("\t")
+                .append("TARGET_SPECIES").append("\t")
                 .append("TARGET_NAME").append("\t")
                 .append("TARGET_NAME_APPROVAL_ID").append("\t")
-                .append("TARGET_SPECIES").append("\t")
                 .append("HUMAN_HOMOLOG_TARGET").append("\t")
                 .append("HUMAN_HOMOLOG_TARGET_APPROVAL_ID").append("\t")
-                .append("REFERENCE_SOURCE_TYPE").append("\t")
-                .append("REFERENCE_SOURCE").append("\t")
+                .append("LIGAND_SUBSTRATE").append("\t")
+                .append("LIGAND_SUBSTRATE_APPROVAL_ID").append("\t")
+                .append("LIGAND_SUBSTRATE_CONCENT").append("\t")
+                .append("LIGAND_SUBSTRATE_CONCENT_UNITS").append("\t")
+                .append("ANALYTES").append("\t")
+                .append("REFERENCE_SOURCE_TYPE_AND_ID").append("\t")
+                .append("LABORATORY_NAME").append("\t")
+                .append("LABORATORY_CITY").append("\t")
+                .append("SPONSOR_CONTACT_NAME").append("\t")
+                .append("SPONSOR_REPORT_SUBMITTERS").append("\t")
                 .append("REPORT_NUMBER").append("\t")
                 .append("REPORT_DATE").append("\t")
-                .append("LABORATORY_NAME").append("\t")
+                .append("BATCH_NUMBER").append("\t")
                 .append("TEST_AGENT").append("\t")
                 .append("TEST_AGENT_APPROVAL_ID").append("\t")
                 .append("TEST_AGENT_CONCENTRATION").append("\t")
                 .append("TEST_AGENT_CONCENTRATION_UNITS").append("\t")
                 .append("RESULT_VALUE").append("\t")
                 .append("RESULT_VALUE_UNITS").append("\t")
-                .append("ASSAY_MODE").append("\t");
+                .append("RESULT_TEST_DATE").append("\t")
+                .append("CONTROL").append("\t")
+                .append("CONTROL_TYPE").append("\t")
+                .append("CONTROL_REFERENCE_VALUE").append("\t")
+                .append("CONTROL_REFERENCE_VALUE_UNITS").append("\t")
+                .append("CONTROL_RESULT_TYPE").append("\t")
+                .append("SUMMARY_TARGET_NAME").append("\t")
+                .append("SUMMARY_RESULT_VALUE_LOW").append("\t")
+                .append("SUMMARY_RESULT_VALUE_AVERAGE").append("\t")
+                .append("SUMMARY_RESULT_VALUE_HIGH").append("\t")
+                .append("SUMMARY_RESULT_VALUE_UNITS").append("\t")
+                .append("SUMMARY_RESULT_TYPE").append("\t")
+                .append("SUMMARY_RELATIONSHIP_TYPE").append("\t")
+                .append("SUMMARY_INTERACTION_TYPE").append("\t")
+                .append("FROM_RESULT_DATA").append("\t");
 
         bw.write(sb.toString());
         bw.newLine();
@@ -72,7 +152,6 @@ public class InvitroPharmacologyTextExporter implements Exporter<InvitroAssayInf
             // Add one more column called "Screening Number" at the beginning.  Have it increment by one.
             // Each of these screenings be new rows. Can duplicate the other Assay columns on each row.
 
-            /*
             // If there is no screening data, only export the Assay details
             if (a.invitroAssayScreenings.size() == 0) {
                 publicCreateRows(a, 0);
@@ -82,88 +161,6 @@ public class InvitroPharmacologyTextExporter implements Exporter<InvitroAssayInf
                     publicCreateRows(a, i);
                 } // for InvitroAssayScreenings
             } // invitroAssayScreenings size > 0
-            */
-
-            /*
-            if (s.productIngredientAllList.size() > 0) {
-                for (int i = 0; i < s.productIngredientAllList.size(); i++) {
-
-                    this.ingredientNumber = i;
-                    int ingredNum = ingredientNumber + 1;
-
-                    StringBuilder sb = new StringBuilder();
-
-                    sb.append(ingredNum).append("\t");  // INGREDIENT_NUMBER
-
-                    StringBuilder sbName = getIngredientDetails(s,ProdDefaultColumns.SUBSTANCE_NAME);
-                    sb.append(sbName.toString()).append("\t");  // SUBSTANCE_NAME
-
-                    StringBuilder sbApprovalId = getIngredientDetails(s,ProdDefaultColumns.APPROVAL_ID);
-                    sb.append(sbApprovalId.toString()).append("\t");  // APPROVAL_ID
-
-                    StringBuilder sbSubKey = getIngredientDetails(s,ProdDefaultColumns.SUBSTANCE_KEY);
-                    sb.append(sbSubKey.toString()).append("\t");  // SUBSTANCE_KEY
-
-                    StringBuilder sbIngType = getIngredientDetails(s,ProdDefaultColumns.INGREDIENT_TYPE);
-                    sb.append(sbIngType.toString()).append("\t");  // INGREDIENT_TYPE
-
-                    StringBuilder sbActMoietyName = getIngredientDetails(s,ProdDefaultColumns.ACTIVE_MOIETY_NAME);
-                    sb.append(sbActMoietyName.toString()).append("\t");  // ACTIVE_MOIETY_NAME
-
-                    StringBuilder sbActMoietyUnii = getIngredientDetails(s,ProdDefaultColumns.ACTIVE_MOIETY_UNII);
-                    sb.append(sbActMoietyUnii.toString()).append("\t");  // ACTIVE_MOIETY_UNII
-
-                    sb.append((s.productNDC != null) ? s.productNDC : "").append("\t"); // PRODUCT_ID
-
-                    StringBuilder sbProdName = getProductNameDetails(s,ProdDefaultColumns.PRODUCT_NAME);
-                    sb.append(sbProdName.toString()).append("\t");  // PRODUCT_NAME
-
-                    sb.append((s.nonProprietaryName != null) ? s.nonProprietaryName : "").append("\t");  // NON_PROPRIETARY_NAME
-
-                    sb.append((s.status != null) ? s.status : "").append("\t"); // STATUS
-
-                    sb.append((s.productType != null) ? s.productType : "").append("\t");  // PRODUCT_TYPE
-
-                    sb.append((s.routeName != null) ? s.routeName : "").append("\t");  // ROUTE_OF_ADMINISTRATOR
-
-                    StringBuilder sbDosageForm = getIngredientDetails(s,ProdDefaultColumns.DOSAGE_FORM_NAME);
-                    sb.append(sbDosageForm.toString()).append("\t");  // DOSAGE_FORM_NAME
-
-                    sb.append((s.marketingCategoryName != null) ? s.marketingCategoryName : "").append("\t");  // MARKETING_CATEGORY_NAME
-
-                    sb.append((s.appTypeNumber != null) ? s.appTypeNumber : "").append("\t");  // APPLICATION_NUMBER
-
-                    sb.append((s.isListed != null) ? s.isListed : "").append("\t");  // IS_LISTED
-
-                    StringBuilder sbLabelerName = getProductCompanyDetails(s,ProdDefaultColumns.LABELER_NAME);
-                    sb.append(sbLabelerName.toString()).append("\t");  // LABELER_NAME
-
-                    StringBuilder sbLabelerDuns = getProductCompanyDetails(s,ProdDefaultColumns.LABELER_DUNS);
-                    sb.append(sbLabelerDuns.toString()).append("\t");  // LABELER_DUNS
-
-                    StringBuilder sbLabelerAdd = getProductCompanyDetails(s,ProdDefaultColumns.LABELER_ADDRESS);
-                    sb.append(sbLabelerAdd.toString()).append("\t");  // LABELER_ADDRESS
-
-                    StringBuilder sbLabelerCity = getProductCompanyDetails(s,ProdDefaultColumns.LABELER_CITY);
-                    sb.append(sbLabelerCity.toString()).append("\t");  // LABELER_CITY
-
-                    StringBuilder sbLabelerState = getProductCompanyDetails(s,ProdDefaultColumns.LABELER_STATE);
-                    sb.append(sbLabelerState.toString()).append("\t");  // LABELER_STATE
-
-                    StringBuilder sbLabelerZip = getProductCompanyDetails(s,ProdDefaultColumns.LABELER_ZIP);
-                    sb.append(sbLabelerZip.toString()).append("\t");  // LABELER_ZIP
-
-                    StringBuilder sbLabelerCountry = getProductCompanyDetails(s,ProdDefaultColumns.LABELER_COUNTRY);
-                    sb.append(sbLabelerCountry.toString()).append("\t");  // LABELER_COUNTRY
-
-                    sb.append((s.provenance != null) ? s.provenance : "").append("\t");  // PROVENANCE
-
-                    bw.write(sb.toString());
-                    bw.newLine();
-
-
-                } // for ProductIngredient
-            } // Ingredient size > 0 */
         } // try
         catch (Exception ex) {
             log.error("Error exporting In-vitro Pharmacology for ID: " + a.id, ex);
@@ -181,13 +178,151 @@ public class InvitroPharmacologyTextExporter implements Exporter<InvitroAssayInf
 
             sb.append(screeningNum).append("\t");  // SCREENING_NUMBER
 
+            StringBuilder sbAssaySet = getAssaySetDetails(a, InvitroPharmTextDefaultColumns.ASSAY_SET);
+            sb.append(sbAssaySet.toString()).append("\t");  // ASSAY_SET
+
+            sb.append((a.id.toString() != null) ? a.id.toString() : "").append("\t");  // ID
+
             sb.append((a.assayId != null) ? a.assayId : "").append("\t");  // ASSAY_ID
+
+            sb.append((a.externalAssaySource != null) ? a.externalAssaySource : "").append("\t");  // EXTERNAL_ASSAY_SOURCE
+
+            sb.append((a.externalAssayId != null) ? a.externalAssayId : "").append("\t");  // EXTERNAL_ASSAY_ID
+
+            sb.append((a.externalAssayReferenceUrl != null) ? a.externalAssayReferenceUrl : "").append("\t");  // EXTERNAL_ASSAY_REFERENCE_URL
+
+            sb.append((a.assayTitle != null) ? a.assayTitle : "").append("\t");  // ASSAY_TITLE
+
+            sb.append((a.assayFormat != null) ? a.assayFormat : "").append("\t");  // ASSAY_FORMAT
+
+            sb.append((a.assayMode != null) ? a.assayMode : "").append("\t");  // ASSAY_MODE
+
+            sb.append((a.bioassayType != null) ? a.bioassayType : "").append("\t");  // BIOASSAY_TYPE
+
+            sb.append((a.bioassayClass != null) ? a.bioassayClass : "").append("\t");  // BIOASSAY_CLASS
+
+            sb.append((a.studyType != null) ? a.studyType : "").append("\t");  // STUDY_TYPE
+
+            sb.append((a.detectionMethod != null) ? a.detectionMethod : "").append("\t");  // DETECTION_METHOD
+
+            sb.append((a.presentationType != null) ? a.presentationType : "").append("\t");  // PRESENTATION_TYPE
+
+            sb.append((a.presentation != null) ? a.presentation : "").append("\t");  // PRESENTATION
+
+            sb.append((a.targetSpecies != null) ? a.targetSpecies : "").append("\t");  // TARGET_SPECIES
+
+            sb.append((a.targetName != null) ? a.targetName : "").append("\t");  // TARGET_NAME
+
+            sb.append((a.targetNameApprovalId != null) ? a.targetNameApprovalId : "").append("\t");  // TARGET_NAME_APPROVAL_ID
+
+            sb.append((a.humanHomologTarget != null) ? a.humanHomologTarget : "").append("\t");  // HUMAN_HOMOLOG_TARGET
+
+            sb.append((a.humanHomologTargetApprovalId != null) ? a.humanHomologTargetApprovalId : "").append("\t");  // HUMAN_HOMOLOG_TARGET_APPROVAL_ID
+
+            sb.append((a.ligandSubstrate != null) ? a.ligandSubstrate : "").append("\t");  // LIGAND_SUBSTRATE
+
+            sb.append((a.ligandSubstrateApprovalId != null) ? a.ligandSubstrateApprovalId : "").append("\t");  // LIGAND_SUBSTRATE_APPROVAL_ID
+
+            sb.append((a.standardLigandSubstrateConcentration != null) ? a.standardLigandSubstrateConcentration : "").append("\t");  // LIGAND_SUBSTRATE_CONCENT
+
+            sb.append((a.standardLigandSubstrateConcentrationUnits != null) ? a.standardLigandSubstrateConcentrationUnits : "").append("\t");  // LIGAND_SUBSTRATE_CONCENT_UNITS
+
+            StringBuilder sbAnalytes = getAssayAnalytesDetails(a, InvitroPharmTextDefaultColumns.ANALYTES);
+            sb.append(sbAnalytes.toString()).append("\t");  // ANALYTES
+
+            // SCREENING DATA
+            StringBuilder sbReference = getScreeningDetails(a, InvitroPharmTextDefaultColumns.REFERENCE_SOURCE_TYPE_AND_ID);
+            sb.append(sbReference.toString()).append("\t");  // REFERENCE_SOURCE_TYPE_AND_ID
+
+            StringBuilder sbLaboratory = getScreeningDetails(a, InvitroPharmTextDefaultColumns.LABORATORY_NAME);
+            sb.append(sbLaboratory.toString()).append("\t");  // LABORATORY_NAME
+
+            StringBuilder sbLaboratoryCity = getScreeningDetails(a, InvitroPharmTextDefaultColumns.LABORATORY_CITY);
+            sb.append(sbLaboratoryCity.toString()).append("\t");  // LABORATORY_CITY
+
+            StringBuilder sbSponsorName = getScreeningDetails(a, InvitroPharmTextDefaultColumns.SPONSOR_CONTACT_NAME);
+            sb.append(sbSponsorName.toString()).append("\t");  // SPONSOR_CONTACT_NAME
+
+            StringBuilder sbSubmitters = getScreeningDetails(a, InvitroPharmTextDefaultColumns.SPONSOR_REPORT_SUBMITTERS);
+            sb.append(sbSubmitters.toString()).append("\t");  // SPONSOR_REPORT_SUBMITTERS
+
+            StringBuilder sbReportNumber = getScreeningDetails(a, InvitroPharmTextDefaultColumns.REPORT_NUMBER);
+            sb.append(sbReportNumber.toString()).append("\t");  // REPORT_NUMBER
+
+            StringBuilder sbReportDate = getScreeningDetails(a, InvitroPharmTextDefaultColumns.REPORT_DATE);
+            sb.append(sbReportDate.toString()).append("\t");  // REPORT_DATE
+
+            StringBuilder sbBatchNumber = getScreeningDetails(a, InvitroPharmTextDefaultColumns.BATCH_NUMBER);
+            sb.append(sbBatchNumber.toString()).append("\t");  // BATCH_NUMBER
+
+            StringBuilder sbTestAgent = getScreeningDetails(a, InvitroPharmTextDefaultColumns.TEST_AGENT);
+            sb.append(sbTestAgent.toString()).append("\t");  // TEST_AGENT
+
+            StringBuilder sbTestAgentApprovalId = getScreeningDetails(a, InvitroPharmTextDefaultColumns.TEST_AGENT_APPROVAL_ID);
+            sb.append(sbTestAgentApprovalId.toString()).append("\t");  // TEST_AGENT_APPROVAL_ID
+
+            StringBuilder sbTestAgentConcent = getScreeningDetails(a, InvitroPharmTextDefaultColumns.TEST_AGENT_CONCENTRATION);
+            sb.append(sbTestAgentConcent.toString()).append("\t");  // TEST_AGENT_CONCENTRATION
+
+            StringBuilder sbTestAgentConcentUnits = getScreeningDetails(a, InvitroPharmTextDefaultColumns.TEST_AGENT_CONCENTRATION_UNITS);
+            sb.append(sbTestAgentConcentUnits.toString()).append("\t");  // TEST_AGENT_CONCENTRATION_UNITS
+
+            StringBuilder sbResultValue = getScreeningDetails(a, InvitroPharmTextDefaultColumns.RESULT_VALUE);
+            sb.append(sbResultValue.toString()).append("\t");  // RESULT_VALUE
+
+            StringBuilder sbResultValueUnits = getScreeningDetails(a, InvitroPharmTextDefaultColumns.RESULT_VALUE_UNITS);
+            sb.append(sbResultValueUnits.toString()).append("\t");  // RESULT_VALUE_UNITS
+
+            StringBuilder sbResultTestDate = getScreeningDetails(a, InvitroPharmTextDefaultColumns.RESULT_TEST_DATE);
+            sb.append(sbResultTestDate.toString()).append("\t");  // RESULT_TEST_DATE
+
+            StringBuilder sbControl = getControlDetails(a, InvitroPharmTextDefaultColumns.CONTROL);
+            sb.append(sbControl.toString()).append("\t");  // CONTROL
+
+            StringBuilder sbControlType = getControlDetails(a, InvitroPharmTextDefaultColumns.CONTROL_TYPE);
+            sb.append(sbControlType.toString()).append("\t");  // CONTROL_TYPE
+
+            StringBuilder sbControlRefValue = getControlDetails(a, InvitroPharmTextDefaultColumns.CONTROL_REFERENCE_VALUE);
+            sb.append(sbControlRefValue.toString()).append("\t");  // CONTROL_REFERENCE_VALUE
+
+            StringBuilder sbControlRefValueUnits = getControlDetails(a, InvitroPharmTextDefaultColumns.CONTROL_REFERENCE_VALUE_UNITS);
+            sb.append(sbControlRefValueUnits.toString()).append("\t");  // CONTROL_REFERENCE_VALUE_UNITS
+
+            StringBuilder sbControlResultType = getControlDetails(a, InvitroPharmTextDefaultColumns.CONTROL_RESULT_TYPE);
+            sb.append(sbControlResultType.toString()).append("\t");  // CONTROL_RESULT_TYPE
+
+            StringBuilder sbSummaryTargetName = getScreeningDetails(a, InvitroPharmTextDefaultColumns.SUMMARY_TARGET_NAME);
+            sb.append(sbSummaryTargetName.toString()).append("\t");  // SUMMARY_TARGET_NAME
+
+            StringBuilder sbSummaryResultValueLow = getScreeningDetails(a, InvitroPharmTextDefaultColumns.SUMMARY_RESULT_VALUE_LOW);
+            sb.append(sbSummaryResultValueLow.toString()).append("\t");  // SUMMARY_RESULT_VALUE_LOW
+
+            StringBuilder sbSummaryResultValueAvg = getScreeningDetails(a, InvitroPharmTextDefaultColumns.SUMMARY_RESULT_VALUE_AVERAGE);
+            sb.append(sbSummaryResultValueAvg.toString()).append("\t");  // SUMMARY_RESULT_VALUE_AVERAGE
+
+            StringBuilder sbSummaryResultValueHigh = getScreeningDetails(a, InvitroPharmTextDefaultColumns.SUMMARY_RESULT_VALUE_HIGH);
+            sb.append(sbSummaryResultValueHigh.toString()).append("\t");  // SUMMARY_RESULT_VALUE_HIGH
+
+            StringBuilder sbSummaryResultValueUnits = getScreeningDetails(a, InvitroPharmTextDefaultColumns.SUMMARY_RESULT_VALUE_UNITS);
+            sb.append(sbSummaryResultValueUnits.toString()).append("\t");  // SUMMARY_RESULT_VALUE_UNITS
+
+            StringBuilder sbSummaryResultType = getScreeningDetails(a, InvitroPharmTextDefaultColumns.SUMMARY_RESULT_TYPE);
+            sb.append(sbSummaryResultType.toString()).append("\t");  // SUMMARY_RESULT_TYPE
+
+            StringBuilder sbSummaryRelType = getScreeningDetails(a, InvitroPharmTextDefaultColumns.SUMMARY_RELATIONSHIP_TYPE);
+            sb.append(sbSummaryRelType.toString()).append("\t");  // SUMMARY_RELATIONSHIP_TYPE
+
+            StringBuilder sbSummaryInteractType = getScreeningDetails(a, InvitroPharmTextDefaultColumns.SUMMARY_INTERACTION_TYPE);
+            sb.append(sbSummaryInteractType.toString()).append("\t");  // SUMMARY_INTERACTION_TYPE
+
+            StringBuilder sbFromResultData = getScreeningDetails(a, InvitroPharmTextDefaultColumns.FROM_RESULT_DATA);
+            sb.append(sbFromResultData.toString()).append("\t");  // FROM_RESULT_DATA
 
             // Write to buffer
             this.bw.write(sb.toString());
             this.bw.newLine();
 
-        }catch(Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -197,109 +332,244 @@ public class InvitroPharmacologyTextExporter implements Exporter<InvitroAssayInf
         bw.close();
     }
 
-    /*
-    private static StringBuilder getProductNameDetails(ProductMainAll s, ProdDefaultColumns fieldName) {
+    private static StringBuilder getAssayAnalytesDetails(InvitroAssayInformation a, InvitroPharmTextDefaultColumns fieldName) {
         StringBuilder sb = new StringBuilder();
 
-        if (s.productNameAllList.size() > 0) {
+        if (a.invitroAssayAnalytes.size() > 0) {
 
-            for (ProductNameAll prodName : s.productNameAllList) {
-                if (sb.length() != 0) {
+            for (int i = 0; i < a.invitroAssayAnalytes.size(); i++) {
+                InvitroAssayAnalyte analy = a.invitroAssayAnalytes.get(i);
+
+                if (i > 0) {
                     sb.append("|");
                 }
-                switch (fieldName) {
-                    case PRODUCT_NAME:
-                        sb.append((prodName.productName != null) ? prodName.productName : "(No Product Name)");
-                        break;
-                    default:
-                        break;
+
+                if (analy != null) {
+                    sb.append(analy.analyte != null ? analy.analyte : "");
                 }
-            }
-        }
+            } // for invitroAssayAnalytes
+        } // if invitroAssayAnalytes.size() > 0
+
         return sb;
     }
 
-    private static StringBuilder getProductCompanyDetails(ProductMainAll s, ProdDefaultColumns fieldName) {
+    private static StringBuilder getAssaySetDetails(InvitroAssayInformation a, InvitroPharmTextDefaultColumns fieldName) {
         StringBuilder sb = new StringBuilder();
 
-        if (s.productCompanyAllList.size() > 0) {
+        if (a.invitroAssaySets.size() > 0) {
 
-            for (ProductCompanyAll prodComp : s.productCompanyAllList) {
-                if (sb.length() != 0) {
+            for (int i = 0; i < a.invitroAssaySets.size(); i++) {
+                InvitroAssaySet asySet = a.invitroAssaySets.get(i);
+
+                if (i > 0) {
                     sb.append("|");
                 }
-                switch (fieldName) {
-                    case LABELER_NAME:
-                        sb.append((prodComp.labelerName != null) ? prodComp.labelerName : "");
-                        break;
-                    case LABELER_DUNS:
-                        sb.append((prodComp.labelerDuns != null) ? prodComp.labelerDuns : "");
-                        break;
-                    case LABELER_ADDRESS:
-                        sb.append((prodComp.address != null) ? prodComp.address : "");
-                        break;
-                    case LABELER_CITY:
-                        sb.append((prodComp.city != null) ? prodComp.city : "");
-                        break;
-                    case LABELER_STATE:
-                        sb.append((prodComp.state != null) ? prodComp.state : "");
-                        break;
-                    case LABELER_ZIP:
-                        sb.append((prodComp.zip != null) ? prodComp.zip : "");
-                        break;
-                    case LABELER_COUNTRY:
-                        sb.append((s.countryWithoutCode != null) ? s.countryWithoutCode : "");
-                        break;
 
-                    default:
-                        break;
+                if (asySet != null) {
+                    sb.append(asySet.assaySet != null ? asySet.assaySet : "");
                 }
-            }
-        }
+
+            } // for invitroAssaySets
+        } // if invitroAssaySets.size() > 0
+
         return sb;
     }
 
-    private static StringBuilder getIngredientDetails(ProductMainAll s, ProdDefaultColumns fieldName) {
+    private static StringBuilder getControlDetails(InvitroAssayInformation a, InvitroPharmTextDefaultColumns fieldName) {
         StringBuilder sb = new StringBuilder();
 
-        try {
-            if (s.productIngredientAllList.size() > 0) {
+        if (a.invitroAssayScreenings.size() > 0) {
 
-                ProductIngredientAll ingred = s.productIngredientAllList.get(ingredientNumber);
+            InvitroAssayScreening screening = a.invitroAssayScreenings.get(screeningNumber);
+
+            if (screening.invitroControls.size() > 0) {
+
+                for (int i = 0; i < screening.invitroControls.size(); i++) {
+                    InvitroControl ctrl = screening.invitroControls.get(i);
+
+                    if (i > 0) {
+                        sb.append("|");
+                    }
+
+                    if (ctrl != null) {
+                        switch (fieldName) {
+                            case CONTROL:
+                                sb.append(ctrl.control != null ? ctrl.control : "");
+                                break;
+                            case CONTROL_TYPE:
+                                sb.append(ctrl.controlType != null ? ctrl.controlType : "");
+                                break;
+                            case CONTROL_REFERENCE_VALUE:
+                                sb.append(ctrl.controlReferenceValue != null ? ctrl.controlReferenceValue : "");
+                                break;
+                            case CONTROL_REFERENCE_VALUE_UNITS:
+                                sb.append(ctrl.controlReferenceValueUnits != null ? ctrl.controlReferenceValueUnits : "");
+                                break;
+                            case CONTROL_RESULT_TYPE:
+                                sb.append(ctrl.controlResultType != null ? ctrl.controlResultType : "");
+                                break;
+                            default:
+                                break;
+                        } // switch
+                    } // if control object exists
+
+                } // for invitroControls
+
+            } // if invitroControls.size() > 0
+        } // invitroAssayScreenings.size() > 0
+
+        return sb;
+    }
+
+    private static StringBuilder getScreeningDetails(InvitroAssayInformation a, InvitroPharmTextDefaultColumns fieldName) {
+        StringBuilder sb = new StringBuilder();
+
+        if (a.invitroAssayScreenings.size() > 0) {
+
+            InvitroAssayScreening screening = a.invitroAssayScreenings.get(screeningNumber);
+
+            if (screening.invitroAssayResultInformation != null) {
 
                 switch (fieldName) {
-                    case SUBSTANCE_NAME:
-                        sb.append((ingred.substanceName != null) ? ingred.substanceName : "");
+
+                    case REFERENCE_SOURCE_TYPE_AND_ID:
+
+                        if (screening.invitroAssayResultInformation.invitroReferences.size() > 0) {
+                            for (int i = 0; i < screening.invitroAssayResultInformation.invitroReferences.size(); i++) {
+                                InvitroReference reference = screening.invitroAssayResultInformation.invitroReferences.get(i);
+
+                                if (i > 0) {
+                                    sb.append("|");
+                                }
+                                if (reference != null) {
+                                    sb.append((reference.sourceType != null) ? reference.sourceType : "");
+
+                                    // Append Source Id to Source Type
+                                    sb.append((reference.sourceId != null) ? " " + reference.sourceId : "");
+                                } // if reference is not null
+                            } // for
+                        }  // if references size > 0
                         break;
-                    case APPROVAL_ID:
-                        sb.append((ingred.substanceApprovalId != null) ? ingred.substanceApprovalId : "");
+                    case LABORATORY_NAME:
+                        sb.append((screening.invitroAssayResultInformation.invitroLaboratory != null && screening.invitroAssayResultInformation.invitroLaboratory.laboratoryName != null)
+                                ? screening.invitroAssayResultInformation.invitroLaboratory.laboratoryName : "");
                         break;
-                    case SUBSTANCE_KEY:
-                        sb.append((ingred.substanceKey != null) ? ingred.substanceKey : "");
+                    case LABORATORY_CITY:
+                        sb.append((screening.invitroAssayResultInformation.invitroLaboratory != null && screening.invitroAssayResultInformation.invitroLaboratory.laboratoryCity != null)
+                                ? screening.invitroAssayResultInformation.invitroLaboratory.laboratoryCity : "");
                         break;
-                    case INGREDIENT_TYPE:
-                        sb.append((ingred.ingredientType != null) ? ingred.ingredientType : "");
+                    case SPONSOR_CONTACT_NAME:
+                        sb.append((screening.invitroAssayResultInformation.invitroSponsor != null && screening.invitroAssayResultInformation.invitroSponsor.sponsorContactName != null)
+                                ? screening.invitroAssayResultInformation.invitroSponsor.sponsorContactName : "");
                         break;
-                    case ACTIVE_MOIETY_NAME:
-                        sb.append((ingred.activeMoietyName != null) ? ingred.activeMoietyName : "");
+                    case SPONSOR_REPORT_SUBMITTERS:
+                        if (screening.invitroAssayResultInformation.invitroSponsorReport.invitroSponsorSubmitters.size() > 0) {
+                            for (int i = 0; i < screening.invitroAssayResultInformation.invitroSponsorReport.invitroSponsorSubmitters.size(); i++) {
+                                InvitroSponsorSubmitter submitter = screening.invitroAssayResultInformation.invitroSponsorReport.invitroSponsorSubmitters.get(i);
+
+                                if (i > 0) {
+                                    sb.append("|");
+                                }
+
+                                if (submitter != null) {
+                                    sb.append(submitter.sponsorReportSubmitterName != null ? submitter.sponsorReportSubmitterName : "");
+                                }
+                            } // for invitroSponsorSubmitters
+                        } // if invitroSponsorSubmitters.size() > 0
                         break;
-                    case ACTIVE_MOIETY_UNII:
-                        sb.append((ingred.activeMoietyUnii != null) ? ingred.activeMoietyUnii : "");
+                    case REPORT_NUMBER:
+                        sb.append((screening.invitroAssayResultInformation.invitroSponsorReport != null && screening.invitroAssayResultInformation.invitroSponsorReport.reportNumber != null)
+                                ? screening.invitroAssayResultInformation.invitroSponsorReport.reportNumber : "");
                         break;
-                    case DOSAGE_FORM_NAME:
-                        sb.append((ingred.dosageFormName != null) ? ingred.dosageFormName : "");
+                    case REPORT_DATE:
+                        sb.append((screening.invitroAssayResultInformation.invitroSponsorReport != null && screening.invitroAssayResultInformation.invitroSponsorReport.reportDate != null)
+                                ? a.convertDateToString(screening.invitroAssayResultInformation.invitroSponsorReport.reportDate) : "");
+                        break;
+                    case BATCH_NUMBER:
+                        sb.append((screening.invitroAssayResultInformation.batchNumber != null)
+                                ? screening.invitroAssayResultInformation.batchNumber : "");
+                        break;
+                    case TEST_AGENT:
+                        sb.append((screening.invitroAssayResultInformation.invitroTestAgent != null && screening.invitroAssayResultInformation.invitroTestAgent.testAgent != null)
+                                ? screening.invitroAssayResultInformation.invitroTestAgent.testAgent : "");
+                        break;
+                    case TEST_AGENT_APPROVAL_ID:
+                        sb.append((screening.invitroAssayResultInformation.invitroTestAgent != null && screening.invitroAssayResultInformation.invitroTestAgent.testAgentApprovalId != null)
+                                ? screening.invitroAssayResultInformation.invitroTestAgent.testAgentApprovalId : "");
+                        break;
+                    case TEST_AGENT_CONCENTRATION:
+                        sb.append((screening.invitroAssayResult != null && screening.invitroAssayResult.testAgentConcentration != null)
+                                ? screening.invitroAssayResult.testAgentConcentration : "");
+                        break;
+                    case TEST_AGENT_CONCENTRATION_UNITS:
+                        sb.append((screening.invitroAssayResult != null && screening.invitroAssayResult.testAgentConcentrationUnits != null)
+                                ? screening.invitroAssayResult.testAgentConcentrationUnits : "");
+                        break;
+                    case RESULT_VALUE:
+                        sb.append((screening.invitroAssayResult != null && screening.invitroAssayResult.resultValue != null)
+                                ? screening.invitroAssayResult.resultValue : "");
+                        break;
+                    case RESULT_VALUE_UNITS:
+                        sb.append((screening.invitroAssayResult != null && screening.invitroAssayResult.resultValueUnits != null)
+                                ? screening.invitroAssayResult.resultValueUnits : "");
+                        break;
+                    case RESULT_TEST_DATE:
+                        sb.append((screening.invitroAssayResult != null && screening.invitroAssayResult.testDate != null)
+                                ? a.convertDateToString(screening.invitroAssayResult.testDate) : "");
+                        break;
+                    case SUMMARY_TARGET_NAME:
+                        sb.append((screening.invitroSummary != null && screening.invitroSummary.targetName != null)
+                                ? screening.invitroSummary.targetName : "");
+                        break;
+                    case SUMMARY_RESULT_VALUE_LOW:
+                        sb.append((screening.invitroSummary != null && screening.invitroSummary.resultValueLow != null)
+                                ? screening.invitroSummary.resultValueLow : "");
+                        break;
+                    case SUMMARY_RESULT_VALUE_AVERAGE:
+                        sb.append((screening.invitroSummary != null && screening.invitroSummary.resultValueAverage != null)
+                                ? screening.invitroSummary.resultValueAverage : "");
+                        break;
+                    case SUMMARY_RESULT_VALUE_HIGH:
+                        sb.append((screening.invitroSummary != null && screening.invitroSummary.resultValueHigh != null)
+                                ? screening.invitroSummary.resultValueHigh : "");
+                        break;
+                    case SUMMARY_RESULT_VALUE_UNITS:
+                        sb.append((screening.invitroSummary != null && screening.invitroSummary.resultValueUnits != null)
+                                ? screening.invitroSummary.resultValueUnits : "");
+                        break;
+                    case SUMMARY_RESULT_TYPE:
+                        sb.append((screening.invitroSummary != null && screening.invitroSummary.resultType != null)
+                                ? screening.invitroSummary.resultType : "");
+                        break;
+                    case SUMMARY_RELATIONSHIP_TYPE:
+                        sb.append((screening.invitroSummary != null && screening.invitroSummary.relationshipType != null)
+                                ? screening.invitroSummary.relationshipType : "");
+                        break;
+                    case SUMMARY_INTERACTION_TYPE:
+                        sb.append((screening.invitroSummary != null && screening.invitroSummary.interactionType != null)
+                                ? screening.invitroSummary.interactionType : "");
+                        break;
+                    case FROM_RESULT_DATA:
+                        String isFromResult = "";
+                        if (screening.invitroSummary != null && screening.invitroSummary.isFromResult != null) {
+                            if (screening.invitroSummary.isFromResult == true) {
+                                isFromResult = "Yes";
+                            } else if (screening.invitroSummary.isFromResult == false) {
+                                isFromResult = "No";
+                            } else {
+                                // Do something
+                            }
+                        }
+                        sb.append(isFromResult);
                         break;
                     default:
                         break;
                 }
             }
-        } catch (
-                Exception ex) {
-            ex.printStackTrace();
-        }
+
+        } // if invitroAssayResultInformation exists
 
         return sb;
     }
-    */
 
 }

@@ -1,8 +1,11 @@
 package gov.hhs.gsrs.invitropharmacology.exporters;
 
 import gov.hhs.gsrs.invitropharmacology.models.*;
+import gov.hhs.gsrs.invitropharmacology.services.SubstanceApiService;
 
+import ix.core.EntityFetcher;
 import ix.ginas.exporters.*;
+import ix.ginas.models.v1.Substance;
 
 import java.io.IOException;
 import java.util.*;
@@ -26,18 +29,21 @@ enum InvitroPharmDefaultColumns implements Column {
     DETECTION_METHOD,
     PRESENTATION_TYPE,
     PRESENTATION,
+    TARGET_SPECIES,
     TARGET_NAME,
     TARGET_NAME_APPROVAL_ID,
-    TARGET_SPECIES,
     HUMAN_HOMOLOG_TARGET,
     HUMAN_HOMOLOG_TARGET_APPROVAL_ID,
     LIGAND_SUBSTRATE,
     LIGAND_SUBSTRATE_APPROVAL_ID,
     LIGAND_SUBSTRATE_CONCENT,
     LIGAND_SUBSTRATE_CONCENT_UNITS,
+    ANALYTES,
     REFERENCE_SOURCE_TYPE_AND_ID,
     LABORATORY_NAME,
+    LABORATORY_CITY,
     SPONSOR_CONTACT_NAME,
+    SPONSOR_REPORT_SUBMITTERS,
     REPORT_NUMBER,
     REPORT_DATE,
     BATCH_NUMBER,
@@ -47,12 +53,21 @@ enum InvitroPharmDefaultColumns implements Column {
     TEST_AGENT_CONCENTRATION_UNITS,
     RESULT_VALUE,
     RESULT_VALUE_UNITS,
-    SUMMARY_RELATIONSHIP,
+    RESULT_TEST_DATE,
+    CONTROL,
+    CONTROL_TYPE,
+    CONTROL_REFERENCE_VALUE,
+    CONTROL_REFERENCE_VALUE_UNITS,
+    CONTROL_RESULT_TYPE,
+    SUMMARY_TARGET_NAME,
+    SUMMARY_RESULT_VALUE_LOW,
+    SUMMARY_RESULT_VALUE_AVERAGE,
+    SUMMARY_RESULT_VALUE_HIGH,
+    SUMMARY_RESULT_VALUE_UNITS,
+    SUMMARY_RESULT_TYPE,
+    SUMMARY_RELATIONSHIP_TYPE,
     SUMMARY_INTERACTION_TYPE,
-    SUMMARY_AVERAGE,
-    SUMMARY_LOW,
-    SUMMARY_HIGH,
-    SUMMARY_UNITS
+    FROM_RESULT_DATA
 }
 
 @Slf4j
@@ -65,7 +80,7 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
 
     private final List<ColumnValueRecipe<InvitroAssayInformation>> recipeMap;
 
-    private InvitroPharmacologyExporter(Builder builder) {
+    private InvitroPharmacologyExporter(Builder builder, SubstanceApiService substanceApiService) {
         this.spreadsheet = builder.spreadsheet;
         this.recipeMap = builder.columns;
 
@@ -166,15 +181,28 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
 
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.PRESENTATION, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.PRESENTATION, (a, cell) -> cell.writeString(a.presentation)));
 
+        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.TARGET_SPECIES, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.TARGET_SPECIES, (a, cell) -> cell.writeString(a.targetSpecies)));
+
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.TARGET_NAME, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.TARGET_NAME, (a, cell) -> cell.writeString(a.targetName)));
 
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.TARGET_NAME_APPROVAL_ID, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.TARGET_NAME_APPROVAL_ID, (a, cell) -> cell.writeString(a.targetNameApprovalId)));
 
-        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.TARGET_SPECIES, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.TARGET_SPECIES, (a, cell) -> cell.writeString(a.targetSpecies)));
-
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.HUMAN_HOMOLOG_TARGET, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.HUMAN_HOMOLOG_TARGET, (a, cell) -> cell.writeString(a.humanHomologTarget)));
 
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.HUMAN_HOMOLOG_TARGET_APPROVAL_ID, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.HUMAN_HOMOLOG_TARGET_APPROVAL_ID, (a, cell) -> cell.writeString(a.humanHomologTargetApprovalId)));
+
+        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.LIGAND_SUBSTRATE, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.LIGAND_SUBSTRATE, (a, cell) -> cell.writeString(a.ligandSubstrate)));
+
+        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.LIGAND_SUBSTRATE_APPROVAL_ID, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.LIGAND_SUBSTRATE_APPROVAL_ID, (a, cell) -> cell.writeString(a.ligandSubstrateApprovalId)));
+
+        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.LIGAND_SUBSTRATE_CONCENT, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.LIGAND_SUBSTRATE_CONCENT, (a, cell) -> cell.writeString(a.standardLigandSubstrateConcentration)));
+
+        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.LIGAND_SUBSTRATE_CONCENT_UNITS, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.LIGAND_SUBSTRATE_CONCENT_UNITS, (a, cell) -> cell.writeString(a.standardLigandSubstrateConcentrationUnits)));
+
+        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.ANALYTES, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.ANALYTES, (s, cell) -> {
+            StringBuilder sb = getAssayAnalytesDetails(s, InvitroPharmDefaultColumns.ANALYTES);
+            cell.writeString(sb.toString());
+        }));
 
         // SCREENING DATA
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.REFERENCE_SOURCE_TYPE_AND_ID, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.REFERENCE_SOURCE_TYPE_AND_ID, (s, cell) -> {
@@ -187,8 +215,18 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
             cell.writeString(sb.toString());
         }));
 
+        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.LABORATORY_CITY, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.LABORATORY_CITY, (s, cell) -> {
+            StringBuilder sb = getScreeningDetails(s, InvitroPharmDefaultColumns.LABORATORY_CITY);
+            cell.writeString(sb.toString());
+        }));
+
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.SPONSOR_CONTACT_NAME, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.SPONSOR_CONTACT_NAME, (s, cell) -> {
             StringBuilder sb = getScreeningDetails(s, InvitroPharmDefaultColumns.SPONSOR_CONTACT_NAME);
+            cell.writeString(sb.toString());
+        }));
+
+        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.SPONSOR_REPORT_SUBMITTERS, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.SPONSOR_REPORT_SUBMITTERS, (s, cell) -> {
+            StringBuilder sb = getScreeningDetails(s, InvitroPharmDefaultColumns.SPONSOR_REPORT_SUBMITTERS);
             cell.writeString(sb.toString());
         }));
 
@@ -199,6 +237,11 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
 
         DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.REPORT_DATE, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.REPORT_DATE, (s, cell) -> {
             StringBuilder sb = getScreeningDetails(s, InvitroPharmDefaultColumns.REPORT_DATE);
+            cell.writeString(sb.toString());
+        }));
+
+        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.BATCH_NUMBER, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.BATCH_NUMBER, (s, cell) -> {
+            StringBuilder sb = getScreeningDetails(s, InvitroPharmDefaultColumns.BATCH_NUMBER);
             cell.writeString(sb.toString());
         }));
 
@@ -232,8 +275,68 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
             cell.writeString(sb.toString());
         }));
 
-        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.SUMMARY_RELATIONSHIP, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.SUMMARY_RELATIONSHIP, (s, cell) -> {
-            StringBuilder sb = getScreeningDetails(s, InvitroPharmDefaultColumns.SUMMARY_RELATIONSHIP);
+        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.RESULT_TEST_DATE, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.RESULT_TEST_DATE, (s, cell) -> {
+            StringBuilder sb = getScreeningDetails(s, InvitroPharmDefaultColumns.RESULT_TEST_DATE);
+            cell.writeString(sb.toString());
+        }));
+
+        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.CONTROL, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.CONTROL, (s, cell) -> {
+            StringBuilder sb = getControlDetails(s, InvitroPharmDefaultColumns.CONTROL);
+            cell.writeString(sb.toString());
+        }));
+
+        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.CONTROL_TYPE, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.CONTROL_TYPE, (s, cell) -> {
+            StringBuilder sb = getControlDetails(s, InvitroPharmDefaultColumns.CONTROL_TYPE);
+            cell.writeString(sb.toString());
+        }));
+
+        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.CONTROL_REFERENCE_VALUE, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.CONTROL_REFERENCE_VALUE, (s, cell) -> {
+            StringBuilder sb = getControlDetails(s, InvitroPharmDefaultColumns.CONTROL_REFERENCE_VALUE);
+            cell.writeString(sb.toString());
+        }));
+
+        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.CONTROL_REFERENCE_VALUE_UNITS, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.CONTROL_REFERENCE_VALUE_UNITS, (s, cell) -> {
+            StringBuilder sb = getControlDetails(s, InvitroPharmDefaultColumns.CONTROL_REFERENCE_VALUE_UNITS);
+            cell.writeString(sb.toString());
+        }));
+
+        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.CONTROL_RESULT_TYPE, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.CONTROL_RESULT_TYPE, (s, cell) -> {
+            StringBuilder sb = getControlDetails(s, InvitroPharmDefaultColumns.CONTROL_RESULT_TYPE);
+            cell.writeString(sb.toString());
+        }));
+
+        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.SUMMARY_TARGET_NAME, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.SUMMARY_TARGET_NAME, (s, cell) -> {
+            StringBuilder sb = getScreeningDetails(s, InvitroPharmDefaultColumns.SUMMARY_TARGET_NAME);
+            cell.writeString(sb.toString());
+        }));
+
+        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.SUMMARY_RESULT_VALUE_LOW, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.SUMMARY_RESULT_VALUE_LOW, (s, cell) -> {
+            StringBuilder sb = getScreeningDetails(s, InvitroPharmDefaultColumns.SUMMARY_RESULT_VALUE_LOW);
+            cell.writeString(sb.toString());
+        }));
+
+        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.SUMMARY_RESULT_VALUE_AVERAGE, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.SUMMARY_RESULT_VALUE_AVERAGE, (s, cell) -> {
+            StringBuilder sb = getScreeningDetails(s, InvitroPharmDefaultColumns.SUMMARY_RESULT_VALUE_AVERAGE);
+            cell.writeString(sb.toString());
+        }));
+
+        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.SUMMARY_RESULT_VALUE_HIGH, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.SUMMARY_RESULT_VALUE_HIGH, (s, cell) -> {
+            StringBuilder sb = getScreeningDetails(s, InvitroPharmDefaultColumns.SUMMARY_RESULT_VALUE_HIGH);
+            cell.writeString(sb.toString());
+        }));
+
+        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.SUMMARY_RESULT_VALUE_UNITS, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.SUMMARY_RESULT_VALUE_UNITS, (s, cell) -> {
+            StringBuilder sb = getScreeningDetails(s, InvitroPharmDefaultColumns.SUMMARY_RESULT_VALUE_UNITS);
+            cell.writeString(sb.toString());
+        }));
+
+        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.SUMMARY_RESULT_TYPE, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.SUMMARY_RESULT_TYPE, (s, cell) -> {
+            StringBuilder sb = getScreeningDetails(s, InvitroPharmDefaultColumns.SUMMARY_RESULT_TYPE);
+            cell.writeString(sb.toString());
+        }));
+
+        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.SUMMARY_RELATIONSHIP_TYPE, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.SUMMARY_RELATIONSHIP_TYPE, (s, cell) -> {
+            StringBuilder sb = getScreeningDetails(s, InvitroPharmDefaultColumns.SUMMARY_RELATIONSHIP_TYPE);
             cell.writeString(sb.toString());
         }));
 
@@ -242,7 +345,34 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
             cell.writeString(sb.toString());
         }));
 
+        DEFAULT_RECIPE_MAP.put(InvitroPharmDefaultColumns.FROM_RESULT_DATA, SingleColumnValueRecipe.create(InvitroPharmDefaultColumns.FROM_RESULT_DATA, (s, cell) -> {
+            StringBuilder sb = getScreeningDetails(s, InvitroPharmDefaultColumns.FROM_RESULT_DATA);
+            cell.writeString(sb.toString());
+        }));
+
     }  // static
+
+    private static StringBuilder getAssayAnalytesDetails(InvitroAssayInformation a, InvitroPharmDefaultColumns fieldName) {
+        StringBuilder sb = new StringBuilder();
+
+        if (a.invitroAssayAnalytes.size() > 0) {
+
+            for (int i = 0; i < a.invitroAssayAnalytes.size(); i++) {
+                InvitroAssayAnalyte analy = a.invitroAssayAnalytes.get(i);
+
+                if (i > 0) {
+                    sb.append("|");
+                }
+
+                if (analy != null) {
+                    sb.append(analy.analyte != null ? analy.analyte : "");
+                }
+
+            } // for invitroAssayAnalytes
+        } // if invitroAssayAnalytes.size() > 0
+
+        return sb;
+    }
 
     private static StringBuilder getAssaySetDetails(InvitroAssayInformation a, InvitroPharmDefaultColumns fieldName) {
         StringBuilder sb = new StringBuilder();
@@ -262,6 +392,52 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
 
             } // for invitroAssaySets
         } // if invitroAssaySets.size() > 0
+
+        return sb;
+    }
+
+    private static StringBuilder getControlDetails(InvitroAssayInformation a, InvitroPharmDefaultColumns fieldName) {
+        StringBuilder sb = new StringBuilder();
+
+        if (a.invitroAssayScreenings.size() > 0) {
+
+            InvitroAssayScreening screening = a.invitroAssayScreenings.get(screeningNumber);
+
+            if (screening.invitroControls.size() > 0) {
+
+                for (int i = 0; i < screening.invitroControls.size(); i++) {
+                    InvitroControl ctrl = screening.invitroControls.get(i);
+
+                    if (i > 0) {
+                        sb.append("|");
+                    }
+
+                    if (ctrl != null) {
+                        switch (fieldName) {
+                            case CONTROL:
+                                sb.append(ctrl.control != null ? ctrl.control : "");
+                                break;
+                            case CONTROL_TYPE:
+                                sb.append(ctrl.controlType != null ? ctrl.controlType : "");
+                                break;
+                            case CONTROL_REFERENCE_VALUE:
+                                sb.append(ctrl.controlReferenceValue != null ? ctrl.controlReferenceValue : "");
+                                break;
+                            case CONTROL_REFERENCE_VALUE_UNITS:
+                                sb.append(ctrl.controlReferenceValueUnits != null ? ctrl.controlReferenceValueUnits : "");
+                                break;
+                            case CONTROL_RESULT_TYPE:
+                                sb.append(ctrl.controlResultType != null ? ctrl.controlResultType : "");
+                                break;
+                            default:
+                                break;
+                        } // switch
+                    } // if control object exists
+
+                } // for invitroControls
+
+            } // if invitroControls.size() > 0
+        } // invitroAssayScreenings.size() > 0
 
         return sb;
     }
@@ -294,14 +470,33 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
                                 } // if reference is not null
                             } // for
                         }  // if references size > 0
-                    break;
+                        break;
                     case LABORATORY_NAME:
                         sb.append((screening.invitroAssayResultInformation.invitroLaboratory != null && screening.invitroAssayResultInformation.invitroLaboratory.laboratoryName != null)
                                 ? screening.invitroAssayResultInformation.invitroLaboratory.laboratoryName : "");
                         break;
+                    case LABORATORY_CITY:
+                        sb.append((screening.invitroAssayResultInformation.invitroLaboratory != null && screening.invitroAssayResultInformation.invitroLaboratory.laboratoryCity != null)
+                                ? screening.invitroAssayResultInformation.invitroLaboratory.laboratoryCity : "");
+                        break;
                     case SPONSOR_CONTACT_NAME:
                         sb.append((screening.invitroAssayResultInformation.invitroSponsor != null && screening.invitroAssayResultInformation.invitroSponsor.sponsorContactName != null)
                                 ? screening.invitroAssayResultInformation.invitroSponsor.sponsorContactName : "");
+                        break;
+                    case SPONSOR_REPORT_SUBMITTERS:
+                        if (screening.invitroAssayResultInformation.invitroSponsorReport.invitroSponsorSubmitters.size() > 0) {
+                            for (int i = 0; i < screening.invitroAssayResultInformation.invitroSponsorReport.invitroSponsorSubmitters.size(); i++) {
+                                InvitroSponsorSubmitter submitter = screening.invitroAssayResultInformation.invitroSponsorReport.invitroSponsorSubmitters.get(i);
+
+                                if (i > 0) {
+                                    sb.append("|");
+                                }
+
+                                if (submitter != null) {
+                                    sb.append(submitter.sponsorReportSubmitterName != null ? submitter.sponsorReportSubmitterName : "");
+                                }
+                            } // for invitroSponsorSubmitters
+                        } // if invitroSponsorSubmitters.size() > 0
                         break;
                     case REPORT_NUMBER:
                         sb.append((screening.invitroAssayResultInformation.invitroSponsorReport != null && screening.invitroAssayResultInformation.invitroSponsorReport.reportNumber != null)
@@ -309,7 +504,7 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
                         break;
                     case REPORT_DATE:
                         sb.append((screening.invitroAssayResultInformation.invitroSponsorReport != null && screening.invitroAssayResultInformation.invitroSponsorReport.reportDate != null)
-                                ? screening.invitroAssayResultInformation.invitroSponsorReport.reportDate : "");
+                                ? a.convertDateToString(screening.invitroAssayResultInformation.invitroSponsorReport.reportDate) : "");
                         break;
                     case BATCH_NUMBER:
                         sb.append((screening.invitroAssayResultInformation.batchNumber != null)
@@ -339,7 +534,35 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
                         sb.append((screening.invitroAssayResult != null && screening.invitroAssayResult.resultValueUnits != null)
                                 ? screening.invitroAssayResult.resultValueUnits : "");
                         break;
-                    case SUMMARY_RELATIONSHIP:
+                    case RESULT_TEST_DATE:
+                        sb.append((screening.invitroAssayResult != null && screening.invitroAssayResult.testDate != null)
+                                ? a.convertDateToString(screening.invitroAssayResult.testDate) : "");
+                        break;
+                    case SUMMARY_TARGET_NAME:
+                        sb.append((screening.invitroSummary != null && screening.invitroSummary.targetName != null)
+                                ? screening.invitroSummary.targetName : "");
+                        break;
+                    case SUMMARY_RESULT_VALUE_LOW:
+                        sb.append((screening.invitroSummary != null && screening.invitroSummary.resultValueLow != null)
+                                ? screening.invitroSummary.resultValueLow : "");
+                        break;
+                    case SUMMARY_RESULT_VALUE_AVERAGE:
+                        sb.append((screening.invitroSummary != null && screening.invitroSummary.resultValueAverage != null)
+                                ? screening.invitroSummary.resultValueAverage : "");
+                        break;
+                    case SUMMARY_RESULT_VALUE_HIGH:
+                        sb.append((screening.invitroSummary != null && screening.invitroSummary.resultValueHigh != null)
+                                ? screening.invitroSummary.resultValueHigh : "");
+                        break;
+                    case SUMMARY_RESULT_VALUE_UNITS:
+                        sb.append((screening.invitroSummary != null && screening.invitroSummary.resultValueUnits != null)
+                                ? screening.invitroSummary.resultValueUnits : "");
+                        break;
+                    case SUMMARY_RESULT_TYPE:
+                        sb.append((screening.invitroSummary != null && screening.invitroSummary.resultType != null)
+                                ? screening.invitroSummary.resultType : "");
+                        break;
+                    case SUMMARY_RELATIONSHIP_TYPE:
                         sb.append((screening.invitroSummary != null && screening.invitroSummary.relationshipType != null)
                                 ? screening.invitroSummary.relationshipType : "");
                         break;
@@ -347,17 +570,18 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
                         sb.append((screening.invitroSummary != null && screening.invitroSummary.interactionType != null)
                                 ? screening.invitroSummary.interactionType : "");
                         break;
-                    case SUMMARY_AVERAGE:
-                        sb.append((screening.invitroSummary != null && screening.invitroSummary.interactionType != null)
-                                ? screening.invitroSummary.interactionType : "");
-                        break;
-                    case SUMMARY_LOW:
-                        sb.append((screening.invitroSummary != null && screening.invitroSummary.interactionType != null)
-                                ? screening.invitroSummary.interactionType : "");
-                        break;
-                    case SUMMARY_HIGH:
-                        sb.append((screening.invitroSummary != null && screening.invitroSummary.interactionType != null)
-                                ? screening.invitroSummary.interactionType : "");
+                    case FROM_RESULT_DATA:
+                        String isFromResult = "";
+                        if (screening.invitroSummary != null && screening.invitroSummary.isFromResult != null) {
+                            if (screening.invitroSummary.isFromResult == true) {
+                                isFromResult = "Yes";
+                            } else if (screening.invitroSummary.isFromResult == false) {
+                                isFromResult = "No";
+                            } else {
+                                // Do something
+                            }
+                        }
+                        sb.append(isFromResult);
                         break;
                     default:
                         break;
@@ -424,8 +648,8 @@ public class InvitroPharmacologyExporter implements Exporter<InvitroAssayInforma
             return this;
         }
 
-        public InvitroPharmacologyExporter build() {
-            return new InvitroPharmacologyExporter(this);
+        public InvitroPharmacologyExporter build(SubstanceApiService substanceApiService) {
+            return new InvitroPharmacologyExporter(this, substanceApiService);
         }
 
         public Builder includePublicDataOnly(boolean publicOnly) {

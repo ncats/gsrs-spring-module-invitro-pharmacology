@@ -63,7 +63,7 @@ public class InvitroReference extends InvitroPharmacologyCommanData {
     public boolean publicDomain;
 
     @Column(name="PRIMARY_REFERENCE")
-    public boolean primaryReference;
+    public Boolean primaryReference;
 
     public InvitroReference () {}
 

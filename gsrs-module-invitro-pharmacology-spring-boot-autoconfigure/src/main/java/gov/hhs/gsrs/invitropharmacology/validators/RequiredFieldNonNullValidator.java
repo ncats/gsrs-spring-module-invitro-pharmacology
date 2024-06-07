@@ -17,7 +17,6 @@ public class RequiredFieldNonNullValidator implements ValidatorPlugin<InvitroAss
     @Override
     public void validate(InvitroAssayInformation objnew, InvitroAssayInformation objold, ValidatorCallback callback) {
 
-        /*
         if (objnew.invitroAssaySets.size() == 0) {
             callback.addMessage(GinasProcessingMessage.ERROR_MESSAGE("Assay Set is required."));
         }
@@ -34,13 +33,13 @@ public class RequiredFieldNonNullValidator implements ValidatorPlugin<InvitroAss
             callback.addMessage(GinasProcessingMessage.ERROR_MESSAGE("Target Name is required."));
         }
 
+        /*
         if (objnew.invitroAssayScreenings.size() > 0) {
             for (int i = 0; i < objnew.invitroAssayScreenings.size(); i++) {
 
                 InvitroAssayScreening screening = objnew.invitroAssayScreenings.get(i);
                 if (screening != null) {
                     if (screening.invitroAssayResultInformation != null) {
-
                         // Validate Reference
                         if (screening.invitroAssayResultInformation.invitroReferences.size() == 0) {
                             callback.addMessage(GinasProcessingMessage.ERROR_MESSAGE("Reference is required."));

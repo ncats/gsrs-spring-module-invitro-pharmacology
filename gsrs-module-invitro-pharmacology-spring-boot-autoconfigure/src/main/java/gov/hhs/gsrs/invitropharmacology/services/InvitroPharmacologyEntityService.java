@@ -130,24 +130,15 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
     protected InvitroAssayInformation update(InvitroAssayInformation assayInfo) {
 
         /*
-        System.out.println("QQQQQQQQQQQQQQ ASSAY INFO " + assayInfo.id);
-
         if (assayInfo.invitroAssayScreenings.size() > 0) {
 
             for (int i = 0; i < assayInfo.invitroAssayScreenings.size(); i++) {
 
                 InvitroAssayScreening screening = assayInfo.invitroAssayScreenings.get(i);
                 if (screening != null) {
-                    System.out.println("GGGGGGGGGGGGG SCREENING NOT NULL " + screening.id);
-
                     // If new Screening
                    // if (screening.id == null) {
-                        System.out.println("DDDDDDDDDDDDDDDDDDDDDD  SCREENING ID ID ID IS NULL ");
-
                         if (screening.invitroAssayResultInformation != null) {
-                            System.out.println("GGGGGGGGGGGGG NOT NULL NOT NULL RESULT INFO " + screening.invitroAssayResultInformation);
-
-                            System.out.println("SPONSR SPONSOR SPONSOR " +  screening.invitroAssayResultInformation.invitroSponsor);
                             //screening.setInfoDirty();
 
                            // screening.invitroAssayResultInformation.batchNumber = "AAAAAAA";
@@ -158,14 +149,6 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
                            // screening.setIsDirty("invitroAssayResultInformation");
                            // screening.invitroAssayResultInformation.invitroSponsor.setIsDirtyToFields();
                             //screening.invitroAssayResultInformation.setIsDirtyToFields();
-
-
-                            if (screening.invitroAssayResultInformation.id != null) {
-
-                                System.out.println("$$$$$$$$$$$$$$$ RESULT INFO ID " + screening.invitroAssayResultInformation.id);
-                                System.out.println("$$$$$$$$$$$$$$$ RESULT INFO ID " + screening.invitroAssayResultInformation.internalVersion);
-
-                            }
                         } // if invitroAssayResultInformation is not null
                   //  }  // if screening id is null
                 } // if screening is not null
@@ -179,22 +162,17 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
             if (importFileName != null) {
                 List<InvitroAssayScreening> screeningImportFile = repository.findScreeningByImportFile(importFileName);
 
-                System.out.println("$$$$$$$$$$$$$$$ " + screeningImportFile);
                 // Found in the Database
                 if (screeningImportFile != null && screeningImportFile.size() > 0) {
-                    System.out.println("HHHHHHHHHHHHHHHHHHHH");
+
                     if (screeningImportFile.get(0) != null) {
-                        System.out.println("MMMMMMMMMMMMMMMMMMMMMMMMM");
+
                         if (screeningImportFile.get(0).invitroAssayResultInformation != null) {
-                            System.out.println("RRRRRRRRRRRRRRRRRRRRR");
+
                             if (screeningImportFile.get(0).invitroAssayResultInformation.id != null) {
-                                System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKK");
                                 Long resultInfoId = screeningImportFile.get(0).invitroAssayResultInformation.id;
-                                System.out.println("REF INFO ID " + resultInfoId);
 
                                 InvitroAssayResultInformation resultInfo = repository.findAssayResultInformationById(resultInfoId);
-
-                                System.out.println("FOUND FOUND " + resultInfo);
                                 screening.setInvitroAssayResultInformation(resultInfo);
                                 assayInfo.invitroAssayScreenings.set(size - 1, screening);
                             }

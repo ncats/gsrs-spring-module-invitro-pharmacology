@@ -92,7 +92,7 @@ public class InvitroSummary extends InvitroPharmacologyCommanData {
     public String referenceSourceUrl;
 
     @Column(name="IS_FROM_RESULT")
-    public boolean isFromResult;
+    public Boolean isFromResult;
 
     public InvitroSummary () {}
 

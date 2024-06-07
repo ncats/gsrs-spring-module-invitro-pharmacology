@@ -56,9 +56,6 @@ public class InvitroAssayScreening extends InvitroPharmacologyCommanData {
 
     public void setOwner(InvitroAssayInformation invitroAssayInformation) {
         this.owner = invitroAssayInformation;
-
-        // Need this to update the field
-        //setIsDirty("invitroAssayInformation");
     }
 
     @Column(name="SCREENING_IMPORT_FILENAME")
