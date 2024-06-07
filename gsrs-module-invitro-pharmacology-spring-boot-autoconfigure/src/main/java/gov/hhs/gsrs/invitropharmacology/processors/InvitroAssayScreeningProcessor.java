@@ -25,7 +25,6 @@ public class InvitroAssayScreeningProcessor implements EntityProcessor<InvitroAs
 
     @Override
     public void preUpdate(InvitroAssayInformation obj) {
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@ PRE PRE PROCESSOR");
     }
 
     @Override

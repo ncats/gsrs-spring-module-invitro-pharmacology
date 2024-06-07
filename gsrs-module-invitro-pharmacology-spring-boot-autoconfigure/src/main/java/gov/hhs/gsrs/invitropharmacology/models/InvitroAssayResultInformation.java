@@ -29,23 +29,15 @@ public class InvitroAssayResultInformation extends InvitroPharmacologyCommanData
     @Column(name = "ID")
     public Long id;
 
+    @Indexable(suggest = true, facet = true, name = "Batch Number", sortable = true)
     @Column(name = "BATCH_NUMBER")
     public String batchNumber;
-
-    @Column(name = "TEST_AGENT_SUBSTANCE_UUID")
-    public String testAgentSubstanceUuid;
 
     @Column(name = "TEST_AGENT", length=2000)
     public String testAgent;
 
-    @Column(name = "PURITY_PERCENT")
-    public String purityPercent;
-
-    @Column(name = "VEHICLE_COMPOSITION")
-    public String vehicleComposition;
-
-    @Column(name = "ASSAY_SET")
-    public String assaySet;
+    @Column(name = "TEST_AGENT_SUBSTANCE_UUID")
+    public String testAgentSubstanceUuid;
 
     public InvitroAssayResultInformation() {
     }
@@ -93,6 +85,10 @@ public class InvitroAssayResultInformation extends InvitroPharmacologyCommanData
     }
 
     @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "INVITRO_LABORATORY_ID", referencedColumnName = "ID")
+    public InvitroLaboratory invitroLaboratory;
+
+    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "INVITRO_SPONSOR_ID", referencedColumnName = "ID")
     public InvitroSponsor invitroSponsor;
 
@@ -100,16 +96,13 @@ public class InvitroAssayResultInformation extends InvitroPharmacologyCommanData
     @JoinColumn(name = "INVITRO_SPONSOR_REPORT_ID", referencedColumnName = "ID")
     public InvitroSponsorReport invitroSponsorReport;
 
-    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "INVITRO_LABORATORY_ID", referencedColumnName = "ID")
-    public InvitroLaboratory invitroLaboratory;
-
    // @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
     @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name="INVITRO_TEST_AGENT_ID", referencedColumnName = "ID")
     public InvitroTestAgent invitroTestAgent;
 
+    /*
     public void setIsDirtyToFields() {
         this.setIsDirty("batchNumber");
-    }
+    } */
 }

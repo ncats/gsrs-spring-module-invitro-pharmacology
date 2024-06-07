@@ -1,8 +1,10 @@
 package gov.hhs.gsrs.invitropharmacology.exporters;
 
 import gov.hhs.gsrs.invitropharmacology.controllers.*;
+import gov.hhs.gsrs.invitropharmacology.services.SubstanceApiService;
 
 import ix.ginas.exporters.*;
+import gsrs.springUtils.AutowireHelper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,6 +15,9 @@ import java.io.OutputStreamWriter;;
 import java.util.*;
 
 public class InvitroPharmacologyExporterFactory implements ExporterFactory {
+
+    @Autowired
+    private SubstanceApiService substanceApiService;
 
     private static final Set<OutputFormat> FORMATS;
 
@@ -38,6 +43,10 @@ public class InvitroPharmacologyExporterFactory implements ExporterFactory {
     @Override
     public InvitroPharmacologyExporter createNewExporter(OutputStream out, Parameters params) throws IOException {
 
+        if (substanceApiService == null) {
+            AutowireHelper.getInstance().autowire(this);
+        }
+
         SpreadsheetFormat format = SpreadsheetFormat.XLSX;
         Spreadsheet spreadsheet = format.createSpreadsheet(out);
 
@@ -45,7 +54,7 @@ public class InvitroPharmacologyExporterFactory implements ExporterFactory {
 
         configure(builder, params);
 
-        return builder.build();
+        return builder.build(substanceApiService);
     }
     
     protected void configure(InvitroPharmacologyExporter.Builder builder, Parameters params){

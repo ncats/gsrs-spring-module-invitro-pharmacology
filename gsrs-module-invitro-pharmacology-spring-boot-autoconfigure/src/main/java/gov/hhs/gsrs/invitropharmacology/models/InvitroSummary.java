@@ -42,9 +42,21 @@ public class InvitroSummary extends InvitroPharmacologyCommanData {
     @Column(name="TARGET_NAME", length=2000)
     public String targetName;
 
+    @Column(name="TARGET_NAME_SUBSTANCE_KEY")
+    public String targetNameSubstanceKey;
+
+    @Column(name="TARGET_NAME_SUBSTANCE_KEY_TYPE")
+    public String targetNameSubstanceKeyType;
+
     @Column(name="TARGET_NAME_SUBSTANCE_UUID")
     public String targetNameSubstanceUuid;
 
+    @Column(name="MEDIATOR_SUBSTANCE", length=2000)
+    public String mediatorSubstance;
+
+    @Column(name="MEDIATOR_SUBSTANCE_UUID")
+    public String mediatorSubstanceUuid;
+    
     @Indexable(suggest = true, facet=true, name= "Relationship Type", sortable = true)
     @Column(name="RELATIONSHIP_TYPE")
     public String relationshipType;
@@ -52,6 +64,10 @@ public class InvitroSummary extends InvitroPharmacologyCommanData {
     @Indexable(suggest = true, facet=true, name= "Interaction Type", sortable = true)
     @Column(name="INTERACTION_TYPE")
     public String interactionType;
+
+    @Indexable(suggest = true, facet=true, name= "Qualification", sortable = true)
+    @Column(name="QUALIFICATION")
+    public String qualification;
 
     @Indexable(suggest = true, facet=true, name= "Summary Result Type", sortable = true)
     @Column(name="RESULT_TYPE")
@@ -72,6 +88,7 @@ public class InvitroSummary extends InvitroPharmacologyCommanData {
     @Column(name="COMMENTS", length=4000)
     public String comments;
 
+    /*
     @Column(name="REFERENCE_SOURCE_TYPE")
     public String referenceSourceType;
 
@@ -80,29 +97,11 @@ public class InvitroSummary extends InvitroPharmacologyCommanData {
 
     @Column(name="REFERENCE_SOURCE_URL")
     public String referenceSourceUrl;
+     */
 
     @Column(name="IS_FROM_RESULT")
-    public String isFromResult;
+    public Boolean isFromResult;
 
     public InvitroSummary () {}
 
-    /*
-    // Set Parent Class, InvitroAssayInformation
-    @Indexable(indexed=false)
-    @ParentReference
-    @EqualsAndHashCode.Exclude
-    @JsonIgnore
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name="INVITRO_ASSAY_INFO_ID", referencedColumnName="ID")
-    public InvitroAssayInformation ownerOfAssayInfo;
-
-    public void setOwner(InvitroAssayInformation invitroAssayInformation) {
-        this.ownerOfAssayInfo = invitroAssayInformation;
-    } */
-
-    /*
-    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name="INVITRO_TEST_AGENT_ID")
-    public InvitroTestAgent invitroTestAgent;
-    */
 }

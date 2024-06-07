@@ -31,6 +31,7 @@ public class InvitroSponsorReport extends InvitroPharmacologyCommanData {
     @Column(name="REPORT_NUMBER")
     public String reportNumber;
 
+    @Indexable(suggest = true, facet=true, name= "Report Date", sortable = true)
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="MM/dd/yyyy")
     @Column(name="REPORT_DATE")
     public Date reportDate;

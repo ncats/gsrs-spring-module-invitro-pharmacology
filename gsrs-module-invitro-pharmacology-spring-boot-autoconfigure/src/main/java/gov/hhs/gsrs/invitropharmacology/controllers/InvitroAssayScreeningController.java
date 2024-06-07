@@ -1,7 +1,6 @@
 package gov.hhs.gsrs.invitropharmacology.controllers;
 
 import gov.hhs.gsrs.invitropharmacology.InvitroPharmacologyDataSourceConfig;
-import gov.hhs.gsrs.invitropharmacology.SubstanceModuleService;
 import gov.hhs.gsrs.invitropharmacology.models.*;
 import gov.hhs.gsrs.invitropharmacology.LegacyAssayScreeningSearcher;
 import gov.hhs.gsrs.invitropharmacology.services.*;
@@ -89,9 +88,6 @@ public class InvitroAssayScreeningController extends EtagLegacySearchEntityContr
     private InvitroAssayScreeningEntityService invitroAssayScreeningEntityService;
 
     @Autowired
-    private SubstanceModuleService substanceModuleService;
-
-    @Autowired
     private LegacyAssayScreeningSearcher legacyAssayScreeningSearcher;
 
     @Autowired
@@ -129,9 +125,8 @@ public class InvitroAssayScreeningController extends EtagLegacySearchEntityContr
                                                @RequestParam Map<String, String> queryParameters,
                                                Principal principal) throws Exception {
         if (principal == null) {
-            System.out.println("NOT LOGGED IN");
             //not logged in!
-           // return gsrsControllerConfiguration.unauthorized("no user logged in", queryParameters);
+          // return gsrsControllerConfiguration.unauthorized("no user logged in", queryParameters);
         }
 
         List<InvitroAssayScreening> assayInfos = new ArrayList<>(updatedEntityJson.length);
@@ -140,7 +135,6 @@ public class InvitroAssayScreeningController extends EtagLegacySearchEntityContr
         ObjectMapper mapper = new ObjectMapper();
 
         for (int i = 0; i < updatedEntityJson.length; i++) {
-           // System.out.println("**************** " + updatedEntityJson[i]);
 
             // Convert Json to InvitroAssayScreening Class Object
             InvitroAssayScreening screeningObj = mapper.treeToValue(updatedEntityJson[i], InvitroAssayScreening.class);

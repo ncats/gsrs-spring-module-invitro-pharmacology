@@ -53,8 +53,8 @@ public class InvitroControl extends InvitroPharmacologyCommanData {
     public String controlReferenceValueUnits;
 
     @Indexable(suggest = true, facet = true, name = "Control Result Type", sortable = true)
-    @Column(name = "RESULT_TYPE")
-    public String resultType;
+    @Column(name = "CONTROL_RESULT_TYPE")
+    public String controlResultType;
 
     public InvitroControl() {
     }

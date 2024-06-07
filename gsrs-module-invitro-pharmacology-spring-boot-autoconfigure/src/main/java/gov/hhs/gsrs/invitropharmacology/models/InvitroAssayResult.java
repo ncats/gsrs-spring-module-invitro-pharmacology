@@ -32,13 +32,6 @@ public class InvitroAssayResult extends InvitroPharmacologyCommanData {
     @Column(name = "ID")
     public Long id;
 
-    @Column(name = "BATCH_NUMBER")
-    public String batchNumber;
-
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="MM/dd/yyyy")
-    @Column(name = "TEST_DATE")
-    public Date testDate;
-
     @Column(name = "TEST_AGENT_CONCENTRATION")
     public Double testAgentConcentration;
 
@@ -69,6 +62,11 @@ public class InvitroAssayResult extends InvitroPharmacologyCommanData {
     @Column(name = "PLASMA_PROTEIN_CONCENT_UNITS")
     public String plasmaProteinConcentrationUnits;
 
+    @Indexable(suggest = true, facet=true, name= "Test Date", sortable = true)
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="MM/dd/yyyy")
+    @Column(name = "TEST_DATE")
+    public Date testDate;
+
     @Column(name = "NUMBER_OF_TESTS")
     public String numberOfTests;
 
@@ -84,22 +82,7 @@ public class InvitroAssayResult extends InvitroPharmacologyCommanData {
     public InvitroAssayResult() {
     }
 
-    /*
-    // Set Parent for InvitroAssayScreening
-    @Indexable(indexed=false)
-    @ParentReference
-    @EqualsAndHashCode.Exclude
-    //@JsonIgnore
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name="INVITRO_SCREENING_ID", referencedColumnName="ID")
-    public InvitroAssayScreening owner;
-
-    public void setOwner(InvitroAssayScreening invitroAssayScreening) {
-        this.owner = invitroAssayScreening;
+    public void setIsDirtyToFields() {
+        this.setIsDirty("testAgentConcentration");
     }
-
-    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name="INVITRO_ASSAY_INFO_ID")
-    public InvitroAssayInformation invitroAssayInformation;
-    */
 }

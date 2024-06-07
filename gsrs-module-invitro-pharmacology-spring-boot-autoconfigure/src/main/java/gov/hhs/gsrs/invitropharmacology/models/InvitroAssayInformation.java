@@ -39,13 +39,13 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
     @Column(name="ASSAY_ID")
     public String assayId;
 
-    @Indexable(suggest = true, facet=true, name= "External Assay ID", sortable = true)
-    @Column(name="EXTERNAL_ASSAY_ID")
-    public String externalAssayId;
-
     @Indexable(suggest = true, facet=true, name= "External Assay Source", sortable = true)
     @Column(name="EXTERNAL_ASSAY_SOURCE")
     public String externalAssaySource;
+
+    @Indexable(suggest = true, facet=true, name= "External Assay ID", sortable = true)
+    @Column(name="EXTERNAL_ASSAY_ID")
+    public String externalAssayId;
 
     @Column(name="EXTERNAL_ASSAY_REFERENCE_URL", length=1000)
     public String externalAssayReferenceUrl;
@@ -88,6 +88,10 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
     @Column(name="PUBLIC_DOMAIN")
     public String publicDomain;
 
+    @Indexable(suggest = true, facet=true, name= "Target Species", sortable = true)
+    @Column(name="TARGET_SPECIES")
+    public String targetSpecies;
+
     @Indexable(suggest = true, facet=true, name= "Target Name", sortable = true)
     @Column(name="TARGET_NAME", length=1000)
     public String targetName;
@@ -99,9 +103,12 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
     @Column(name="TARGET_NAME_SUBSTANCE_UUID")
     public String targetNameSubstanceUuid;
 
-    @Indexable(suggest = true, facet=true, name= "Target Species", sortable = true)
-    @Column(name="TARGET_SPECIES")
-    public String targetSpecies;
+    @Indexable(suggest = true, name= "Target Name Substance Key")
+    @Column(name="TARGET_NAME_SUBSTANCE_KEY")
+    public String targetNameSubstanceKey;
+
+    @Column(name="TARGET_NAME_SUBSTANCE_KEY_TYPE")
+    public String targetNameSubstanceKeyType;
 
     @Indexable(suggest = true, facet=true, name= "Human Homolog Target", sortable = true)
     @Column(name="HUMAN_HOMOLOG_TARGET", length=1000)
@@ -111,6 +118,13 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
     @Column(name="HUMAN_HOMOLOG_TARGET_APPROVAL_ID")
     public String humanHomologTargetApprovalId;
 
+    @Indexable(suggest = true, facet=true, name= "Human Homolog Target Substance Key", sortable = true)
+    @Column(name="HUMAN_HOMOLOG_TARGET_SUBSTANCE_KEY")
+    public String humanHomologTargetSubstanceKey;
+
+    @Column(name="HUMAN_HOMOLOG_TARGET_SUBSTANCE_KEY_TYPE")
+    public String humanHomologTargetSubstanceKeyType;
+
     @Indexable(suggest = true, facet=true, name= "Ligand (Substrate)", sortable = true)
     @Column(name="LIGAND_SUBSTRATE", length=1000)
     public String ligandSubstrate;
@@ -118,6 +132,13 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
     @Indexable(suggest = true, name= "Ligand (Substrate) Approval ID")
     @Column(name="LIGAND_SUBSTRATE_APPROVAL_ID")
     public String ligandSubstrateApprovalId;
+
+    @Indexable(suggest = true, name= "Ligand (Substrate) Substance Key")
+    @Column(name="LIGAND_SUBSTRATE_SUBSTANCE_KEY")
+    public String ligandSubstrateSubstanceKey;
+
+    @Column(name="LIGAND_SUBSTRATE_SUBSTANCE_KEY_TYPE")
+    public String ligandSubstrateSubstanceKeyType;
 
     @Column(name="STANDARD_LIGAND_CONCENT")
     public String standardLigandSubstrateConcentration;
@@ -135,6 +156,23 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
     @Indexable(facet=true, name="Deprecated")
     public String getDeprecated() {
         return "Not Deprecated";
+    }
+
+    // Set Child for InvitroAssayAnalytes
+    @ToString.Exclude
+    @OrderBy("modifiedDate asc")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    public List<InvitroAssayAnalyte> invitroAssayAnalytes = new ArrayList<InvitroAssayAnalyte>();
+
+    public void setInvitroAssayAnalytes(List<InvitroAssayAnalyte> invitroAssayAnalytes) {
+        this.invitroAssayAnalytes = invitroAssayAnalytes;
+        if (invitroAssayAnalytes != null) {
+            for (InvitroAssayAnalyte invitro : invitroAssayAnalytes)
+            {
+                invitro.setOwner(this);
+            }
+        }
     }
 
     // Set Child for InvitroAssayScreening
@@ -155,18 +193,12 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
     }
 
     // Many To Many, InvitroAssaySet
-    @Indexable(indexed=false)
+    //@Indexable(indexed=false)
     @ToString.Exclude
     @LazyCollection(LazyCollectionOption.FALSE)
-    //@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
-    //CAN REGISTER@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH })
-    //@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @ManyToMany(cascade= CascadeType.ALL)
-   // @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-   // @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinTable(name="GSRS_INVITRO_ASSAY_SET_DET", joinColumns = @JoinColumn(name = "INVITRO_ASSAY_INFO_ID "),
             inverseJoinColumns = @JoinColumn(name = "INVITRO_ASSAY_SET_ID"))
-    //public Set<InvitroAssaySet> invitroAssaySets = new LinkedHashSet<>();
     public List<InvitroAssaySet> invitroAssaySets = new ArrayList<>();
 
     public void addInvitroAssaySet(InvitroAssaySet assaySet) {
@@ -175,8 +207,6 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
 
     @PreUpdate
     public void beforeUpdate(){
-        System.out.println("BEFORE UPDATE PRE UPDATE ASSAY INFO " + id);
-
         if (invitroAssayScreenings.size() > 0) {
 
             for (int i = 0; i < invitroAssayScreenings.size(); i++) {
@@ -185,27 +215,35 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
                 if (screening != null) {
 
                     if (screening.invitroAssayResultInformation != null) {
-                        System.out.println("GGGGGGGGGGGGG NOT NULL NOT NULL RESULT INFO " + screening.invitroAssayResultInformation);
 
                         // IMPORTANT NEED THIS. Set Dirty Fields, to save/update the fields into the database
+                       // screening.setIsDirty("invitroAssayResultInformation");
+                       // screening.setIsDirtyToFields();
+                       // screening.invitroAssayResultInformation.setIsDirtyToFields();
 
-                        screening.setIsDirty("invitroAssayResultInformation");
-                        screening.invitroAssayResultInformation.setIsDirtyToFields();
+                        /*
+                        if (screening.invitroAssayResultInformation.invitroLaboratory != null) {
+                            screening.invitroAssayResultInformation.invitroLaboratory.setIsDirtyToFields();
+                        }
+
                         if (screening.invitroAssayResultInformation.invitroSponsor != null) {
                             screening.invitroAssayResultInformation.invitroSponsor.setIsDirtyToFields();
                         }
                         if (screening.invitroAssayResultInformation.invitroSponsorReport != null) {
                             screening.invitroAssayResultInformation.invitroSponsorReport.setIsDirtyToFields();
                         }
-                        if (screening.invitroAssayResultInformation.invitroLaboratory != null) {
-                            screening.invitroAssayResultInformation.invitroLaboratory.setIsDirtyToFields();
-                        }
+
                         if (screening.invitroAssayResultInformation.invitroTestAgent != null) {
                             screening.invitroAssayResultInformation.invitroTestAgent.setIsDirtyToFields();
                         }
 
+                        if (screening.invitroAssayResult != null) {
+                            screening.invitroAssayResult.setIsDirtyToFields();
+                        }
                         if (screening.invitroAssayResultInformation.id != null) {
                         }
+
+                         */
                     } // if invitroAssayResultInformation is not null
                     //  }  // if screening id is null
                 } // if screening is not null
