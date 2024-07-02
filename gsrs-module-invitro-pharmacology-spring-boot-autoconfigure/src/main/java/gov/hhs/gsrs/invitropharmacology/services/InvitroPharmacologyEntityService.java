@@ -128,62 +128,6 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
     @Override
     @Transactional
     protected InvitroAssayInformation update(InvitroAssayInformation assayInfo) {
-
-        /*
-        if (assayInfo.invitroAssayScreenings.size() > 0) {
-
-            for (int i = 0; i < assayInfo.invitroAssayScreenings.size(); i++) {
-
-                InvitroAssayScreening screening = assayInfo.invitroAssayScreenings.get(i);
-                if (screening != null) {
-                    // If new Screening
-                   // if (screening.id == null) {
-                        if (screening.invitroAssayResultInformation != null) {
-                            //screening.setInfoDirty();
-
-                           // screening.invitroAssayResultInformation.batchNumber = "AAAAAAA";
-                           // screening.invitroAssayResultInformation.setIsDirty("batchNumber");
-
-                            //screening.invitroAssayResultInformation.invitroSponsor.setIsDirty("sponsorContactName");
-
-                           // screening.setIsDirty("invitroAssayResultInformation");
-                           // screening.invitroAssayResultInformation.invitroSponsor.setIsDirtyToFields();
-                            //screening.invitroAssayResultInformation.setIsDirtyToFields();
-                        } // if invitroAssayResultInformation is not null
-                  //  }  // if screening id is null
-                } // if screening is not null
-
-            } // for
-        } // if screening size > 0
-        */
-                           /*
-            String importFileName = screening.screeningImportFileName;
-
-            if (importFileName != null) {
-                List<InvitroAssayScreening> screeningImportFile = repository.findScreeningByImportFile(importFileName);
-
-                // Found in the Database
-                if (screeningImportFile != null && screeningImportFile.size() > 0) {
-
-                    if (screeningImportFile.get(0) != null) {
-
-                        if (screeningImportFile.get(0).invitroAssayResultInformation != null) {
-
-                            if (screeningImportFile.get(0).invitroAssayResultInformation.id != null) {
-                                Long resultInfoId = screeningImportFile.get(0).invitroAssayResultInformation.id;
-
-                                InvitroAssayResultInformation resultInfo = repository.findAssayResultInformationById(resultInfoId);
-                                screening.setInvitroAssayResultInformation(resultInfo);
-                                assayInfo.invitroAssayScreenings.set(size - 1, screening);
-                            }
-                        }
-                    }
-
-                } else {
-                    screening.setInfoDirty();
-                }
-            }  */
-
        return repository.saveAndFlush(assayInfo);
     }
 
@@ -286,8 +230,7 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
                     screening.setOwner(assay.get());
                 }
             }
-            //  InvitroAssayScreening screening2 = null;
-            //  InvitroAssayScreening newscreening = null;
+
             // if Result Information object is null, get the id
             if (screening.invitroAssayResultInformation != null) {
                 if (screening.invitroAssayResultInformation.id != null) {
@@ -332,7 +275,6 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
         AbstractGsrsEntityService.UpdateResult.UpdateResultBuilder<InvitroAssayInformation> builder = AbstractGsrsEntityService.UpdateResult.<InvitroAssayInformation>builder();
 
         try {
-
             int size = assayInformation.invitroAssayScreenings.size();
             if (size > 0) {
                 InvitroAssayScreening screening = assayInformation.invitroAssayScreenings.get(size - 1);

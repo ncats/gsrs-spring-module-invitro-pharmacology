@@ -64,7 +64,6 @@ public class InvitroAssayScreening extends InvitroPharmacologyCommanData {
     // Set Parent Class, InvitroResultInformation
     @ParentReference
     @EqualsAndHashCode.Exclude
-   // @ManyToOne()
    // @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
     @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     //@ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.PERSIST)

@@ -216,34 +216,6 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
 
                     if (screening.invitroAssayResultInformation != null) {
 
-                        // IMPORTANT NEED THIS. Set Dirty Fields, to save/update the fields into the database
-                       // screening.setIsDirty("invitroAssayResultInformation");
-                       // screening.setIsDirtyToFields();
-                       // screening.invitroAssayResultInformation.setIsDirtyToFields();
-
-                        /*
-                        if (screening.invitroAssayResultInformation.invitroLaboratory != null) {
-                            screening.invitroAssayResultInformation.invitroLaboratory.setIsDirtyToFields();
-                        }
-
-                        if (screening.invitroAssayResultInformation.invitroSponsor != null) {
-                            screening.invitroAssayResultInformation.invitroSponsor.setIsDirtyToFields();
-                        }
-                        if (screening.invitroAssayResultInformation.invitroSponsorReport != null) {
-                            screening.invitroAssayResultInformation.invitroSponsorReport.setIsDirtyToFields();
-                        }
-
-                        if (screening.invitroAssayResultInformation.invitroTestAgent != null) {
-                            screening.invitroAssayResultInformation.invitroTestAgent.setIsDirtyToFields();
-                        }
-
-                        if (screening.invitroAssayResult != null) {
-                            screening.invitroAssayResult.setIsDirtyToFields();
-                        }
-                        if (screening.invitroAssayResultInformation.id != null) {
-                        }
-
-                         */
                     } // if invitroAssayResultInformation is not null
                     //  }  // if screening id is null
                 } // if screening is not null
