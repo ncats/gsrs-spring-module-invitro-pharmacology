@@ -101,8 +101,4 @@ public class InvitroAssayResultInformation extends InvitroPharmacologyCommanData
     @JoinColumn(name="INVITRO_TEST_AGENT_ID", referencedColumnName = "ID")
     public InvitroTestAgent invitroTestAgent;
 
-    /*
-    public void setIsDirtyToFields() {
-        this.setIsDirty("batchNumber");
-    } */
 }

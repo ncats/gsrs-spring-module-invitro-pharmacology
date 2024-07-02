@@ -115,7 +115,7 @@ public class InvitroAssayScreeningController extends EtagLegacySearchEntityContr
     @GetGsrsRestApiMapping("/actuator/health")
     public ResponseEntity<Object> checkHealth() throws Exception {
         JSONObject status = new JSONObject();
-        status.put("status", "UP");
+        status.put("status", "In-vitro Pharmacology Microservice is UP");
         return new ResponseEntity(status, HttpStatus.OK);
     }
 

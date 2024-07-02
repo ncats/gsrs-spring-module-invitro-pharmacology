@@ -88,17 +88,6 @@ public class InvitroSummary extends InvitroPharmacologyCommanData {
     @Column(name="COMMENTS", length=4000)
     public String comments;
 
-    /*
-    @Column(name="REFERENCE_SOURCE_TYPE")
-    public String referenceSourceType;
-
-    @Column(name="REFERENCE_SOURCE")
-    public String referenceSource;
-
-    @Column(name="REFERENCE_SOURCE_URL")
-    public String referenceSourceUrl;
-     */
-
     @Column(name="IS_FROM_RESULT")
     public Boolean isFromResult;
 
