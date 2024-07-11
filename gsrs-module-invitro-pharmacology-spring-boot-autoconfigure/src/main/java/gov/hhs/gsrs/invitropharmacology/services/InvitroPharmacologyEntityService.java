@@ -218,6 +218,19 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
     }
 
     @Transactional
+    public InvitroAssayScreening screeningSave(InvitroAssayScreening screening, EntityManager entityManager) {
+        InvitroAssayScreening obj = null;
+
+        try {
+            return assayScreeningRepository.saveAndFlush(screening);
+
+        } catch (Exception t) {
+            t.printStackTrace();
+        }
+        return obj;
+    }
+
+    @Transactional
     public InvitroAssayScreening saveScreening(InvitroAssayScreening screening, Long assayId, EntityManager entityManager) {
         InvitroAssayScreening obj = null;
 
@@ -350,8 +363,8 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
         return list;
     }
 
-    public List<InvitroAssayScreening> findAllScreeningSummaryByTestAgentId(Long TestAgentId) {
-        List<InvitroAssayScreening> list = repository.findAllScreeningSummaryByTestAgentId(TestAgentId);
+    public List<InvitroAssayInformation> findAllScreeningSummaryByTestAgentId(String testAgent) {
+        List<InvitroAssayInformation> list = repository.findAllScreeningSummaryByTestAgentId(testAgent);
         return list;
     }
 
