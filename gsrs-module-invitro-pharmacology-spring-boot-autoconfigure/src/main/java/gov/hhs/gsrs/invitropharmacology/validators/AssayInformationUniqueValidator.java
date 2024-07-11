@@ -33,7 +33,7 @@ public class AssayInformationUniqueValidator implements ValidatorPlugin<InvitroA
             // When registering a new Assay and assay id is null
             // if Assay ID in the database and this object ID is not equal, then error
             if ((objnew.id == null) || (!assayExists.id.equals(objnew.id))) {
-                callback.addMessage(GinasProcessingMessage.ERROR_MESSAGE("External Assay Source and External Assay ID already exist in the database."));
+                callback.addMessage(GinasProcessingMessage.ERROR_MESSAGE("The combination of External Assay Source and External Assay ID already exist in the database."));
             }
         }
     }
