@@ -74,13 +74,13 @@ public class InvitroSummary extends InvitroPharmacologyCommanData {
     public String resultType;
 
     @Column(name="RESULT_VALUE_AVERAGE")
-    public String resultValueAverage;
+    public Double resultValueAverage;
 
     @Column(name="RESULT_VALUE_LOW")
-    public String resultValueLow;
+    public Double resultValueLow;
 
     @Column(name="RESULT_VALUE_HIGH")
-    public String resultValueHigh;
+    public Double resultValueHigh;
 
     @Column(name="RESULT_VALUE_UNITS")
     public String resultValueUnits;
