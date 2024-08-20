@@ -51,7 +51,7 @@ public class InvitroAssayResult extends InvitroPharmacologyCommanData {
     public String ligandSubstrateConcentrationUnits;
 
     @Column(name = "PLASMA_PROTEIN_ADDED")
-    public String plasmaProteinAdded;
+    public Boolean plasmaProteinAdded;
 
     @Column(name = "PROTEIN")
     public String protein;
