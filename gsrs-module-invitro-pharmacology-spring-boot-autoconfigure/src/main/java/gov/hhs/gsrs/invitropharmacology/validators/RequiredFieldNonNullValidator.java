@@ -18,19 +18,19 @@ public class RequiredFieldNonNullValidator implements ValidatorPlugin<InvitroAss
     public void validate(InvitroAssayInformation objnew, InvitroAssayInformation objold, ValidatorCallback callback) {
 
         if (objnew.invitroAssaySets.size() == 0) {
-            callback.addMessage(GinasProcessingMessage.ERROR_MESSAGE("Assay Set is required."));
+            callback.addMessage(GinasProcessingMessage.ERROR_MESSAGE("RequiredFieldNonNullValidatorAssaySetError", "Assay Set is required."));
         }
 
         if ((objnew.externalAssayId == null) || (objnew.externalAssayId.isEmpty())) {
-            callback.addMessage(GinasProcessingMessage.ERROR_MESSAGE("External Assay ID is required"));
+            callback.addMessage(GinasProcessingMessage.ERROR_MESSAGE("RequiredFieldNonNullValidatorAssayIDError", "External Assay ID is required"));
         }
 
         if (objnew.externalAssaySource == null || objnew.externalAssaySource.isEmpty()) {
-            callback.addMessage(GinasProcessingMessage.ERROR_MESSAGE("External Assay Source is required."));
+            callback.addMessage(GinasProcessingMessage.ERROR_MESSAGE("RequiredFieldNonNullValidatorAssaySourceError", "External Assay Source is required."));
         }
 
         if (objnew.targetName == null || objnew.targetName.isEmpty()) {
-            callback.addMessage(GinasProcessingMessage.ERROR_MESSAGE("Target Name is required."));
+            callback.addMessage(GinasProcessingMessage.ERROR_MESSAGE("RequiredFieldNonNullValidatorTargetNameError", "Target Name is required."));
         }
 
         /*
