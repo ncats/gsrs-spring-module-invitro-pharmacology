@@ -13,19 +13,20 @@
     <artifactId>gsrs-module-invitro-pharmacology-spring-boot-starter</artifactId>
 
     <dependencies>
-        <!-- SPRING BOOT DEPENDENCIES -->
+        <!-- INVITRO PHARMACOLOGY MODULE Autoconfigure Dependencies -->
+        <dependency>
+            <groupId>gov.nih.ncats</groupId>
+            <artifactId>gsrs-module-invitro-pharmacology-spring-boot-autoconfigure</artifactId>
+            <version>${gsrs.invitro-pharmacology.version}</version>
+        </dependency>
+
+        <!-- SPRING BOOT Dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
             <version>${spring-boot.version}</version>
         </dependency>
 
-        <!-- INVITRO PHARMACOLOGY DEPENDENCIES -->
-        <dependency>
-            <groupId>gov.nih.ncats</groupId>
-            <artifactId>gsrs-module-invitro-pharmacology-spring-boot-autoconfigure</artifactId>
-            <version>${gsrs.invitro-pharmacology.version}</version>
-        </dependency>
     </dependencies>
 
 </project>
