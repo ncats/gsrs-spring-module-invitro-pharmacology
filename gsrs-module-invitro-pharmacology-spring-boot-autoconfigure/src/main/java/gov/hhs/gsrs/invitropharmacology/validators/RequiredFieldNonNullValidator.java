@@ -17,8 +17,20 @@ public class RequiredFieldNonNullValidator implements ValidatorPlugin<InvitroAss
     @Override
     public void validate(InvitroAssayInformation objnew, InvitroAssayInformation objold, ValidatorCallback callback) {
 
+        // Assay Set is required.  There can be multiple Assay Sets
         if (objnew.invitroAssaySets.size() == 0) {
             callback.addMessage(GinasProcessingMessage.ERROR_MESSAGE("Assay Set is required."));
+        } else {
+            if (objnew.invitroAssaySets.size() > 0) {
+                for (int i = 0; i < objnew.invitroAssaySets.size(); i++) {
+                    InvitroAssaySet assaySetObj = objnew.invitroAssaySets.get(i);
+                    if (assaySetObj != null) {
+                        if (assaySetObj.assaySet == null || assaySetObj.assaySet == "") {
+                            callback.addMessage(GinasProcessingMessage.ERROR_MESSAGE("Assay Set is required."));
+                        }
+                    }
+                }
+            }
         }
 
         if ((objnew.externalAssayId == null) || (objnew.externalAssayId.isEmpty())) {
