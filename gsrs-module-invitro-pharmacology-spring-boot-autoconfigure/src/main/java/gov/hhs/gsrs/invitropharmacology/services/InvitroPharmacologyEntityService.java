@@ -79,8 +79,8 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
     @Override
     protected InvitroAssayInformation create(InvitroAssayInformation assayInfo) {
         try {
-            // if Assay ID is null, generate a new UUID and assign to Assay ID
-            if (assayInfo.assayId == null) {
+            // if Assay ID is null or empty, generate a new UUID and assign to Assay ID
+            if ((assayInfo.assayId == null) || ((assayInfo.assayId != null) && (assayInfo.assayId.isEmpty()))) {
                 assayInfo.assayId = UUID.randomUUID().toString();
             }
 
