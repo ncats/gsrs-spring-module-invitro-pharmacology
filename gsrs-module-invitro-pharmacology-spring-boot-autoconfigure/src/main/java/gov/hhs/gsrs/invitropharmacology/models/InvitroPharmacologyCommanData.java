@@ -26,7 +26,7 @@ public class InvitroPharmacologyCommanData extends AbstractGsrsEntity implements
     @JsonSerialize(using = GsrsDateSerializer.class)
     @JsonDeserialize(using = GsrsDateDeserializer.class)
     @CreatedDate
-    @Indexable( name = "Record Created Date", sortable=true)
+    @Indexable(facet = true, name = "Record Created Date", sortable=true)
     @Column(name = "CREATED_DATE")
     private Date createdDate;
 
@@ -37,11 +37,11 @@ public class InvitroPharmacologyCommanData extends AbstractGsrsEntity implements
     @JsonSerialize(using = GsrsDateSerializer.class)
     @JsonDeserialize(using = GsrsDateDeserializer.class)
     @LastModifiedDate
-    @Indexable( name = "Record Modified Date", sortable=true)
+    @Indexable(facet = true, name = "Record Last Edited", sortable=true)
     @Column(name = "MODIFIED_DATE")
     private Date modifiedDate;
 
-    @Indexable(name = "Record Modified By")
+    @Indexable(facet = true, name = "Record Last Edited By")
     @Column(name = "MODIFIED_BY")
     private String modifiedBy;
 
