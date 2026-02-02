@@ -117,6 +117,29 @@ public class InvitroPharmacologyController extends EtagLegacySearchEntityControl
         return stream;
     }
 
+    @Override
+    public SearchOptions instrumentSearchOptions(SearchOptions so) {
+
+        so = super.instrumentSearchOptions(so);
+
+        so.addDateRangeFacet("root_createdDate");
+        so.addDateRangeFacet("root_modifiedDate");
+
+        if (gsrsFactoryConfiguration != null) {
+            Optional<Map<String, Object>> conf = gsrsFactoryConfiguration
+                    .getSearchSettingsFor(invitroPharmacologyEntityService.CONTEXT);
+
+            String restrict = conf
+                    .map(cc -> cc.get("restrictDefaultToIdentifiers"))
+                    .filter(bb -> bb != null).map(bb -> bb.toString())
+                    .orElse(null);
+            if (restrict != null && "true".equalsIgnoreCase(restrict)) {
+                so.setDefaultField(TextIndexer.FULL_IDENTIFIER_FIELD);
+            }
+        }
+        return so;
+    }
+
     @PostGsrsRestApiMapping("/screening")
     public ResponseEntity<Object> createScreening(@RequestBody JsonNode entityJson,
                                                 @RequestParam Map<String, String> queryParameters,
