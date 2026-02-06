@@ -14,13 +14,13 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.18</version>
+        <version>3.5.7</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <groupId>gov.nih.ncats</groupId>
     <artifactId>gsrs-module-invitro-pharmacology</artifactId>
-    <version>3.2.0-SNAPSHOT</version>
+    <version>3.2.5-SNAPSHOT</version>
     <name>GSRS Invitro Pharmacology Module</name>
     <description>GSRS Invitro Pharmacology Module for Spring Boot</description>
 
@@ -29,15 +29,14 @@
     </scm>
 
     <properties>
-        <java.version>1.8</java.version>
-        <spring-cloud.version>2021.0.8</spring-cloud.version>
-        <lucene.version>4.10.0</lucene.version>
-        <gsrs.version>3.2.0-SNAPSHOT</gsrs.version>
-        <gsrs.invitro-pharmacology.version>3.2.0-SNAPSHOT</gsrs.invitro-pharmacology.version>
-        <log4j2.version>2.17.1</log4j2.version>
-        <spring-boot.version>2.7.18</spring-boot.version>
+        <java.version>17</java.version>
+        <spring-cloud.version>2025.008</spring-cloud.version>
+        <gsrs.version>3.2.5-SNAPSHOT</gsrs.version>
+        <gsrs.invitro-pharmacology.version>3.2.5-SNAPSHOT</gsrs.invitro-pharmacology.version>
+        <log4j2.version>2.22.1</log4j2.version>
+        <spring-boot.version>3.5.7</spring-boot.version>
         <!-- TO BE REMOVE -->
-        <gsrs.substance.version>3.2.0-SNAPSHOT</gsrs.substance.version>
+        <gsrs.substance.version>3.2.5-SNAPSHOT</gsrs.substance.version>
     </properties>
 
     <!-- NEW Maven Central Repository BEGIN - July 2025 -->
@@ -86,32 +85,4 @@
         </repository>
     </distributionManagement>
     <!-- NEW Maven Central Repository END -->
-
-
-    <!-- OLD Maven Repository -->
-    <!--
-    <repositories>
-        <repository>
-            <id>oss.sonatype.org-snapshot</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
-    -->
 </project>
