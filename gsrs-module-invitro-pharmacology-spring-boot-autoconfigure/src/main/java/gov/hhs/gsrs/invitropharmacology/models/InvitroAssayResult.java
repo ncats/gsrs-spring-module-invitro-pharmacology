@@ -39,7 +39,7 @@ public class InvitroAssayResult extends InvitroPharmacologyCommanData {
     public String testAgentConcentrationUnits;
 
     @Column(name = "RESULT_VALUE")
-    public Double resultValue;
+    public String resultValue;
 
     @Column(name = "RESULT_VALUE_UNITS")
     public String resultValueUnits;

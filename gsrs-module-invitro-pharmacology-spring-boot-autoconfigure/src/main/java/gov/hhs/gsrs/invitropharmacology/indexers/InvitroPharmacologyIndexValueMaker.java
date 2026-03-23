@@ -108,9 +108,9 @@ public class InvitroPharmacologyIndexValueMaker implements IndexValueMaker<Invit
 
     public void createIndexableValuesBySubstanceApiResolver(Consumer<IndexableValue> consumer, String substanceKey, String substanceKeyType) {
 
-        // If Substance Key Type is APPROVAL_ID, BDNUM, or other key type, get the Substance record by Resolver
+        // If Substance Key Type is APPROVAL_ID, UNII, BDNUM, or other key type, get the Substance record by Resolver
         if ((substanceKeyType != null) && (!substanceKeyType.equalsIgnoreCase("UUID"))) {
-            // SUBSTANCE API Substance Key Resolver, if Substance Key Type is UUID, APPROVAL_ID, BDNUM, Other keys
+            // SUBSTANCE API Substance Key Resolver, if Substance Key Type is UUID, APPROVAL_ID, UNII, BDNUM, Other keys
             Optional<SubstanceDTO> substance = substanceApiService.getSubstanceBySubstanceKeyResolver(substanceKey, substanceKeyType);
 
             if (substance.get() != null) {
