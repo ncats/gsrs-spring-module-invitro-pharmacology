@@ -68,7 +68,10 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
 
     @Override
     protected InvitroAssayInformation fromNewJson(JsonNode json) throws IOException {
-        return objectMapper.convertValue(json, InvitroAssayInformation.class);
+        InvitroAssayInformation assayInfo = fromUpdatedJson(json);
+        assayInfo.id = null;
+        assayInfo.internalVersion = null;
+        return assayInfo;
     }
 
     @Override
