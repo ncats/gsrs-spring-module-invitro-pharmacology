@@ -20,7 +20,7 @@
 
     <groupId>gov.nih.ncats</groupId>
     <artifactId>gsrs-module-invitro-pharmacology</artifactId>
-    <version>3.2.0-SNAPSHOT</version>
+    <version>3.2.0</version>
     <name>GSRS Invitro Pharmacology Module</name>
     <description>GSRS Invitro Pharmacology Module for Spring Boot</description>
 
@@ -32,12 +32,12 @@
         <java.version>1.8</java.version>
         <spring-cloud.version>2021.0.8</spring-cloud.version>
         <lucene.version>4.10.0</lucene.version>
-        <gsrs.version>3.2.0-SNAPSHOT</gsrs.version>
-        <gsrs.invitro-pharmacology.version>3.2.0-SNAPSHOT</gsrs.invitro-pharmacology.version>
+        <gsrs.version>3.2.0</gsrs.version>
+        <gsrs.invitro-pharmacology.version>3.2.0</gsrs.invitro-pharmacology.version>
         <log4j2.version>2.17.1</log4j2.version>
         <spring-boot.version>2.7.18</spring-boot.version>
         <!-- TO BE REMOVE -->
-        <gsrs.substance.version>3.2.0-SNAPSHOT</gsrs.substance.version>
+        <gsrs.substance.version>3.2.0</gsrs.substance.version>
     </properties>
 
     <!-- NEW Maven Central Repository BEGIN - July 2025 -->
