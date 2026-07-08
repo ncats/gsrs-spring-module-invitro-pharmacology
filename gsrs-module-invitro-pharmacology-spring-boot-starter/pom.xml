@@ -11,6 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>gsrs-module-invitro-pharmacology-spring-boot-starter</artifactId>
+    <name>gsrs-module-invitro-pharmacology-spring-boot-starter</name>
 
     <dependencies>
         <!-- INVITRO PHARMACOLOGY MODULE Autoconfigure Dependencies -->
