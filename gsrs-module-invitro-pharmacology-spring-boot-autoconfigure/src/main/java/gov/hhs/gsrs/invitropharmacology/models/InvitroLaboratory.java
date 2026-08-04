@@ -9,7 +9,7 @@ import ix.core.models.ParentReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @SingleParent
 @Data
