@@ -1,2 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=gov.hhs.gsrs.invitropharmacology.autoconfigure.GsrsInvitroPharmacologyAutoConfiguration,\
-gov.hhs.gsrs.invitropharmacology.autoconfigure.SubstancesApiConfiguration
