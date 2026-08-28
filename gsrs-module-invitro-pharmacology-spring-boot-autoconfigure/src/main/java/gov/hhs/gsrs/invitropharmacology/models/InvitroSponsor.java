@@ -2,23 +2,8 @@ package gov.hhs.gsrs.invitropharmacology.models;
 
 import ix.core.SingleParent;
 import ix.core.models.Indexable;
-import ix.core.models.IndexableRoot;
-import ix.core.models.ParentReference;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 import jakarta.persistence.*;
-
-import java.util.Date;
-import java.util.ArrayList;
-import java.util.List;
 
 @SingleParent
 @Data

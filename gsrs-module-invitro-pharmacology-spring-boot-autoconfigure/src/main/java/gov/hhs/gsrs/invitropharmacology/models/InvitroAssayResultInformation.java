@@ -2,20 +2,12 @@ package gov.hhs.gsrs.invitropharmacology.models;
 
 import ix.core.SingleParent;
 import ix.core.models.Indexable;
-import ix.core.models.ParentReference;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @SingleParent
 @Data
@@ -46,8 +38,7 @@ public class InvitroAssayResultInformation extends InvitroPharmacologyCommanData
     @JsonIgnore
     @Indexable(indexed=false)
     @ToString.Exclude
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "invitroAssayResultInformation")
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "invitroAssayResultInformation")
     public List<InvitroAssayScreening> invitroAssayScreenings = new ArrayList<InvitroAssayScreening>();
 
     public void setInvitroAssayScreenings(List<InvitroAssayScreening> invitroAssayScreenings) {
@@ -70,8 +61,7 @@ public class InvitroAssayResultInformation extends InvitroPharmacologyCommanData
     // Set Child for InvitroAssayScreening
     @Indexable(indexed=false)
     @ToString.Exclude
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<InvitroReference> invitroReferences = new ArrayList<InvitroReference>();
 
     public void setInvitroReferences(List<InvitroReference> invitroReferences) {
