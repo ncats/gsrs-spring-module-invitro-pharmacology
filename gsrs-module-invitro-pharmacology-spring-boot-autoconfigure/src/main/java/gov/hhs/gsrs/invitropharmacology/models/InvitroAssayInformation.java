@@ -1,27 +1,13 @@
 package gov.hhs.gsrs.invitropharmacology.models;
 
-import ix.core.SingleParent;
 import ix.core.models.Indexable;
 import ix.core.models.IndexableRoot;
-import ix.core.models.ParentReference;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 import jakarta.persistence.*;
-
-import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.LinkedHashSet;
-import java.util.UUID;
 
 @IndexableRoot
 @Data
@@ -161,8 +147,7 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
     // Set Child for InvitroAssayAnalytes
     @ToString.Exclude
     @OrderBy("modifiedDate asc")
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<InvitroAssayAnalyte> invitroAssayAnalytes = new ArrayList<InvitroAssayAnalyte>();
 
     public void setInvitroAssayAnalytes(List<InvitroAssayAnalyte> invitroAssayAnalytes) {
@@ -178,8 +163,7 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
     // Set Child for InvitroAssayScreening
     @ToString.Exclude
     @OrderBy("modifiedDate asc")
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
     public List<InvitroAssayScreening> invitroAssayScreenings = new ArrayList<InvitroAssayScreening>();
 
     public void setInvitroAssayScreenings(List<InvitroAssayScreening> invitroAssayScreenings) {
@@ -195,8 +179,8 @@ public class InvitroAssayInformation extends InvitroPharmacologyCommanData {
     // Many To Many, InvitroAssaySet
     //@Indexable(indexed=false)
     @ToString.Exclude
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @ManyToMany(cascade= CascadeType.ALL)
+    // Codex recommended adding the FetchType.EAGER as well in this case
+    @ManyToMany(fetch=FetchType.EAGER, cascade= CascadeType.ALL)
     @JoinTable(name="GSRS_INVITRO_ASSAY_SET_DET", joinColumns = @JoinColumn(name = "INVITRO_ASSAY_INFO_ID "),
             inverseJoinColumns = @JoinColumn(name = "INVITRO_ASSAY_SET_ID"))
     public List<InvitroAssaySet> invitroAssaySets = new ArrayList<>();

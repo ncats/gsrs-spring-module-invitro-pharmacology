@@ -8,19 +8,9 @@ import ix.core.models.ParentReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 import jakarta.persistence.*;
-
-import java.util.Date;
 import java.util.Set;
 import java.util.LinkedHashSet;
-import java.util.ArrayList;
-import java.util.List;
 
 @SingleParent
 @Data
