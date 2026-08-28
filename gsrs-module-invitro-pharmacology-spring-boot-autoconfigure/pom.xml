@@ -5,7 +5,7 @@
     <parent>
         <artifactId>gsrs-module-invitro-pharmacology</artifactId>
         <groupId>gov.nih.ncats</groupId>
-        <version>3.2.5-SNAPSHOT</version>
+        <version>3.2.6-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -81,13 +81,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-
-        <!-- SPRINGFOX BOOT Dependencies -->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
-            <version>3.0.0</version>
         </dependency>
 
         <!-- LOMBOK Dependencies -->

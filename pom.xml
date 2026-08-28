@@ -14,13 +14,13 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.7</version>
+        <version>4.1.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <groupId>gov.nih.ncats</groupId>
     <artifactId>gsrs-module-invitro-pharmacology</artifactId>
-    <version>3.2.5-SNAPSHOT</version>
+    <version>3.2.6-SNAPSHOT</version>
     <name>GSRS Invitro Pharmacology Module</name>
     <description>GSRS Invitro Pharmacology Module for Spring Boot</description>
 
@@ -31,12 +31,12 @@
     <properties>
         <java.version>17</java.version>
         <spring-cloud.version>2025.008</spring-cloud.version>
-        <gsrs.version>3.2.5-SNAPSHOT</gsrs.version>
-        <gsrs.invitro-pharmacology.version>3.2.5-SNAPSHOT</gsrs.invitro-pharmacology.version>
+        <gsrs.version>3.2.6-SNAPSHOT</gsrs.version>
+        <gsrs.invitro-pharmacology.version>3.2.6-SNAPSHOT</gsrs.invitro-pharmacology.version>
         <log4j2.version>2.22.1</log4j2.version>
-        <spring-boot.version>3.5.7</spring-boot.version>
+        <spring-boot.version>4.1.0</spring-boot.version>
         <!-- TO BE REMOVE -->
-        <gsrs.substance.version>3.2.5-SNAPSHOT</gsrs.substance.version>
+        <gsrs.substance.version>3.2.6-SNAPSHOT</gsrs.substance.version>
     </properties>
 
     <repositories>
@@ -129,105 +129,6 @@
                             <sourcepath>${project.build.directory}/generated-sources/delombok</sourcepath>
                         <doclint>none</doclint>
 
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>attach-javadocs</id>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.2.8</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                                <configuration>
-                                    <keyname>${gpg.keyname}</keyname>
-                                    <passphraseServerId>${gpg.keyname}</passphraseServerId>
-                                    <gpgArguments>
-                                        <arg>--batch</arg>
-                                        <arg>--pinentry-mode</arg>
-                                        <arg>loopback</arg>
-                                        <arg>--no-tty</arg>
-                                    </gpgArguments>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
-    <profiles>
-        <profile>
-            <id>release-signing</id>
-            <activation>
-                <property>
-                    <name>performRelease</name>
-                    <value>true</value>
-                </property>
-            </activation>
-
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.projectlombok</groupId>
-                        <artifactId>lombok-maven-plugin</artifactId>
-                        <version>1.18.20.0</version>
-                        <executions>
-                            <execution>
-                                <phase>generate-sources</phase>
-                                <goals>
-                                    <goal>delombok</goal>
-                                </goals>
-                                <configuration>
-                                    <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
-                                    <outputDirectory>${project.build.directory}/generated-sources/delombok</outputDirectory>
-                                    <addOutputDirectory>false</addOutputDirectory>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.sonatype.central</groupId>
-                        <artifactId>central-publishing-maven-plugin</artifactId>
-                        <version>0.8.0</version>
-                        <extensions>true</extensions>
-                        <configuration>
-                            <publishingServerId>ossrh</publishingServerId>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <version>2.2.1</version>
-                        <executions>
-                            <execution>
-                                <id>attach-sources</id>
-                                <goals>
-                                    <goal>jar-no-fork</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <configuration>
-                            <sourcepath>${project.build.directory}/generated-sources/delombok</sourcepath>
-                            <additionalparam>-Xdoclint:none</additionalparam>
-                            <additionalOptions>-Xdoclint:none</additionalOptions>
-                            <additionalJOption>-Xdoclint:none</additionalJOption>
                         </configuration>
                         <executions>
                             <execution>
