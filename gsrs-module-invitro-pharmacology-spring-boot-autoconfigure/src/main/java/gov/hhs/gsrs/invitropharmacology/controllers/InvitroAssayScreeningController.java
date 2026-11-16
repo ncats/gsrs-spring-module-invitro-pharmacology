@@ -115,13 +115,11 @@ public class InvitroAssayScreeningController extends EtagLegacySearchEntityContr
     }
 
     @PutGsrsRestApiMapping("/saveBulkScreenings")
-    //@Transactional
     public ResponseEntity<String> updateBulkScreenings(@RequestBody JsonNode[] updatedEntityJson,
                                                @RequestParam Map<String, String> queryParameters,
                                                Principal principal) throws Exception {
         if (principal == null) {
             //not logged in!
-          // return gsrsControllerConfiguration.unauthorized("no user logged in", queryParameters);
         }
 
         List<InvitroAssayScreening> assayInfos = new ArrayList<>(updatedEntityJson.length);
@@ -134,29 +132,19 @@ public class InvitroAssayScreeningController extends EtagLegacySearchEntityContr
             // Convert Json to InvitroAssayScreening Class Object
             InvitroAssayScreening screeningObj = mapper.treeToValue(updatedEntityJson[i], InvitroAssayScreening.class);
 
-           // screeningObj.setOwner();
             // Save/Update the InvitroAssayScreening record into the database
             InvitroAssayScreening savedScreeningObj = invitroAssayScreeningEntityService.updateBulkScreenings(screeningObj, entityManager);
-
-          //  InvitroAssayScreening savedScreeningObj = invitroPharmacologyEntityService.updateBulkScreenings(screeningObj, entityManager);
 
             if (savedScreeningObj != null) {
                 savedList.add(savedScreeningObj);
             }
         }
         return new ResponseEntity(savedList, HttpStatus.OK);
-
-        //return gsrsControllerConfiguration.handleNotFound(queryParameters);
     }
 
 
     public InvitroAssayScreening updateBulkScreenings(InvitroAssayScreening screening) {
         try {
-            // InvitroAssayScreening obj = null;
-            //  entityManager.merge(screening);
-            //  entityManager.persist(screening);
-            //  entityManager.flush();
-
             InvitroAssayScreening obj = invitroAssayScreeningEntityService.updateBulkScreenings(screening, entityManager);
             return obj;
         } catch (Throwable t) {

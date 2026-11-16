@@ -16,9 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-//import com.fasterxml.jackson.databind.JsonNode;
-//import com.fasterxml.jackson.databind.ObjectMapper;
-
 // jackson databind
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.json.JsonMapper;
@@ -47,9 +44,6 @@ public class InvitroAssayScreeningEntityService extends AbstractGsrsEntityServic
 
     @Autowired
     private InvitroAssayScreeningRepository assayScreeningRepository;
-
-    //@Autowired
-    //private ObjectMapper objectMapper;
 
     @Autowired
     @Qualifier("legacyJsonMapper")
