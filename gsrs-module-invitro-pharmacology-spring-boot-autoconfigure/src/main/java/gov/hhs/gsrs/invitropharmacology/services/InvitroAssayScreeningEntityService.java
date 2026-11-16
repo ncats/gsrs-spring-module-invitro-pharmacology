@@ -70,7 +70,7 @@ public class InvitroAssayScreeningEntityService extends AbstractGsrsEntityServic
 
     @Override
     protected InvitroAssayScreening fromNewJson(JsonNode json) throws IOException {
-        return objectMapper.convertValue(json, InvitroAssayScreening.class);
+        return mapper.convertValue(json, InvitroAssayScreening.class);
     }
 
     @Override
