@@ -11,12 +11,18 @@ import gsrs.repository.GroupRepository;
 import gsrs.service.AbstractGsrsEntityService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
+//import com.fasterxml.jackson.databind.JsonNode;
+//import com.fasterxml.jackson.databind.ObjectMapper;
+
+// jackson databind
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.json.JsonMapper;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -50,8 +56,11 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
     @Autowired
     private InvitroAssayScreeningEntityService invitroAssayScreeningEntityService;
 
+    //@Autowired
+    //private ObjectMapper objectMapper;
     @Autowired
-    private ObjectMapper objectMapper;
+    @Qualifier("legacyJsonMapper")
+    private JsonMapper mapper;
 
     @Autowired
     private GroupRepository groupRepository;
@@ -162,7 +171,7 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
     @Override
     protected InvitroAssayInformation fromUpdatedJson(JsonNode json) throws IOException {
         //TODO should we make any edits to remove fields?
-        return objectMapper.convertValue(json, InvitroAssayInformation.class);
+        return mapper.convertValue(json, InvitroAssayInformation.class);
     }
 
     @Override
@@ -172,7 +181,7 @@ public class InvitroPharmacologyEntityService extends AbstractGsrsEntityService<
 
     @Override
     protected JsonNode toJson(InvitroAssayInformation details) throws IOException {
-        return objectMapper.valueToTree(details);
+        return mapper.valueToTree(details);
     }
 
     @Override
