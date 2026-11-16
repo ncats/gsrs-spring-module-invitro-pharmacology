@@ -1,25 +1,15 @@
 package gov.hhs.gsrs.invitropharmacology.models;
 
-import ix.core.SingleParent;
 import ix.core.models.Indexable;
 import ix.core.models.IndexableRoot;
 import ix.core.models.ParentReference;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 import jakarta.persistence.*;
-
-import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @IndexableRoot
 @Data
@@ -93,8 +83,7 @@ public class InvitroAssayScreening extends InvitroPharmacologyCommanData {
 
     // Set Child Class, InvitroControl
     @ToString.Exclude
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.MERGE, mappedBy = "owner")
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.MERGE, mappedBy = "owner")
     public List<InvitroControl> invitroControls = new ArrayList<InvitroControl>();
 
     public void setInvitroControls(List<InvitroControl> invitroControls) {
